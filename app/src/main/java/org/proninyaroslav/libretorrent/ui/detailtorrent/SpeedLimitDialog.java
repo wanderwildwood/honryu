@@ -33,6 +33,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import org.proninyaroslav.libretorrent.ui.base.EInkDialogBuilder;
 
 import org.proninyaroslav.libretorrent.R;
 import org.proninyaroslav.libretorrent.core.InputFilterRange;
@@ -94,7 +95,7 @@ public class SpeedLimitDialog extends DialogFragment {
         requestKey = args.getFragmentRequestKey();
 
         binding = DialogSpeedLimitBinding.inflate(getLayoutInflater(), null, false);
-        var builder = new MaterialAlertDialogBuilder(activity)
+        var builder = new EInkDialogBuilder(activity)
                 .setIcon(R.drawable.ic_speed_24px)
                 .setTitle(R.string.speed_limit_title)
                 .setMessage(R.string.torrent_speed_limit_dialog)

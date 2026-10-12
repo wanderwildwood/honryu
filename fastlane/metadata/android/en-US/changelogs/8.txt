@@ -1,2 +1,0 @@
-* Bugfixing
-* Update to jlibtorrent 1.2.0.17

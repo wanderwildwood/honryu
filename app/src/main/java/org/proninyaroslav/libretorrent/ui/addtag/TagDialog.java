@@ -40,6 +40,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import org.proninyaroslav.libretorrent.ui.base.EInkDialogBuilder;
 
 import org.proninyaroslav.libretorrent.R;
 import org.proninyaroslav.libretorrent.databinding.DialogTagBinding;
@@ -148,7 +149,7 @@ public class TagDialog extends DialogFragment {
     }
 
     private void initAlertDialog(View view) {
-        var builder = new MaterialAlertDialogBuilder(activity)
+        var builder = new EInkDialogBuilder(activity)
                 .setIcon(R.drawable.ic_label_24px)
                 .setTitle(viewModel.state.getExistsTagId() == null ?
                         R.string.add_tag :

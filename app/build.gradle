@@ -3,32 +3,30 @@ plugins {
     alias(libs.plugins.navigation.safeargs)
 }
 
-// Signing is optional: if key.properties/keystore aren't present (e.g. F-Droid builds),
-// the release build type is left unsigned instead of failing the build.
-def keystorePropertiesFile = rootProject.file('key.properties')
-def keystoreProperties = new Properties()
-def hasKeystoreProperties = keystorePropertiesFile.exists()
-if (hasKeystoreProperties) {
-    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+// The release key lives in a gitignored signing/ folder and nowhere else. Without it a release
+// builds unsigned, which installs nowhere: there is deliberately no fallback key.
+def signingPropertiesFile = rootProject.file('signing/signing.properties')
+def signingProperties = new Properties()
+def hasSigningProperties = signingPropertiesFile.exists()
+if (hasSigningProperties) {
+    signingPropertiesFile.withInputStream { signingProperties.load(it) }
 }
 
 android {
     namespace = 'org.proninyaroslav.libretorrent'
     defaultConfig {
-        applicationId 'org.proninyaroslav.libretorrent'
+        applicationId 'com.wanderwildwood.honryu'
         minSdkVersion 24
         targetSdkVersion 35
         compileSdkVersion 36
-        // Version code format: 0000xx0
-        // xx - version code
-        // trailing zero - auto increment for split ABI
-        versionCode 9000350
-        // Version format: major.minor.[revision][-some_info]
-        versionName '4.1.1'
+        // Torrents 0.1.0, on LibreTorrent 4.1.1. versionCode = major * 1000000 + minor * 1000 + patch
+        versionCode 1000
+        versionName '0.1.0'
         vectorDrawables.useSupportLibrary = true
 
         ndk {
-            abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+            // The Kompakt is arm64; x86_64 is for the emulator only (see debug).
+            abiFilters 'arm64-v8a'
         }
 
         javaCompileOptions {
@@ -41,12 +39,12 @@ android {
     }
 
     signingConfigs {
-        if (hasKeystoreProperties) {
+        if (hasSigningProperties) {
             release {
-                storeFile rootProject.file(keystoreProperties['storeFile'])
-                storePassword keystoreProperties['storePassword']
-                keyAlias keystoreProperties['keyAlias']
-                keyPassword keystoreProperties['keyPassword']
+                storeFile rootProject.file('signing/signing.keystore')
+                storePassword signingProperties.getProperty('STORE_PASSWORD')
+                keyAlias signingProperties.getProperty('KEY_ALIAS')
+                keyPassword signingProperties.getProperty('KEY_PASSWORD')
             }
         }
     }
@@ -72,8 +70,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
             buildConfigField('boolean', SESSION_LOGGING, 'false')
-            // Unsigned when no key.properties is provided (e.g. F-Droid, which signs releases itself)
-            if (hasKeystoreProperties) {
+            if (hasSigningProperties) {
                 signingConfig = signingConfigs.release
             }
         }
@@ -82,6 +79,9 @@ android {
             applicationIdSuffix '.debug'
             versionNameSuffix '-DEBUG'
             debuggable true
+            ndk {
+                abiFilters 'arm64-v8a', 'x86_64'
+            }
 
             buildConfigField('boolean', SESSION_LOGGING, 'true')
             enableUnitTestCoverage = true
@@ -93,7 +93,8 @@ android {
     def isBuildingBundle = gradle.startParameter.taskNames.any { it.toLowerCase().contains("bundle") }
     splits {
         abi {
-            enable = !isBuildingBundle
+            // One APK: only arm64 ships, so there is nothing to split.
+            enable = false
             reset()
             include 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
             universalApk = true

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- MenuMMD: white, a 2dp black outline, 20dp corners, no shadow. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#FFFFFF" />
+    <stroke android:width="2dp" android:color="#000000" />
+    <corners android:radius="20dp" />
+    <padding android:top="8dp" android:bottom="8dp" />
+</shape>

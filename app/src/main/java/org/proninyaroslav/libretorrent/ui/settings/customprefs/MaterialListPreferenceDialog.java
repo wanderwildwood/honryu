@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.preference.ListPreferenceDialogFragmentCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import org.proninyaroslav.libretorrent.ui.base.EInkDialogBuilder;
 
 public class MaterialListPreferenceDialog extends ListPreferenceDialogFragmentCompat {
     private int whichButtonClicked = 0;
@@ -33,7 +34,7 @@ public class MaterialListPreferenceDialog extends ListPreferenceDialogFragmentCo
         var context = getContext();
         whichButtonClicked = DialogInterface.BUTTON_NEGATIVE;
         var preference = getPreference();
-        var builder = new MaterialAlertDialogBuilder(requireActivity())
+        var builder = new EInkDialogBuilder(requireActivity())
                 .setTitle(preference.getDialogTitle())
                 .setIcon(preference.getDialogIcon())
                 .setPositiveButton(preference.getPositiveButtonText(), this)

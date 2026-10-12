@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A dialog on a white page: a 2dp black rim stands in for the dimming E Ink cannot show. -->
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:insetLeft="24dp" android:insetRight="24dp"
+    android:insetTop="80dp" android:insetBottom="80dp">
+    <shape android:shape="rectangle">
+        <solid android:color="#FFFFFF" />
+        <stroke android:width="2dp" android:color="#000000" />
+        <corners android:radius="12dp" />
+    </shape>
+</inset>

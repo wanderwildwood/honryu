@@ -28,6 +28,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import org.proninyaroslav.libretorrent.ui.base.EInkDialogBuilder;
 import com.skydoves.colorpickerview.flag.FlagMode;
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
 
@@ -53,7 +54,7 @@ public class ColorPickerDialog extends DialogFragment {
         );
         viewModel = new ViewModelProvider(this).get(ColorPickerViewModel.class);
 
-        var builder = new MaterialAlertDialogBuilder(requireActivity())
+        var builder = new EInkDialogBuilder(requireActivity())
                 .setIcon(R.drawable.ic_palette_24px)
                 .setTitle(R.string.color_picker)
                 .setView(binding.getRoot())

@@ -28,6 +28,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import org.proninyaroslav.libretorrent.ui.base.EInkDialogBuilder;
 
 import org.proninyaroslav.libretorrent.R;
 import org.proninyaroslav.libretorrent.databinding.DialogLogFilterBinding;
@@ -42,7 +43,7 @@ public class LogFilterDialog extends DialogFragment {
         DialogLogFilterBinding binding = DataBindingUtil.inflate(i, R.layout.dialog_log_filter, null, false);
         binding.setViewModel(viewModel);
 
-        var builder = new MaterialAlertDialogBuilder(requireContext())
+        var builder = new EInkDialogBuilder(requireContext())
                 .setTitle(R.string.filter)
                 .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
                 .setView(binding.getRoot());

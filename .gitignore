@@ -75,3 +75,6 @@ key.properties
 
 # Android NDK build stuff
 .externalNativeBuild
+
+# Release signing key, never committed
+signing/

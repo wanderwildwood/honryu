@@ -38,6 +38,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import org.proninyaroslav.libretorrent.ui.base.EInkDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -390,7 +391,7 @@ public class TorrentDetailsFragment extends Fragment {
             return;
         }
 
-        new MaterialAlertDialogBuilder(activity)
+        new EInkDialogBuilder(activity)
                 .setIcon(R.drawable.ic_magnet_24px)
                 .setTitle(R.string.share_magnet)
                 .setView(R.layout.dialog_magnet_include_prior)

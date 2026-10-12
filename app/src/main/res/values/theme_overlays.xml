@@ -135,9 +135,24 @@
         <item name="colorOnOkContainer">@color/colorOnOkContainer_highContrast</item>
     </style>
 
+    <!-- Dialogs as EInkDialog draws them: no dimming behind, a black rim (EInkDialogBuilder)
+         and 12dp corners. -->
     <style name="ThemeOverlay.App.MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog.Centered">
         <item name="materialAlertDialogBodyTextStyle">@style/MaterialAlertDialog.App.Body.Text
         </item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.App.Dialog</item>
+    </style>
+
+    <!-- AppCompat dialogs (the settings pickers) draw their window background. -->
+    <style name="ThemeOverlay.App.AlertDialog" parent="ThemeOverlay.Material3.Dialog.Alert">
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowBackground">@drawable/mmd_dialog_background</item>
+    </style>
+
+    <style name="ShapeAppearance.App.Dialog" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
     </style>
 
     <style name="ThemeOverlay.App.Surface" parent="">

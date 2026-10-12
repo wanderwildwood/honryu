@@ -1,9 +1,0 @@
-* Bugfixing
-* Added:
-   - New fetching magnet mechanism (ability to add magnet link in wait list)
-   - Torrent sorting by date added
-* Added new translations:
-   - Czech
-   - Norwegian Bokmål
-   - Romanian
-* Update to jlibtorrent 1.2.0.10

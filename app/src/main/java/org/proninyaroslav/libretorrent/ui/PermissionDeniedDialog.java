@@ -33,6 +33,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import org.proninyaroslav.libretorrent.ui.base.EInkDialogBuilder;
 
 import org.proninyaroslav.libretorrent.R;
 
@@ -72,7 +73,7 @@ public class PermissionDeniedDialog extends DialogFragment {
                 R.string.perm_denied_warning_android_r :
                 R.string.perm_denied_warning;
 
-        var builder = new MaterialAlertDialogBuilder(activity)
+        var builder = new EInkDialogBuilder(activity)
                 .setIcon(R.drawable.ic_folder_24px)
                 .setTitle(R.string.perm_denied_title)
                 .setMessage(message)

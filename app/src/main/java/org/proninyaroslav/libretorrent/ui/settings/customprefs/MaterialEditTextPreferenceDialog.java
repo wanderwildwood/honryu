@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.preference.EditTextPreferenceDialogFragmentCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import org.proninyaroslav.libretorrent.ui.base.EInkDialogBuilder;
 
 public class MaterialEditTextPreferenceDialog extends EditTextPreferenceDialogFragmentCompat {
     private int whichButtonClicked = 0;
@@ -33,7 +34,7 @@ public class MaterialEditTextPreferenceDialog extends EditTextPreferenceDialogFr
         var context = getContext();
         whichButtonClicked = DialogInterface.BUTTON_NEGATIVE;
         var preference = getPreference();
-        var builder = new MaterialAlertDialogBuilder(requireActivity())
+        var builder = new EInkDialogBuilder(requireActivity())
                 .setTitle(preference.getDialogTitle())
                 .setIcon(preference.getDialogIcon())
                 .setPositiveButton(preference.getPositiveButtonText(), this)

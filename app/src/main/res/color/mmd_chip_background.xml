@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- FilterChipMMD: black when chosen, the page showing through when not. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="#000000" android:state_checked="true" />
+    <item android:color="#FFFFFF" />
+</selector>

@@ -32,6 +32,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import org.proninyaroslav.libretorrent.ui.base.EInkDialogBuilder;
 
 import org.proninyaroslav.libretorrent.R;
 import org.proninyaroslav.libretorrent.databinding.DialogSelectTagBinding;
@@ -95,7 +96,7 @@ public class SelectTagDialog extends DialogFragment implements TagsAdapter.OnCli
 
         initLayoutView();
 
-        var alert = new MaterialAlertDialogBuilder(activity)
+        var alert = new EInkDialogBuilder(activity)
                 .setIcon(R.drawable.ic_label_24px)
                 .setTitle(R.string.select_tag)
                 .setPositiveButton(R.string.new_tag, null)

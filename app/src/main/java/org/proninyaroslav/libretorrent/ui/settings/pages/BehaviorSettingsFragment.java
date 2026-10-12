@@ -31,6 +31,7 @@ import androidx.preference.Preference;
 import androidx.preference.SwitchPreferenceCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import org.proninyaroslav.libretorrent.ui.base.EInkDialogBuilder;
 
 import org.proninyaroslav.libretorrent.R;
 import org.proninyaroslav.libretorrent.core.RepositoryHelper;
@@ -222,7 +223,7 @@ public class BehaviorSettingsFragment extends CustomPreferenceFragment
             return;
         }
 
-        new MaterialAlertDialogBuilder(activity)
+        new EInkDialogBuilder(activity)
                 .setIcon(R.drawable.ic_warning_24px)
                 .setTitle(R.string.warning)
                 .setMessage(R.string.pref_custom_battery_control_dialog_summary)

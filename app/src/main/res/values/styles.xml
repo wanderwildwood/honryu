@@ -10,6 +10,7 @@
             @style/App.Components.FloatingActionButton.Menu.Text
         </item>
         <item name="iconTint">?attr/colorOnSecondaryContainer</item>
+        <item name="android:popupElevation">0dp</item>
     </style>
 
     <style name="App.Components.ListItem" parent="Widget.Material3.CardView.Outlined">
@@ -65,4 +66,90 @@
     </style>
 
     <style name="TextAppearance.App.SectionTitle" parent="TextAppearance.Material3.TitleSmall" />
+    <!-- MMD components, drawn with views. -->
+
+    <!-- The add button: black, flat, white mark. A shadow on this panel is a grey smear. -->
+    <style name="Widget.App.FloatingActionButton" parent="Widget.Material3.FloatingActionButton.Primary">
+        <item name="backgroundTint">#000000</item>
+        <item name="tint">#FFFFFF</item>
+        <item name="elevation">0dp</item>
+        <item name="hoveredFocusedTranslationZ">0dp</item>
+        <item name="pressedTranslationZ">0dp</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="rippleColor">@android:color/transparent</item>
+    </style>
+
+    <style name="Widget.App.ExtendedFloatingActionButton" parent="Widget.Material3.ExtendedFloatingActionButton.Icon.Primary">
+        <item name="backgroundTint">#000000</item>
+        <item name="iconTint">#FFFFFF</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="elevation">0dp</item>
+        <item name="rippleColor">@android:color/transparent</item>
+    </style>
+
+    <!-- Cards keep their edge with a black line, not a tint or a shadow. -->
+    <style name="Widget.App.CardView" parent="Widget.Material3.CardView.Outlined">
+        <item name="strokeColor">#000000</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="cardElevation">0dp</item>
+        <item name="rippleColor">@android:color/transparent</item>
+    </style>
+
+    <!-- As LinearProgressIndicatorMMD: an outlined bar that fills with black. -->
+    <style name="Widget.App.LinearProgressIndicator" parent="Widget.Material3.LinearProgressIndicator">
+        <item name="indicatorColor">#000000</item>
+        <item name="trackColor">@android:color/transparent</item>
+        <item name="trackThickness">8dp</item>
+        <item name="trackCornerRadius">4dp</item>
+        <item name="indicatorTrackGapSize">0dp</item>
+        <item name="trackStopIndicatorSize">0dp</item>
+        <item name="android:background">@drawable/mmd_progress_track</item>
+    </style>
+
+    <style name="Widget.App.Button.OutlinedButton" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="strokeColor">#000000</item>
+        <item name="strokeWidth">1.5dp</item>
+    </style>
+    <style name="Widget.App.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
+        <item name="android:background">@drawable/mmd_nav_bar_background</item>
+        <item name="itemBackground">@drawable/mmd_nav_item_background</item>
+        <item name="itemActiveIndicatorStyle">@null</item>
+        <item name="itemIconTint">#000000</item>
+        <item name="itemTextColor">#000000</item>
+        <item name="itemRippleColor">@android:color/transparent</item>
+        <item name="elevation">0dp</item>
+    </style>
+    <!-- FilterChipMMD: a 2dp outline when off, solid black with white words when on. -->
+    <style name="Widget.App.Chip.Filter" parent="Widget.Material3.Chip.Filter">
+        <item name="chipBackgroundColor">@color/mmd_chip_background</item>
+        <item name="android:textColor">@color/mmd_chip_text</item>
+        <item name="checkedIconTint">#FFFFFF</item>
+        <item name="chipIconTint">@color/mmd_chip_text</item>
+        <item name="chipStrokeColor">#000000</item>
+        <item name="chipStrokeWidth">2dp</item>
+        <item name="rippleColor">@android:color/transparent</item>
+    </style>
+
+    <!-- A tonal button would be white on white here, so it takes the outlined form. -->
+    <style name="Widget.App.Button.TonalButton" parent="Widget.App.Button.OutlinedButton" />
+    <style name="Widget.App.PopupMenu" parent="Widget.Material3.PopupMenu">
+        <item name="android:popupBackground">@drawable/mmd_menu_background</item>
+        <item name="android:popupElevation">0dp</item>
+    </style>
+
+    <style name="Widget.App.PopupMenu.Overflow" parent="Widget.Material3.PopupMenu.Overflow">
+        <item name="android:popupBackground">@drawable/mmd_menu_background</item>
+        <item name="android:popupElevation">0dp</item>
+    </style>
+
+    <style name="Widget.App.PopupMenu.ListPopupWindow" parent="Widget.Material3.PopupMenu.ListPopupWindow">
+        <item name="android:popupBackground">@drawable/mmd_menu_background</item>
+        <item name="android:popupElevation">0dp</item>
+    </style>
+    <style name="Widget.App.NavigationView" parent="Widget.Material3.NavigationView">
+        <item name="android:background">@drawable/mmd_drawer_background</item>
+        <item name="backgroundTint">@null</item>
+        <item name="drawerLayoutCornerSize">0dp</item>
+        <item name="elevation">0dp</item>
+    </style>
 </resources>

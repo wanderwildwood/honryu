@@ -147,7 +147,7 @@
 
                         <com.google.android.material.chip.Chip
                             android:id="@+id/sort_by_name"
-                            style="@style/Widget.Material3.Chip.Filter"
+                            style="@style/Widget.App.Chip.Filter"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checkable="true"
@@ -156,7 +156,7 @@
 
                         <com.google.android.material.chip.Chip
                             android:id="@+id/sort_by_size"
-                            style="@style/Widget.Material3.Chip.Filter"
+                            style="@style/Widget.App.Chip.Filter"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checkable="true"

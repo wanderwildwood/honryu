@@ -28,6 +28,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import org.proninyaroslav.libretorrent.ui.base.EInkDialogBuilder;
 
 import org.acra.ReportField;
 import org.acra.dialog.CrashReportDialogHelper;
@@ -94,7 +95,7 @@ public class ErrorReportDialog extends DialogFragment {
 
         initLayoutView(binding);
 
-        return new MaterialAlertDialogBuilder(requireActivity())
+        return new EInkDialogBuilder(requireActivity())
                 .setIcon(R.drawable.ic_error_24px)
                 .setTitle(R.string.error)
                 .setMessage(args.getMessage())

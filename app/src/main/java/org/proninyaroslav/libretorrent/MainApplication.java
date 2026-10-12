@@ -58,7 +58,7 @@ public class MainApplication extends Application {
                 .withBuildConfigClass(BuildConfig.class)
                 .withReportFormat(StringFormat.JSON);
         builder.withPluginConfigurations(new MailSenderConfigurationBuilder()
-                .withMailTo("proninyaroslav@mail.ru")
+                .withMailTo("email@wanderthe.dev")
                 .build());
         builder.withPluginConfigurations(new DialogConfigurationBuilder()
                 .withEnabled(true)

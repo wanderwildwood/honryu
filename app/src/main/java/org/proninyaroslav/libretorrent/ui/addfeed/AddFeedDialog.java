@@ -45,6 +45,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import org.proninyaroslav.libretorrent.ui.base.EInkDialogBuilder;
 
 import org.proninyaroslav.libretorrent.R;
 import org.proninyaroslav.libretorrent.core.utils.Utils;
@@ -223,7 +224,7 @@ public class AddFeedDialog extends DialogFragment {
     }
 
     private void initAlertDialog(View view) {
-        var builder = new MaterialAlertDialogBuilder(activity)
+        var builder = new EInkDialogBuilder(activity)
                 .setNegativeButton(R.string.cancel, null)
                 .setView(view);
 

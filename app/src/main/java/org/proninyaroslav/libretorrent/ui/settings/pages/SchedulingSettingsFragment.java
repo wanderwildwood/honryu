@@ -31,6 +31,7 @@ import androidx.preference.Preference;
 import androidx.preference.SwitchPreferenceCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import org.proninyaroslav.libretorrent.ui.base.EInkDialogBuilder;
 
 import org.proninyaroslav.libretorrent.R;
 import org.proninyaroslav.libretorrent.core.RepositoryHelper;
@@ -119,7 +120,7 @@ public class SchedulingSettingsFragment extends CustomPreferenceFragment
             return;
         }
 
-        new MaterialAlertDialogBuilder(activity)
+        new EInkDialogBuilder(activity)
                 .setIcon(R.drawable.ic_warning_24px)
                 .setTitle(R.string.permission_denied)
                 .setMessage(R.string.exact_alarm_permission_warning)

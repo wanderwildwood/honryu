@@ -2,38 +2,12 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory android:title="@string/pref_theme_category">
-
-        <ListPreference
-            android:entries="@array/pref_theme_entries"
-            android:entryValues="@array/pref_theme_entries_value"
-            android:key="@string/pref_key_theme"
-            android:persistent="false"
-            android:title="@string/pref_theme_title"
-            app:singleLineTitle="false"
-            app:useSimpleSummaryProvider="true" />
-
-        <ListPreference
-            android:key="@string/pref_key_locale"
-            android:persistent="false"
-            android:title="@string/pref_locale_title"
-            android:summary="@string/pref_locale_summary"
-            app:singleLineTitle="false" />
-
-        <SwitchPreferenceCompat
-            android:key="@string/pref_key_theme_black_backgrounds"
-            android:persistent="false"
-            android:summary="@string/pref_theme_black_backgrounds_summary"
-            android:title="@string/pref_black_backgrounds"
-            app:singleLineTitle="false" />
-
-        <SwitchPreferenceCompat
-            android:key="@string/pref_key_theme_dynamic_colors"
-            android:persistent="false"
-            android:summary="@string/pref_theme_dynamic_colors_summary"
-            android:title="@string/pref_theme_dynamic_colors_title"
-            app:singleLineTitle="false" />
-    </PreferenceCategory>
+    <ListPreference
+        android:key="@string/pref_key_locale"
+        android:persistent="false"
+        android:title="@string/pref_locale_title"
+        android:summary="@string/pref_locale_summary"
+        app:singleLineTitle="false" />
 
     <PreferenceCategory android:title="@string/pref_notification_category">
 

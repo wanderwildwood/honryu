@@ -26,6 +26,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import org.proninyaroslav.libretorrent.ui.base.EInkDialogBuilder;
 
 import org.proninyaroslav.libretorrent.R;
 import org.proninyaroslav.libretorrent.databinding.DialogTextInputBinding;
@@ -38,7 +39,7 @@ public class GoToFolderDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         var args = GoToFolderDialogArgs.fromBundle(getArguments());
         var binding = DialogTextInputBinding.inflate(getLayoutInflater());
-        var builder = new MaterialAlertDialogBuilder(requireActivity())
+        var builder = new EInkDialogBuilder(requireActivity())
                 .setIcon(R.drawable.ic_folder_open_24px)
                 .setTitle(R.string.go_to_folder)
                 .setPositiveButton(R.string.ok, (dialog, which) -> {

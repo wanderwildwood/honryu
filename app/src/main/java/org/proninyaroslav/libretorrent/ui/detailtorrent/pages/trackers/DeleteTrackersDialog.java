@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import org.proninyaroslav.libretorrent.ui.base.EInkDialogBuilder;
 
 import org.proninyaroslav.libretorrent.R;
 
@@ -28,7 +29,7 @@ public class DeleteTrackersDialog extends DialogFragment {
         var args = DeleteTrackersDialogArgs.fromBundle(getArguments());
         requestKey = args.getFragmentRequestKey();
 
-        var builder = new MaterialAlertDialogBuilder(requireActivity())
+        var builder = new EInkDialogBuilder(requireActivity())
                 .setIcon(R.drawable.ic_delete_24px)
                 .setTitle(args.getTrackersCount() > 1 ?
                         R.string.delete_selected_trackers :

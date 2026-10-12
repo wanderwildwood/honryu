@@ -41,6 +41,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import org.proninyaroslav.libretorrent.ui.base.EInkDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.proninyaroslav.libretorrent.MainActivity;
@@ -350,7 +351,7 @@ public class CreateTorrentFragment extends Fragment {
             return;
         }
 
-        new MaterialAlertDialogBuilder(activity)
+        new EInkDialogBuilder(activity)
                 .setIcon(R.drawable.ic_error_24px)
                 .setTitle(R.string.error)
                 .setMessage(e.getMessage())

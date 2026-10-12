@@ -22,6 +22,7 @@ package org.proninyaroslav.libretorrent.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -33,6 +34,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -138,6 +140,8 @@ public class NavBarFragment extends Fragment {
         }
 
         drawerLayout = view.findViewById(R.id.drawer_layout);
+        // No dimming over the page: the drawer's own black edge separates it.
+        drawerLayout.setScrimColor(Color.TRANSPARENT);
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         navigationView = view.findViewById(R.id.navigation_view);
         navRail = view.findViewById(R.id.navigation_rail);
@@ -153,6 +157,11 @@ public class NavBarFragment extends Fragment {
             @Override
             public void handleOnBackPressed() {
                 if (navController == null || activity == null) {
+                    return;
+                }
+                // Back closes an open side drawer before it leaves the page.
+                if (drawerLayout != null && drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    drawerLayout.closeDrawer(GravityCompat.START);
                     return;
                 }
                 if (!navController.navigateUp() && !activity.getRootNavController().navigateUp()) {

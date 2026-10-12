@@ -191,7 +191,7 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/drawer_sorting_date_added"
-                style="@style/Widget.Material3.Chip.Filter"
+                style="@style/Widget.App.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checkable="true"
@@ -199,7 +199,7 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/drawer_sorting_name"
-                style="@style/Widget.Material3.Chip.Filter"
+                style="@style/Widget.App.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checkable="true"
@@ -207,7 +207,7 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/drawer_sorting_size"
-                style="@style/Widget.Material3.Chip.Filter"
+                style="@style/Widget.App.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checkable="true"
@@ -215,7 +215,7 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/drawer_sorting_progress"
-                style="@style/Widget.Material3.Chip.Filter"
+                style="@style/Widget.App.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checkable="true"
@@ -223,7 +223,7 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/drawer_sorting_ETA"
-                style="@style/Widget.Material3.Chip.Filter"
+                style="@style/Widget.App.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checkable="true"
@@ -231,7 +231,7 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/drawer_sorting_peers"
-                style="@style/Widget.Material3.Chip.Filter"
+                style="@style/Widget.App.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checkable="true"

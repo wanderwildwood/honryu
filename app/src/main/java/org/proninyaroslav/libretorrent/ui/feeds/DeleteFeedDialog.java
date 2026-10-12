@@ -27,6 +27,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import org.proninyaroslav.libretorrent.ui.base.EInkDialogBuilder;
 
 import org.proninyaroslav.libretorrent.R;
 
@@ -38,7 +39,7 @@ public class DeleteFeedDialog extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         var args = DeleteFeedDialogArgs.fromBundle(getArguments());
 
-        return new MaterialAlertDialogBuilder(requireActivity())
+        return new EInkDialogBuilder(requireActivity())
                 .setIcon(R.drawable.ic_delete_24px)
                 .setTitle(R.string.deleting)
                 .setMessage(args.getFeedCount() > 1

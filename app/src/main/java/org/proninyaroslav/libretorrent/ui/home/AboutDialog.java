@@ -20,17 +20,18 @@
 package org.proninyaroslav.libretorrent.ui.home;
 
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Html;
-import android.text.method.LinkMovementMethod;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import org.proninyaroslav.libretorrent.ui.base.EInkDialogBuilder;
 
 import org.proninyaroslav.libretorrent.R;
 import org.proninyaroslav.libretorrent.core.system.SystemFacadeHelper;
@@ -43,29 +44,27 @@ public class AboutDialog extends DialogFragment {
         var activity = requireActivity();
         var binding = DialogAboutBinding.inflate(getLayoutInflater(), null, false);
 
-        var builder = new MaterialAlertDialogBuilder(activity)
-                .setTitle(R.string.about_title)
+        var builder = new EInkDialogBuilder(activity)
                 .setView(binding.getRoot())
-                .setPositiveButton(R.string.ok, (dialog, which) -> dismiss())
-                .setNeutralButton(R.string.about_changelog, (dialog, which) -> openChangelogLink());
+                .setPositiveButton(R.string.honryu_about_close, (dialog, which) -> dismiss());
 
         String versionName = SystemFacadeHelper
                 .getSystemFacade(activity.getApplicationContext())
                 .getAppVersionName();
-        if (versionName != null) {
-            binding.version.setText(versionName);
-        }
-        binding.description.setText(
-                Html.fromHtml(getString(R.string.about_description), Html.FROM_HTML_MODE_LEGACY)
-        );
-        binding.description.setMovementMethod(LinkMovementMethod.getInstance());
+        binding.version.setText(getString(R.string.honryu_about_title,
+                versionName != null ? versionName : ""));
+        binding.site.setOnClickListener((v) -> open("https://wanderthe.dev"));
+        // Straight to the checkout: the site's own Donate button only leads there anyway.
+        binding.llama.setOnClickListener((v) -> open("https://square.link/u/AGu8oT10"));
 
         return builder.create();
     }
 
-    private void openChangelogLink() {
-        Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(getString(R.string.about_changelog_link)));
-        startActivity(i);
+    private void open(String url) {
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(requireContext(), R.string.honryu_about_no_browser, Toast.LENGTH_SHORT).show();
+        }
     }
 }

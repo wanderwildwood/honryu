@@ -77,7 +77,6 @@ import org.proninyaroslav.libretorrent.core.exception.FetchLinkException;
 import org.proninyaroslav.libretorrent.core.filter.TorrentFilter;
 import org.proninyaroslav.libretorrent.core.filter.TorrentFilterCollection;
 import org.proninyaroslav.libretorrent.core.model.data.metainfo.BencodeFileItem;
-import org.proninyaroslav.libretorrent.core.model.data.preferences.PrefTheme;
 import org.proninyaroslav.libretorrent.core.settings.SettingsRepository;
 import org.proninyaroslav.libretorrent.core.sorting.BaseSorting;
 import org.proninyaroslav.libretorrent.core.sorting.TorrentSorting;
@@ -1033,15 +1032,8 @@ public class Utils {
         Runtime.getRuntime().exit(0);
     }
 
+    // Always light: an E Ink panel shows black on white, and a dark theme is a setting it cannot honour.
     public static void applyNightMode(@NonNull Application application) {
-        var pref = RepositoryHelper.getSettingsRepository(application);
-        var theme = pref.theme();
-        if (theme instanceof PrefTheme.System) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-        } else if (theme instanceof PrefTheme.Light) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        } else if (theme instanceof PrefTheme.Dark) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        }
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
     }
 }

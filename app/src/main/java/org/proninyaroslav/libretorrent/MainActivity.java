@@ -33,6 +33,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import org.proninyaroslav.libretorrent.ui.base.EInkDialogBuilder;
 
 import org.proninyaroslav.libretorrent.core.RepositoryHelper;
 import org.proninyaroslav.libretorrent.core.settings.SettingsRepository;
@@ -206,7 +207,7 @@ public class MainActivity extends ThemeActivity {
         binding.message.append(getString(R.string.manage_all_files_warning_dialog_description));
         binding.message.append(Utils.getLineSeparator());
         binding.message.append(getString(R.string.project_page));
-        new MaterialAlertDialogBuilder(this)
+        new EInkDialogBuilder(this)
                 .setIcon(R.drawable.ic_warning_24px)
                 .setTitle(R.string.manage_all_files_warning_dialog_title)
                 .setView(binding.getRoot())

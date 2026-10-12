@@ -175,6 +175,6 @@
     </string-array>
 
     <!-- About dialog -->
-    <string name="about_changelog_link" translatable="false">https://gitlab.com/proninyaroslav/libretorrent/blob/master/NEWS.md</string>
-    <string name="project_page" translatable="false">https://gitlab.com/proninyaroslav/libretorrent</string>
+    <string name="about_changelog_link" translatable="false">https://github.com/wanderwildwood/honryu/releases</string>
+    <string name="project_page" translatable="false">https://github.com/wanderwildwood/honryu</string>
 </resources>

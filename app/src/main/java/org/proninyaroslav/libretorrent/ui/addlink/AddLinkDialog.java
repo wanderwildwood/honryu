@@ -43,6 +43,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import org.proninyaroslav.libretorrent.ui.base.EInkDialogBuilder;
 
 import org.proninyaroslav.libretorrent.MainActivity;
 import org.proninyaroslav.libretorrent.R;
@@ -173,7 +174,7 @@ public class AddLinkDialog extends DialogFragment {
     }
 
     private void initAlertDialog(View view) {
-        var builder = new MaterialAlertDialogBuilder(activity, R.style.ThemeOverlay_Material3_MaterialAlertDialog)
+        var builder = new EInkDialogBuilder(activity, R.style.ThemeOverlay_Material3_MaterialAlertDialog)
                 .setTitle(R.string.dialog_add_link_title)
                 .setIcon(R.drawable.ic_link_24px)
                 .setPositiveButton(R.string.add, null)

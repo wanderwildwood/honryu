@@ -30,6 +30,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.preference.PreferenceManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import org.proninyaroslav.libretorrent.ui.base.EInkDialogBuilder;
 
 import org.proninyaroslav.libretorrent.R;
 import org.proninyaroslav.libretorrent.databinding.DialogDeleteTorrentBinding;
@@ -61,7 +62,7 @@ public class DeleteTorrentDialog extends DialogFragment {
                 )
         );
 
-        var builder = new MaterialAlertDialogBuilder(requireActivity())
+        var builder = new EInkDialogBuilder(requireActivity())
                 .setIcon(R.drawable.ic_delete_24px)
                 .setTitle(R.string.deleting)
                 .setMessage(args.getTorrentCount() > 1

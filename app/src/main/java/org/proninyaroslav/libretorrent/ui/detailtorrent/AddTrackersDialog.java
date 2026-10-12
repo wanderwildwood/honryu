@@ -37,6 +37,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import org.proninyaroslav.libretorrent.ui.base.EInkDialogBuilder;
 
 import org.proninyaroslav.libretorrent.R;
 import org.proninyaroslav.libretorrent.core.exception.NormalizeUrlException;
@@ -77,7 +78,7 @@ public class AddTrackersDialog extends DialogFragment {
         requestKey = args.getFragmentRequestKey();
 
         binding = DialogMultilineTextInputBinding.inflate(getLayoutInflater(), null, false);
-        var builder = new MaterialAlertDialogBuilder(activity)
+        var builder = new EInkDialogBuilder(activity)
                 .setIcon(R.drawable.ic_add_24px)
                 .setTitle(R.string.add_trackers)
                 .setMessage(R.string.dialog_add_trackers)

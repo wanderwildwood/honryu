@@ -2,9 +2,12 @@
     android:inset="16dp">
 
     <shape>
-        <solid android:color="?attr/colorSecondaryContainer" />
+        <solid android:color="#FFFFFF" />
 
-        <corners android:radius="24dp" />
+        <!-- MenuMMD: a 2dp black outline in place of a shadow. -->
+        <stroke android:width="2dp" android:color="#000000" />
+
+        <corners android:radius="20dp" />
 
         <padding
             android:top="16dp"

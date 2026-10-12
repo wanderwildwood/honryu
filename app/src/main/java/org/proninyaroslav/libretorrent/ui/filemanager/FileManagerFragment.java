@@ -56,6 +56,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import org.proninyaroslav.libretorrent.ui.base.EInkDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 
@@ -576,7 +577,7 @@ public class FileManagerFragment extends Fragment implements FileManagerAdapter.
         Editable editable = binding.fileName.getText();
         String fileName = (editable == null ? null : editable.toString());
         if (!replace && viewModel.fileExists(fileName)) {
-            new MaterialAlertDialogBuilder(activity)
+            new EInkDialogBuilder(activity)
                     .setIcon(R.drawable.ic_file_24px)
                     .setTitle(R.string.replace_file)
                     .setMessage(R.string.error_file_exists)

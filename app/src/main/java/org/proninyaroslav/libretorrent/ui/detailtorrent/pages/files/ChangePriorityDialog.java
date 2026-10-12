@@ -28,6 +28,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import org.proninyaroslav.libretorrent.ui.base.EInkDialogBuilder;
 
 import org.proninyaroslav.libretorrent.R;
 import org.proninyaroslav.libretorrent.core.model.filetree.FilePriority;
@@ -46,7 +47,7 @@ public class ChangePriorityDialog extends DialogFragment {
         requestKey = args.getFragmentRequestKey();
 
         binding = DialogChangePriorityBinding.inflate(getLayoutInflater(), null, false);
-        var builder = new MaterialAlertDialogBuilder(requireActivity())
+        var builder = new EInkDialogBuilder(requireActivity())
                 .setIcon(R.drawable.ic_arrow_upward_alt_24px)
                 .setTitle(R.string.dialog_change_priority_title)
                 .setPositiveButton(R.string.ok, (dialog, which) -> onPositiveClick())

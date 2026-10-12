@@ -30,6 +30,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import org.proninyaroslav.libretorrent.ui.base.EInkDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.proninyaroslav.libretorrent.R;
@@ -44,7 +45,7 @@ public class EditTorrentNameDialog extends DialogFragment {
         var args = EditTorrentNameDialogArgs.fromBundle(getArguments());
         var binding = DialogTextInputBinding.inflate(getLayoutInflater(), null, false);
 
-        var builder = new MaterialAlertDialogBuilder(requireActivity())
+        var builder = new EInkDialogBuilder(requireActivity())
                 .setIcon(R.drawable.ic_edit_24px)
                 .setTitle(R.string.edit_torrent_name)
                 .setView(binding.getRoot())

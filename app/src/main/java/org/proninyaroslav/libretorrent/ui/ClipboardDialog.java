@@ -26,6 +26,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import org.proninyaroslav.libretorrent.ui.base.EInkDialogBuilder;
 
 import org.proninyaroslav.libretorrent.R;
 import org.proninyaroslav.libretorrent.core.utils.Utils;
@@ -55,7 +56,7 @@ public class ClipboardDialog extends DialogFragment {
         }
 
         var args = ClipboardDialogArgs.fromBundle(getArguments());
-        var builder = new MaterialAlertDialogBuilder(activity)
+        var builder = new EInkDialogBuilder(activity)
                 .setIcon(R.drawable.ic_content_copy_24px)
                 .setTitle(R.string.clipboard)
                 .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss());
