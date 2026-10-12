@@ -7,6 +7,12 @@ A BitTorrent client for an E Ink phone. Black on white, Lato, nothing that slide
 Built for the [Mudita Kompakt](https://mudita.com/products/kompakt/), whose 4.3" panel has
 sixteen greys and a slow redraw.
 
+## Screenshots
+
+| | | | |
+|---|---|---|---|
+| ![Torrents](screenshots/1-torrents.png) | ![Adding a torrent](screenshots/2-add.png) | ![Details](screenshots/3-details.png) | ![Settings](screenshots/4-settings.png) |
+
 ## What it is
 
 Yaroslav Pronin's [LibreTorrent](https://gitlab.com/proninyaroslav/libretorrent), dressed
