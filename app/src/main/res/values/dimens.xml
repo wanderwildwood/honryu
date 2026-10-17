@@ -20,4 +20,7 @@
     <dimen name="text_filed_max_width">488dp</dimen>
     <dimen name="bottom_bar_padding">80dp</dimen>
     <dimen name="list_fab_padding">72dp</dimen>
+    <!-- TopAppBarMMD: 64dp tall, a 1dp rule beneath, as the library draws it. -->
+    <dimen name="top_bar_height">64dp</dimen>
+    <dimen name="top_bar_rule">1dp</dimen>
 </resources>

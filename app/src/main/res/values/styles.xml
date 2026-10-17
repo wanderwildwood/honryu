@@ -45,6 +45,15 @@
         <item name="elevation">0dp</item>
     </style>
 
+    <!-- TopAppBarMMD: 64dp, titleLarge (24sp Lato), white. The rule beneath is
+         layout/top_bar_rule under each bar. -->
+    <style name="Widget.App.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="android:minHeight">@dimen/top_bar_height</item>
+        <item name="android:background">@android:color/white</item>
+        <item name="titleTextAppearance">@style/TextAppearance.App.TitleLarge</item>
+        <item name="contentInsetStartWithNavigation">0dp</item>
+    </style>
+
     <style name="Widget.App.AppBarLayout" parent="Widget.Material3.AppBarLayout">
         <item name="elevation">0dp</item>
     </style>

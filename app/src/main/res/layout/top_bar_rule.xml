@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TopAppBarMMD's rule beneath the title, as his Compose apps draw it. -->
+<View xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/top_bar_rule"
+    android:background="@color/mmd_ink" />

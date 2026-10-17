@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- White with TopAppBarMMD's rule along the bottom, for a bar drawn over another. -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item><shape><solid android:color="@android:color/white" /></shape></item>
+    <item android:gravity="bottom" android:height="@dimen/top_bar_rule"><shape><solid android:color="@color/mmd_ink" /></shape></item>
+</layer-list>

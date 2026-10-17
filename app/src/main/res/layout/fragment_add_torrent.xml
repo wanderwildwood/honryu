@@ -20,6 +20,8 @@
             app:navigationIcon="@drawable/abc_ic_ab_back_material"
             app:title="@string/add_torrent_title" />
 
+        <include layout="@layout/top_bar_rule" />
+
         <com.google.android.material.button.MaterialButtonToggleGroup
             android:id="@+id/pages_toggle_button"
             android:layout_width="wrap_content"

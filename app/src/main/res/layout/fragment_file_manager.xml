@@ -39,6 +39,8 @@
                 app:navigationIcon="@drawable/abc_ic_ab_back_material"
                 tools:title="Select folder" />
 
+            <include layout="@layout/top_bar_rule" />
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/storage_menu"
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"

@@ -3,6 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/search_menu"
+        android:contentDescription="@string/search"
+        android:icon="@drawable/ic_search_24px"
+        android:title="@string/search"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/pause_all_menu"
         android:contentDescription="@string/pause_all"
         android:icon="@drawable/ic_pause_24px"

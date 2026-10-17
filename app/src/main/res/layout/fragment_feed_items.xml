@@ -15,23 +15,15 @@
         app:liftOnScroll="false"
         app:statusBarForeground="?attr/colorSurface">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapsing_toolbar_layout"
-            style="?attr/collapsingToolbarLayoutLargeStyle"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/app_bar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+            android:layout_height="wrap_content"
+            app:menu="@menu/feed_items"
+            app:navigationIcon="@drawable/abc_ic_ab_back_material"
+            app:title="@string/feed_articles" />
 
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/app_bar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:elevation="0dp"
-                app:layout_collapseMode="pin"
-                app:menu="@menu/feed_items"
-                app:navigationIcon="@drawable/abc_ic_ab_back_material"
-                app:title="@string/feed_articles" />
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+        <include layout="@layout/top_bar_rule" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <org.proninyaroslav.libretorrent.ui.customviews.MaterialSwipeRefreshLayout

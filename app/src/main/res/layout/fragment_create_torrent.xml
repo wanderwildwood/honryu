@@ -33,6 +33,8 @@
                 app:navigationIcon="@drawable/abc_ic_ab_back_material"
                 app:title="@string/create_torrent" />
 
+            <include layout="@layout/top_bar_rule" />
+
             <com.google.android.material.progressindicator.LinearProgressIndicator
                 android:id="@+id/creating_progress"
                 android:layout_width="match_parent"

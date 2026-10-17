@@ -155,7 +155,7 @@ public class HomeFragment extends AbstractListDetailFragment {
                 navBarFragment.setNavRailHeaderView(navRailHeaderBinding.getRoot());
             }
             binding.addTorrentFab.hide();
-            binding.searchBar.setNavigationIcon(R.drawable.ic_search_24px);
+            binding.homeAppBar.setNavigationIcon(R.drawable.ic_search_24px);
             Utils.applyWindowInsets(binding.torrentList, WindowInsetsSide.BOTTOM | WindowInsetsSide.LEFT | WindowInsetsSide.RIGHT);
         } else {
             Utils.applyWindowInsets(binding.torrentList, WindowInsetsSide.LEFT | WindowInsetsSide.RIGHT);
@@ -240,7 +240,7 @@ public class HomeFragment extends AbstractListDetailFragment {
         if (navRailHeaderBinding != null) {
             navRailHeaderBinding.drawerButton.setOnClickListener(l);
         } else {
-            binding.searchBar.setNavigationOnClickListener(l);
+            binding.homeAppBar.setNavigationOnClickListener(l);
         }
     }
 
@@ -318,7 +318,7 @@ public class HomeFragment extends AbstractListDetailFragment {
                 navBarFragment.getDrawerLayout().open();
             }
         });
-        binding.searchBar.setOnMenuItemClickListener(this::onMenuItemClickListener);
+        binding.homeAppBar.setOnMenuItemClickListener(this::onMenuItemClickListener);
 
         binding.contextualAppBar.setOnMenuItemClickListener(this::onContextualMenuItemClickListener);
         binding.contextualAppBar.setNavigationOnClickListener((v) -> finishContextualMode());
@@ -332,7 +332,9 @@ public class HomeFragment extends AbstractListDetailFragment {
 
     boolean onMenuItemClickListener(MenuItem item) {
         int itemId = item.getItemId();
-        if (itemId == R.id.about_menu) {
+        if (itemId == R.id.search_menu) {
+            binding.searchView.show();
+        } else if (itemId == R.id.about_menu) {
             showAboutDialog();
         } else if (itemId == R.id.shutdown_app_menu) {
             viewModel.stopEngine();
@@ -1279,11 +1281,11 @@ public class HomeFragment extends AbstractListDetailFragment {
     }
 
     private void startContextualMode() {
-        binding.searchBar.expand(binding.contextualAppBarContainer, binding.appBarLayout);
+        binding.contextualAppBarContainer.setVisibility(View.VISIBLE);
     }
 
     private void collapseContextualAppBar() {
-        binding.searchBar.collapse(binding.contextualAppBarContainer, binding.appBarLayout);
+        binding.contextualAppBarContainer.setVisibility(View.GONE);
     }
 
     private void finishContextualMode() {

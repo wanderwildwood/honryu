@@ -457,9 +457,9 @@ public class LogFragment extends Fragment {
     private void updateToolbarSubtitle() {
         int numEntries = viewModel.getLogEntriesCount();
         if (numEntries > 1) {
-            binding.collapsingToolbarLayout.setSubtitle(Integer.toString(numEntries));
+            binding.appBar.setSubtitle(Integer.toString(numEntries));
         } else {
-            binding.collapsingToolbarLayout.setSubtitle(null);
+            binding.appBar.setSubtitle(null);
         }
     }
 

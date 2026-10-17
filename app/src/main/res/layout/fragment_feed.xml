@@ -13,22 +13,14 @@
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapsing_toolbar_layout"
-            style="?attr/collapsingToolbarLayoutLargeStyle"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/app_bar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+            android:layout_height="wrap_content"
+            app:menu="@menu/feed"
+            app:title="@string/feed" />
 
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/app_bar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:elevation="0dp"
-                app:layout_collapseMode="pin"
-                app:menu="@menu/feed"
-                app:title="@string/feed" />
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+        <include layout="@layout/top_bar_rule" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <org.proninyaroslav.libretorrent.ui.customviews.MaterialSwipeRefreshLayout

@@ -19,17 +19,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/toolbar_top_margin"
-            app:layout_scrollFlags="scroll|enterAlways|snap"
             app:menu="@menu/torrent_details"
             app:navigationIcon="@drawable/abc_ic_ab_back_material"
             app:title="@string/details" />
+
+        <include layout="@layout/top_bar_rule" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:focusable="true"
-            app:layout_scrollFlags="scroll|enterAlways|snap"
             app:tabContentStart="52dp"
             app:tabMode="scrollable" />
     </com.google.android.material.appbar.AppBarLayout>
