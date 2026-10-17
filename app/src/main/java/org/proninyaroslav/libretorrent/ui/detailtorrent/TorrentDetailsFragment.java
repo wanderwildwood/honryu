@@ -41,6 +41,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.proninyaroslav.libretorrent.ui.base.EInkDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayoutMediator;
+import org.proninyaroslav.libretorrent.ui.customviews.StoneTabLayout;
 
 import org.proninyaroslav.libretorrent.MainActivity;
 import org.proninyaroslav.libretorrent.R;
@@ -228,6 +229,7 @@ public class TorrentDetailsFragment extends Fragment {
                     }
                 }
         ).attach();
+        StoneTabLayout.apply(binding.tabLayout);
         binding.viewPager.setCurrentItem(currentFragPos);
 
         binding.appBar.setNavigationOnClickListener((v) ->

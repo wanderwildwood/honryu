@@ -29,9 +29,7 @@
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:focusable="true"
-            app:tabContentStart="52dp"
-            app:tabMode="scrollable" />
+            android:focusable="true" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager2.widget.ViewPager2
