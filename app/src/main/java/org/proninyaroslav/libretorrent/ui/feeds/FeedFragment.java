@@ -19,11 +19,9 @@
 
 package org.proninyaroslav.libretorrent.ui.feeds;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -37,17 +35,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.view.ActionMode;
 import androidx.core.util.Pair;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.AbstractListDetailFragment;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.recyclerview.selection.MutableSelection;
-import androidx.recyclerview.selection.SelectionPredicates;
-import androidx.recyclerview.selection.SelectionTracker;
-import androidx.recyclerview.selection.StorageStrategy;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.slidingpanelayout.widget.SlidingPaneLayout;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -62,12 +52,18 @@ import org.proninyaroslav.libretorrent.core.utils.WindowInsetsSide;
 import org.proninyaroslav.libretorrent.databinding.FragmentFeedBinding;
 import org.proninyaroslav.libretorrent.ui.NavBarFragment;
 import org.proninyaroslav.libretorrent.ui.NavBarFragmentDirections;
+import org.proninyaroslav.libretorrent.ui.compose.ComposeList;
+import org.proninyaroslav.libretorrent.ui.compose.Lists;
+import org.proninyaroslav.libretorrent.ui.compose.OnRow;
+import org.proninyaroslav.libretorrent.ui.compose.RowSelection;
+import org.proninyaroslav.libretorrent.ui.DebugSeed;
 import org.proninyaroslav.libretorrent.ui.detailtorrent.BlankFragmentDirections;
 import org.proninyaroslav.libretorrent.ui.feeditems.FeedItemsFragmentArgs;
 import org.proninyaroslav.libretorrent.ui.feeditems.FeedItemsFragmentDirections;
 import org.proninyaroslav.libretorrent.ui.filemanager.FileManagerConfig;
 import org.proninyaroslav.libretorrent.ui.filemanager.FileManagerFragment;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -89,15 +85,10 @@ public class FeedFragment extends AbstractListDetailFragment {
     private static final String REQUEST_RESTORE_BACKUP_DIALOG_KEY = TAG + "_restore_backup_dialog";
     private static final String REQUEST_DELETE_FEED_DIALOG_KEY = TAG + "_delete_feed_dialog";
 
-    private static final String TAG_FEED_LIST_STATE = "feed_list_state";
-    private static final String SELECTION_TRACKER_ID = "selection_tracker_0";
 
     private MainActivity activity;
-    private FeedChannelListAdapter adapter;
-    private LinearLayoutManager layoutManager;
-    /* Save state scrolling */
-    private Parcelable feedListState;
-    private SelectionTracker<FeedChannelItem> selectionTracker;
+    private final ComposeList<FeedChannelItem> feeds = new ComposeList<>();
+    private RowSelection<FeedChannelItem> selectionTracker;
     private ActionMode actionMode;
     private FragmentFeedBinding binding;
     private FeedViewModel viewModel;
@@ -195,73 +186,34 @@ public class FeedFragment extends AbstractListDetailFragment {
         var provider = new ViewModelProvider(this);
         viewModel = provider.get(FeedViewModel.class);
 
-        adapter = new FeedChannelListAdapter(feedClickListener);
-        /*
-         * A RecyclerView by default creates another copy of the ViewHolder in order to
-         * fade the views into each other. This causes the problem because the old ViewHolder gets
-         * the payload but then the new one doesn't. So needs to explicitly tell it to reuse the old one.
-         */
-        DefaultItemAnimator animator = new DefaultItemAnimator() {
-            @Override
-            public boolean canReuseUpdatedViewHolder(@NonNull RecyclerView.ViewHolder viewHolder) {
-                return true;
-            }
-        };
-        layoutManager = new LinearLayoutManager(activity);
-        binding.feedList.setLayoutManager(layoutManager);
-        binding.feedList.setItemAnimator(animator);
-        binding.feedList.setEmptyView(binding.emptyViewFeedList);
-        binding.feedList.addItemDecoration(Utils.buildListDivider(activity));
-        binding.feedList.setAdapter(adapter);
+        selectionTracker = new RowSelection<>();
+        feeds.setByName(true);
+        feeds.setEmptyView(binding.feedList, binding.emptyViewFeedList);
+        Lists.feeds(binding.feedList, feeds, selectionTracker, feedClickListener,
+                getResources().getDimensionPixelSize(R.dimen.list_fab_padding));
 
-        selectionTracker = new SelectionTracker.Builder<>(
-                SELECTION_TRACKER_ID,
-                binding.feedList,
-                new FeedChannelListAdapter.KeyProvider(adapter),
-                new FeedChannelListAdapter.ItemLookup(binding.feedList),
-                StorageStrategy.createParcelableStorage(FeedChannelItem.class))
-                .withSelectionPredicate(SelectionPredicates.createSelectAnything())
-                .build();
-
-        selectionTracker.addObserver(new SelectionTracker.SelectionObserver<>() {
-            @Override
-            public void onSelectionChanged() {
-                super.onSelectionChanged();
-
-                if (selectionTracker.hasSelection() && actionMode == null) {
-                    actionMode = activity.startSupportActionMode(actionModeCallback);
-                    setActionModeTitle(selectionTracker.getSelection().size());
-
-                } else if (!selectionTracker.hasSelection()) {
-                    if (actionMode != null) {
-                        actionMode.finish();
-                    }
-                    actionMode = null;
-                } else {
-                    setActionModeTitle(selectionTracker.getSelection().size());
-                    /* Show/hide menu items after change selected feeds */
-                    int size = selectionTracker.getSelection().size();
-                    if (size == 1 || size == 2) {
-                        actionMode.invalidate();
-                    }
-                }
-            }
-
-            @Override
-            public void onSelectionRestored() {
-                super.onSelectionRestored();
-
+        selectionTracker.addObserver(() -> {
+            if (selectionTracker.hasSelection() && actionMode == null) {
                 actionMode = activity.startSupportActionMode(actionModeCallback);
                 setActionModeTitle(selectionTracker.getSelection().size());
+
+            } else if (!selectionTracker.hasSelection()) {
+                if (actionMode != null) {
+                    actionMode.finish();
+                }
+                actionMode = null;
+            } else {
+                setActionModeTitle(selectionTracker.getSelection().size());
+                /* Show/hide menu items after change selected feeds */
+                int size = selectionTracker.getSelection().size();
+                if (size == 1 || size == 2) {
+                    actionMode.invalidate();
+                }
             }
         });
 
-        if (savedInstanceState != null) {
-            selectionTracker.onRestoreInstanceState(savedInstanceState);
-        }
-        adapter.setSelectionTracker(selectionTracker);
-
-        binding.swipeContainer.setOnRefreshListener(() -> viewModel.refreshAllFeeds());
+        /* A swipe turns the list's page; refreshing is in the menu */
+        binding.swipeContainer.setEnabled(false);
 
         binding.addChannel.setOnClickListener((v) -> showAddFeedDialog(null));
 
@@ -295,50 +247,13 @@ public class FeedFragment extends AbstractListDetailFragment {
         subscribeAdapter();
         subscribeFeedsDeleted();
         subscribeRefreshStatus();
-
-        getDetailPaneNavHostFragment()
-                .getNavController()
-                .addOnDestinationChangedListener(destinationListener);
     }
 
     @Override
     public void onStop() {
         super.onStop();
 
-        getDetailPaneNavHostFragment()
-                .getNavController()
-                .removeOnDestinationChangedListener(destinationListener);
-
         disposables.clear();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        if (feedListState != null && layoutManager != null) {
-            layoutManager.onRestoreInstanceState(feedListState);
-        }
-    }
-
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-
-        if (savedInstanceState != null) {
-            feedListState = savedInstanceState.getParcelable(TAG_FEED_LIST_STATE);
-        }
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        if (layoutManager != null) {
-            feedListState = layoutManager.onSaveInstanceState();
-            outState.putParcelable(TAG_FEED_LIST_STATE, feedListState);
-        }
-        selectionTracker.onSaveInstanceState(outState);
-
-        super.onSaveInstanceState(outState);
     }
 
     private void subscribeAdapter() {
@@ -362,7 +277,10 @@ public class FeedFragment extends AbstractListDetailFragment {
                         }
                 )
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(adapter::submitList,
+                .subscribe((list) -> {
+                            Collections.sort(list);
+                            feeds.submitList(DebugSeed.feeds(activity, list));
+                        },
                         (Throwable t) -> Log.e(TAG, "Getting feed list error: " +
                                 Log.getStackTraceString(t)));
     }
@@ -423,7 +341,7 @@ public class FeedFragment extends AbstractListDetailFragment {
                 .subscribe(binding.swipeContainer::setRefreshing));
     }
 
-    private final FeedChannelListAdapter.ClickListener feedClickListener =
+    private final OnRow<FeedChannelItem> feedClickListener =
             (item) -> openFeedItems(item.id);
 
     private void openFeedItems(long feedId) {
@@ -532,18 +450,12 @@ public class FeedFragment extends AbstractListDetailFragment {
         NavHostFragment.findNavController(this).navigate(action);
     }
 
-    @SuppressLint("RestrictedApi")
     private void selectAllFeeds() {
-        int n = adapter.getItemCount();
-        if (n > 0) {
-            selectionTracker.startRange(0);
-            selectionTracker.extendRange(adapter.getItemCount() - 1);
-        }
+        selectionTracker.selectAll(feeds.getItems());
     }
 
     private void deleteFeeds() {
-        MutableSelection<FeedChannelItem> selections = new MutableSelection<>();
-        selectionTracker.copySelection(selections);
+        List<FeedChannelItem> selections = selectionTracker.getSelection();
 
         viewModel.deleteFeeds(StreamSupport.stream(selections.spliterator(), false)
                 .map(FeedChannel.class::cast)
@@ -555,8 +467,7 @@ public class FeedFragment extends AbstractListDetailFragment {
     }
 
     private void copyChannelUrl() {
-        MutableSelection<FeedChannelItem> selections = new MutableSelection<>();
-        selectionTracker.copySelection(selections);
+        List<FeedChannelItem> selections = selectionTracker.getSelection();
 
         Iterator<FeedChannelItem> it = selections.iterator();
         if (!it.hasNext()) {
@@ -572,8 +483,7 @@ public class FeedFragment extends AbstractListDetailFragment {
     }
 
     private void refreshSelectedFeeds() {
-        MutableSelection<FeedChannelItem> selections = new MutableSelection<>();
-        selectionTracker.copySelection(selections);
+        List<FeedChannelItem> selections = selectionTracker.getSelection();
 
         long[] ids = new long[selections.size()];
         int i = 0;
@@ -585,8 +495,7 @@ public class FeedFragment extends AbstractListDetailFragment {
     }
 
     private void editChannel() {
-        MutableSelection<FeedChannelItem> selections = new MutableSelection<>();
-        selectionTracker.copySelection(selections);
+        List<FeedChannelItem> selections = selectionTracker.getSelection();
 
         Iterator<FeedChannelItem> it = selections.iterator();
         if (!it.hasNext()) {
@@ -598,8 +507,7 @@ public class FeedFragment extends AbstractListDetailFragment {
     }
 
     private void markAsReadFeeds() {
-        MutableSelection<FeedChannelItem> selections = new MutableSelection<>();
-        selectionTracker.copySelection(selections);
+        List<FeedChannelItem> selections = selectionTracker.getSelection();
 
         disposables.add(Observable.fromIterable(selections)
                 .map((selection -> selection.id))
@@ -685,27 +593,4 @@ public class FeedFragment extends AbstractListDetailFragment {
                 .setUri(uri);
         NavHostFragment.findNavController(this).navigate(action);
     }
-
-    private final NavController.OnDestinationChangedListener destinationListener =
-            (navController, navDestination, arguments) -> {
-                if (!Utils.isTwoPane(activity)) {
-                    return;
-                }
-                try {
-                    Bundle rawArgs;
-                    if (navDestination.getId() == R.id.feedItemsFragment) {
-                        rawArgs = arguments;
-                    } else {
-                        var entry = navController.getBackStackEntry(R.id.feedItemsFragment);
-                        rawArgs = entry.getArguments();
-                    }
-                    if (rawArgs == null) {
-                        return;
-                    }
-                    var args = FeedItemsFragmentArgs.fromBundle(rawArgs);
-                    adapter.markAsOpen(args.getFeedId());
-                } catch (IllegalArgumentException e) {
-                    // Ignore
-                }
-            };
 }

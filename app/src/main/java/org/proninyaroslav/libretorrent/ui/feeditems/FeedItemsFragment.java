@@ -23,7 +23,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,7 +33,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -44,6 +42,11 @@ import org.proninyaroslav.libretorrent.core.utils.Utils;
 import org.proninyaroslav.libretorrent.core.utils.WindowInsetsSide;
 import org.proninyaroslav.libretorrent.databinding.FragmentFeedItemsBinding;
 import org.proninyaroslav.libretorrent.ui.NavBarFragmentDirections;
+import org.proninyaroslav.libretorrent.ui.compose.ComposeList;
+import org.proninyaroslav.libretorrent.ui.compose.Lists;
+import org.proninyaroslav.libretorrent.ui.DebugSeed;
+
+import java.util.Collections;
 
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -54,15 +57,11 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class FeedItemsFragment extends Fragment {
     private static final String TAG = FeedItemsFragment.class.getSimpleName();
 
-    private static final String TAG_ITEMS_LIST_STATE = "items_list_state";
 
     private MainActivity activity;
     private FragmentFeedItemsBinding binding;
     private FeedItemsViewModel viewModel;
-    private FeedItemsAdapter adapter;
-    private LinearLayoutManager layoutManager;
-    /* Save state scrolling */
-    private Parcelable itemsListState;
+    private final ComposeList<FeedItemsListItem> items = new ComposeList<>();
     private final CompositeDisposable disposables = new CompositeDisposable();
 
     @Override
@@ -102,15 +101,11 @@ public class FeedItemsFragment extends Fragment {
         viewModel = new ViewModelProvider(this).get(FeedItemsViewModel.class);
         viewModel.setFeedId(args.getFeedId());
 
-        layoutManager = new LinearLayoutManager(activity);
-        binding.feedItemsList.setLayoutManager(layoutManager);
-        binding.feedItemsList.addItemDecoration(Utils.buildListDivider(activity));
-        binding.feedItemsList.setEmptyView(binding.emptyViewFeedItems);
+        items.setEmptyView(binding.feedItemsList, binding.emptyViewFeedItems);
+        Lists.feedItems(binding.feedItemsList, items, this::openDownloadUrl, this::onItemMenuClicked);
 
-        adapter = new FeedItemsAdapter(itemClickListener);
-        binding.feedItemsList.setAdapter(adapter);
-
-        binding.swipeContainer.setOnRefreshListener(() -> viewModel.refreshChannel());
+        /* A swipe turns the list's page; refreshing is in the menu */
+        binding.swipeContainer.setEnabled(false);
 
         binding.appBar.setNavigationOnClickListener((v) ->
                 activity.getOnBackPressedDispatcher().onBackPressed());
@@ -140,34 +135,6 @@ public class FeedItemsFragment extends Fragment {
         disposables.clear();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        if (itemsListState != null && layoutManager != null) {
-            layoutManager.onRestoreInstanceState(itemsListState);
-        }
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        if (layoutManager != null) {
-            itemsListState = layoutManager.onSaveInstanceState();
-            outState.putParcelable(TAG_ITEMS_LIST_STATE, itemsListState);
-        }
-
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onViewStateRestored(Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-
-        if (savedInstanceState != null) {
-            itemsListState = savedInstanceState.getParcelable(TAG_ITEMS_LIST_STATE);
-        }
-    }
-
     private void subscribeAdapter() {
         disposables.add(observeFeedItems());
     }
@@ -181,7 +148,10 @@ public class FeedItemsFragment extends Fragment {
                                 .toList()
                 )
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(adapter::submitList,
+                .subscribe((list) -> {
+                            Collections.sort(list);
+                            items.submitList(DebugSeed.feedItems(activity, list));
+                        },
                         (Throwable t) -> Log.e(TAG, "Getting item list error: " +
                                 Log.getStackTraceString(t)));
     }
@@ -192,23 +162,15 @@ public class FeedItemsFragment extends Fragment {
                 .subscribe(binding.swipeContainer::setRefreshing));
     }
 
-    private final FeedItemsAdapter.ClickListener itemClickListener = new FeedItemsAdapter.ClickListener() {
-        @Override
-        public void onItemClicked(@NonNull FeedItemsListItem item) {
-            openDownloadUrl(item);
+    private void onItemMenuClicked(int menuId, @NonNull FeedItemsListItem item) {
+        if (menuId == R.id.open_article_menu) {
+            openArticle(item);
+        } else if (menuId == R.id.mark_as_read_menu) {
+            viewModel.markAsRead(item.id);
+        } else if (menuId == R.id.mark_as_unread_menu) {
+            viewModel.markAsUnread(item.id);
         }
-
-        @Override
-        public void onItemMenuClicked(int menuId, @NonNull FeedItemsListItem item) {
-            if (menuId == R.id.open_article_menu) {
-                openArticle(item);
-            } else if (menuId == R.id.mark_as_read_menu) {
-                viewModel.markAsRead(item.id);
-            } else if (menuId == R.id.mark_as_unread_menu) {
-                viewModel.markAsUnread(item.id);
-            }
-        }
-    };
+    }
 
     private void openArticle(FeedItemsListItem item) {
         if (TextUtils.isEmpty(item.articleUrl)) {

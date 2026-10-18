@@ -32,15 +32,11 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <org.proninyaroslav.libretorrent.ui.customviews.EmptyRecyclerView
+        <androidx.compose.ui.platform.ComposeView
             android:id="@+id/feed_items_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="8dp"
-            android:clipToPadding="false"
-            android:scrollbarStyle="outsideOverlay"
-            android:scrollbars="vertical"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"  />
     </org.proninyaroslav.libretorrent.ui.customviews.MaterialSwipeRefreshLayout>
 
     <org.proninyaroslav.libretorrent.ui.customviews.EmptyListPlaceholder

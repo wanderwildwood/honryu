@@ -24,7 +24,6 @@ import android.content.Context;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.InsetDrawable;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.Formatter;
@@ -51,13 +50,6 @@ import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.AbstractListDetailFragment;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.preference.PreferenceManager;
-import androidx.recyclerview.selection.MutableSelection;
-import androidx.recyclerview.selection.SelectionPredicates;
-import androidx.recyclerview.selection.SelectionTracker;
-import androidx.recyclerview.selection.StorageStrategy;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.slidingpanelayout.widget.SlidingPaneLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -80,6 +72,10 @@ import org.proninyaroslav.libretorrent.core.utils.WindowInsetsSide;
 import org.proninyaroslav.libretorrent.databinding.FragmentHomeBinding;
 import org.proninyaroslav.libretorrent.databinding.HomeDrawerContentBinding;
 import org.proninyaroslav.libretorrent.databinding.MainNavRailHeaderBinding;
+import org.proninyaroslav.libretorrent.ui.compose.ComposeList;
+import org.proninyaroslav.libretorrent.ui.compose.Lists;
+import org.proninyaroslav.libretorrent.ui.compose.RowSelection;
+import org.proninyaroslav.libretorrent.ui.DebugSeed;
 import org.proninyaroslav.libretorrent.ui.NavBarFragment;
 import org.proninyaroslav.libretorrent.ui.NavBarFragmentDirections;
 import org.proninyaroslav.libretorrent.ui.detailtorrent.BlankFragmentDirections;
@@ -117,22 +113,16 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class HomeFragment extends AbstractListDetailFragment {
     private static final String TAG = HomeFragment.class.getSimpleName();
 
-    private static final String TAG_TORRENT_LIST_STATE = "torrent_list_state";
-    private static final String SELECTION_TRACKER_ID = "selection_tracker_0";
-    private static final String SEARCH_SELECTION_TRACKER_ID = "selection_tracker_1";
     private static final String KEY_FILE_MANAGER_DIALOG_REQUEST = TAG + "_file_manager_dialog";
     private static final String KEY_DELETE_TORRENT_DIALOG_REQUEST = TAG + "_delete_torrent_dialog";
 
     private MainActivity activity;
-    private TorrentListAdapter adapter;
-    private TorrentListAdapter searchAdapter;
-    private LinearLayoutManager layoutManager;
-    /* Save state scrolling */
-    private Parcelable torrentListState;
-    private SelectionTracker<TorrentListItem> selectionTracker;
-    private SelectionTracker<TorrentListItem> searchSelectionTracker;
+    private final ComposeList<TorrentListItem> torrents = new ComposeList<>();
+    private final ComposeList<TorrentListItem> searchTorrents = new ComposeList<>();
+    private RowSelection<TorrentListItem> selectionTracker;
+    private RowSelection<TorrentListItem> searchSelectionTracker;
     /* Whichever tracker currently owns the contextual selection mode */
-    private SelectionTracker<TorrentListItem> activeSelectionTracker;
+    private RowSelection<TorrentListItem> activeSelectionTracker;
     private FragmentHomeBinding binding;
     private HomeDrawerContentBinding drawerBinding;
     private MainNavRailHeaderBinding navRailHeaderBinding = null;
@@ -258,31 +248,12 @@ public class HomeFragment extends AbstractListDetailFragment {
         var provider = new ViewModelProvider(activity);
         viewModel = provider.get(HomeViewModel.class);
 
-        adapter = new TorrentListAdapter(torrentClickListener);
-        /*
-         * A RecyclerView by default creates another copy of the ViewHolder in order to
-         * fade the views into each other. This causes the problem because the old ViewHolder gets
-         * the payload but then the new one doesn't. So needs to explicitly tell it to reuse the old one.
-         */
-        DefaultItemAnimator animator = new DefaultItemAnimator() {
-            @Override
-            public boolean canReuseUpdatedViewHolder(@NonNull RecyclerView.ViewHolder viewHolder) {
-                return true;
-            }
-        };
-        layoutManager = new LinearLayoutManager(activity);
-        binding.torrentList.setLayoutManager(layoutManager);
-        binding.torrentList.setItemAnimator(animator);
-        binding.torrentList.setEmptyView(binding.emptyViewTorrentList);
-        binding.torrentList.setLoadingView(binding.loadingViewTorrentList);
-        binding.torrentList.addItemDecoration(Utils.buildListDivider(activity));
-        binding.torrentList.setAdapter(adapter);
-
-        selectionTracker = createSelectionTracker(SELECTION_TRACKER_ID, binding.torrentList, adapter);
-        if (savedInstanceState != null) {
-            selectionTracker.onRestoreInstanceState(savedInstanceState);
-        }
-        adapter.setSelectionTracker(selectionTracker);
+        torrents.setEmptyView(binding.torrentList, binding.emptyViewTorrentList);
+        torrents.setLoadingView(binding.loadingViewTorrentList);
+        selectionTracker = createSelectionTracker();
+        Lists.torrents(binding.torrentList, torrents, selectionTracker,
+                this::onTorrentClicked, this::onTorrentPauseClicked,
+                getResources().getDimensionPixelSize(R.dimen.list_fab_padding));
 
         getAddTorrentFab().setOnClickListener(this::showFabMenu);
 
@@ -357,31 +328,11 @@ public class HomeFragment extends AbstractListDetailFragment {
     }
 
     private void initSearch(@Nullable Bundle savedInstanceState) {
-        searchAdapter = new TorrentListAdapter(torrentClickListener);
-        /*
-         * A RecyclerView by default creates another copy of the ViewHolder in order to
-         * fade the views into each other. This causes the problem because the old ViewHolder gets
-         * the payload but then the new one doesn't. So needs to explicitly tell it to reuse the old one.
-         */
-        DefaultItemAnimator animator = new DefaultItemAnimator() {
-            @Override
-            public boolean canReuseUpdatedViewHolder(@NonNull RecyclerView.ViewHolder viewHolder) {
-                return true;
-            }
-        };
-        binding.searchTorrentList.setLayoutManager(new LinearLayoutManager(activity));
-        binding.searchTorrentList.setItemAnimator(animator);
-        binding.searchTorrentList.setEmptyView(binding.emptyViewSearchTorrentList);
-        binding.searchTorrentList.setLoadingView(binding.loadingViewSearchTorrentList);
-        binding.searchTorrentList.addItemDecoration(Utils.buildListDivider(activity));
-        binding.searchTorrentList.setAdapter(searchAdapter);
-
-        searchSelectionTracker = createSelectionTracker(
-                SEARCH_SELECTION_TRACKER_ID, binding.searchTorrentList, searchAdapter);
-        if (savedInstanceState != null) {
-            searchSelectionTracker.onRestoreInstanceState(savedInstanceState);
-        }
-        searchAdapter.setSelectionTracker(searchSelectionTracker);
+        searchTorrents.setEmptyView(binding.searchTorrentList, binding.emptyViewSearchTorrentList);
+        searchTorrents.setLoadingView(binding.loadingViewSearchTorrentList);
+        searchSelectionTracker = createSelectionTracker();
+        Lists.torrents(binding.searchTorrentList, searchTorrents, searchSelectionTracker,
+                this::onTorrentClicked, this::onTorrentPauseClicked, 0);
 
         binding.searchView.getEditText().addTextChangedListener(new TextWatcher() {
             @Override
@@ -401,43 +352,19 @@ public class HomeFragment extends AbstractListDetailFragment {
         viewModel.resetSearch();
     }
 
-    private SelectionTracker<TorrentListItem> createSelectionTracker(
-            String id,
-            RecyclerView recyclerView,
-            TorrentListAdapter adapter
-    ) {
-        var tracker = new SelectionTracker.Builder<>(
-                id,
-                recyclerView,
-                new TorrentListAdapter.KeyProvider(adapter),
-                new TorrentListAdapter.ItemLookup(recyclerView),
-                StorageStrategy.createParcelableStorage(TorrentListItem.class))
-                .withSelectionPredicate(SelectionPredicates.createSelectAnything())
-                .build();
-
-        tracker.addObserver(new SelectionTracker.SelectionObserver<TorrentListItem>() {
-            @Override
-            public void onSelectionChanged() {
-                super.onSelectionChanged();
-                onSelectionUpdated(tracker);
-            }
-
-            @Override
-            public void onSelectionRestored() {
-                super.onSelectionRestored();
-                onSelectionUpdated(tracker);
-            }
-        });
+    private RowSelection<TorrentListItem> createSelectionTracker() {
+        var tracker = new RowSelection<TorrentListItem>();
+        tracker.addObserver(() -> onSelectionUpdated(tracker));
 
         return tracker;
     }
 
     /*
-     * Both the main list and the search results list have their own SelectionTracker,
-     * since they're backed by separate adapters/RecyclerViews. Only one of them drives
+     * Both the main list and the search results list have their own selection,
+     * since they're separate lists. Only one of them drives
      * the contextual app bar at a time - whichever most recently gained a selection.
      */
-    private void onSelectionUpdated(SelectionTracker<TorrentListItem> tracker) {
+    private void onSelectionUpdated(RowSelection<TorrentListItem> tracker) {
         var addTorrentFab = getAddTorrentFab();
         if (tracker.hasSelection()) {
             activeSelectionTracker = tracker;
@@ -462,7 +389,7 @@ public class HomeFragment extends AbstractListDetailFragment {
         }
     }
 
-    private SelectionTracker<TorrentListItem> currentSelectionTracker() {
+    private RowSelection<TorrentListItem> currentSelectionTracker() {
         return activeSelectionTracker != null ? activeSelectionTracker : selectionTracker;
     }
 
@@ -506,85 +433,20 @@ public class HomeFragment extends AbstractListDetailFragment {
         subscribeTags();
 
         binding.searchView.addTransitionListener(searchViewListener);
-
-        getDetailPaneNavHostFragment()
-                .getNavController()
-                .addOnDestinationChangedListener(destinationListener);
     }
 
     @Override
     public void onStop() {
         super.onStop();
 
-        getDetailPaneNavHostFragment()
-                .getNavController()
-                .removeOnDestinationChangedListener(destinationListener);
-
         binding.searchView.removeTransitionListener(searchViewListener);
         disposables.clear();
         unsubscribeSearchList();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        if (torrentListState != null && layoutManager != null) {
-            layoutManager.onRestoreInstanceState(torrentListState);
-        }
-    }
-
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-
-        if (savedInstanceState != null) {
-            torrentListState = savedInstanceState.getParcelable(TAG_TORRENT_LIST_STATE);
-        }
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        if (layoutManager != null) {
-            torrentListState = layoutManager.onSaveInstanceState();
-            outState.putParcelable(TAG_TORRENT_LIST_STATE, torrentListState);
-        }
-        if (selectionTracker != null) {
-            selectionTracker.onSaveInstanceState(outState);
-        }
-        if (searchSelectionTracker != null) {
-            searchSelectionTracker.onSaveInstanceState(outState);
-        }
-
-        super.onSaveInstanceState(outState);
-    }
-
     private void subscribeAdapter() {
         disposables.add(observeTorrents());
     }
-
-    private final NavController.OnDestinationChangedListener destinationListener =
-            (navController, navDestination, arguments) -> {
-                if (!Utils.isTwoPane(activity)) {
-                    return;
-                }
-                try {
-                    Bundle rawArgs;
-                    if (navDestination.getId() == R.id.torrentDetailsFragment) {
-                        rawArgs = arguments;
-                    } else {
-                        var entry = navController.getBackStackEntry(R.id.torrentDetailsFragment);
-                        rawArgs = entry.getArguments();
-                    }
-                    if (rawArgs == null) {
-                        return;
-                    }
-                    var args = TorrentDetailsFragmentArgs.fromBundle(rawArgs);
-                    adapter.markAsOpen(args.getTorrentId());
-                } catch (IllegalArgumentException e) {
-                    // Ignore
-                }
-            };
 
     private void setDetailsNavAnimation(NavOptions.Builder options) {
         var slidingPaneLayout = getSlidingPaneLayout();
@@ -613,14 +475,24 @@ public class HomeFragment extends AbstractListDetailFragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe((state) -> {
                             if (state instanceof TorrentListItemState.Initial) {
-                                binding.torrentList.setLoading(true);
+                                torrents.setLoading(true);
                             } else if (state instanceof TorrentListItemState.Loaded loaded) {
-                                binding.torrentList.setLoading(false);
-                                adapter.submitList(loaded.list());
+                                torrents.setLoading(false);
+                                submitTorrents(torrents, loaded.list());
                             }
                         },
                         (Throwable t) -> Log.e(TAG, "Getting torrent info list error: " +
                                 Log.getStackTraceString(t)));
+    }
+
+    /* Letters down the edge when the torrents are in name order, page dots otherwise */
+    private void submitTorrents(ComposeList<TorrentListItem> list, List<TorrentListItem> items) {
+        list.setByName(viewModel.getSorting().sorting().getColumnName()
+                .equals(TorrentSorting.SortingColumns.name.name()));
+        if (list == torrents) {
+            items = DebugSeed.torrents(activity, items, viewModel.getSorting());
+        }
+        list.submitList(items);
     }
 
     private void subscribeSearchList() {
@@ -653,10 +525,10 @@ public class HomeFragment extends AbstractListDetailFragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe((state) -> {
                             if (state instanceof TorrentListItemState.Initial) {
-                                binding.searchTorrentList.setLoading(true);
+                                searchTorrents.setLoading(true);
                             } else if (state instanceof TorrentListItemState.Loaded loaded) {
-                                binding.searchTorrentList.setLoading(false);
-                                searchAdapter.submitList(loaded.list());
+                                searchTorrents.setLoading(false);
+                                submitTorrents(searchTorrents, loaded.list());
                             }
                         },
                         (Throwable t) -> Log.e(TAG, "Getting torrent info list error: " +
@@ -681,7 +553,7 @@ public class HomeFragment extends AbstractListDetailFragment {
                                 .toList()
                 )
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(searchAdapter::submitList,
+                .subscribe((list) -> submitTorrents(searchTorrents, list),
                         (Throwable t) -> Log.e(TAG, "Getting torrent info list error: " +
                                 Log.getStackTraceString(t)));
     }
@@ -704,7 +576,7 @@ public class HomeFragment extends AbstractListDetailFragment {
                                 .toList()
                 )
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(adapter::submitList,
+                .subscribe((list) -> submitTorrents(torrents, list),
                         (Throwable t) -> Log.e(TAG, "Getting torrent info list error: " +
                                 Log.getStackTraceString(t)));
     }
@@ -1191,17 +1063,13 @@ public class HomeFragment extends AbstractListDetailFragment {
                         Integer.toString(listenPort)));
     }
 
-    private final TorrentListAdapter.ClickListener torrentClickListener = new TorrentListAdapter.ClickListener() {
-        @Override
-        public void onItemClicked(@NonNull TorrentListItem item) {
-            openTorrentDetails(item.torrentId);
-        }
+    private void onTorrentClicked(@NonNull TorrentListItem item) {
+        openTorrentDetails(item.torrentId);
+    }
 
-        @Override
-        public void onItemPauseClicked(@NonNull TorrentListItem item) {
-            viewModel.pauseResumeTorrent(item.torrentId);
-        }
-    };
+    private void onTorrentPauseClicked(@NonNull TorrentListItem item) {
+        viewModel.pauseResumeTorrent(item.torrentId);
+    }
 
     private void openTorrentDetails(String torrentId) {
         var navController = getDetailPaneNavHostFragment().getNavController();
@@ -1346,8 +1214,7 @@ public class HomeFragment extends AbstractListDetailFragment {
     }
 
     private void deleteTorrents(boolean withFiles) {
-        MutableSelection<TorrentListItem> selections = new MutableSelection<>();
-        currentSelectionTracker().copySelection(selections);
+        List<TorrentListItem> selections = currentSelectionTracker().getSelection();
 
         disposables.add(Observable.fromIterable(selections)
                 .map((selection -> selection.torrentId))
@@ -1357,22 +1224,16 @@ public class HomeFragment extends AbstractListDetailFragment {
         finishContextualMode();
     }
 
-    @SuppressLint("RestrictedApi")
     private void selectAllTorrents() {
         boolean isSearch = activeSelectionTracker == searchSelectionTracker;
-        var targetAdapter = isSearch ? searchAdapter : adapter;
+        var target = isSearch ? searchTorrents : torrents;
         var targetTracker = isSearch ? searchSelectionTracker : selectionTracker;
 
-        int n = targetAdapter.getItemCount();
-        if (n > 0) {
-            targetTracker.startRange(0);
-            targetTracker.extendRange(n - 1);
-        }
+        targetTracker.selectAll(target.getItems());
     }
 
     private void forceRecheckTorrents() {
-        MutableSelection<TorrentListItem> selections = new MutableSelection<>();
-        currentSelectionTracker().copySelection(selections);
+        List<TorrentListItem> selections = currentSelectionTracker().getSelection();
 
         disposables.add(Observable.fromIterable(selections)
                 .map((selection -> selection.torrentId))
@@ -1381,8 +1242,7 @@ public class HomeFragment extends AbstractListDetailFragment {
     }
 
     private void forceAnnounceTorrents() {
-        MutableSelection<TorrentListItem> selections = new MutableSelection<>();
-        currentSelectionTracker().copySelection(selections);
+        List<TorrentListItem> selections = currentSelectionTracker().getSelection();
 
         disposables.add(Observable.fromIterable(selections)
                 .map((selection -> selection.torrentId))

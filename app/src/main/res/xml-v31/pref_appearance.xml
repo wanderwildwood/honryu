@@ -9,6 +9,14 @@
         android:summary="@string/pref_locale_summary"
         app:singleLineTitle="false" />
 
+    <SwitchPreferenceCompat
+        android:key="@string/pref_key_list_jump"
+        android:persistent="false"
+        android:summaryOff="@string/list_jump_hidden"
+        android:summaryOn="@string/list_jump_shown"
+        android:title="@string/list_jump_setting"
+        app:singleLineTitle="false" />
+
     <PreferenceCategory android:title="@string/pref_notification_category">
 
         <SwitchPreferenceCompat

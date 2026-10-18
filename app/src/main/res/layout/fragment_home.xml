@@ -7,18 +7,11 @@
     android:layout_width="@dimen/list_pane_width"
     android:layout_height="match_parent">
 
-    <org.proninyaroslav.libretorrent.ui.customviews.EmptyRecyclerView
+    <androidx.compose.ui.platform.ComposeView
         android:id="@+id/torrent_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:paddingTop="8dp"
-        android:paddingBottom="@dimen/list_fab_padding"
-        android:scrollbarStyle="outsideOverlay"
-        android:scrollbars="vertical"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:itemCount="3"
-        tools:listitem="@layout/item_torrent_list" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <org.proninyaroslav.libretorrent.ui.customviews.EmptyListPlaceholder
         android:id="@+id/empty_view_torrent_list"
@@ -99,13 +92,10 @@
         android:hint="@string/search"
         android:visibility="gone">
 
-        <org.proninyaroslav.libretorrent.ui.customviews.EmptyRecyclerView
+        <androidx.compose.ui.platform.ComposeView
             android:id="@+id/search_torrent_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingVertical="8dp"
-            android:scrollbarStyle="outsideOverlay"
-            android:scrollbars="vertical" />
+            android:layout_height="match_parent" />
 
         <org.proninyaroslav.libretorrent.ui.customviews.EmptyListPlaceholder
             android:id="@+id/empty_view_search_torrent_list"

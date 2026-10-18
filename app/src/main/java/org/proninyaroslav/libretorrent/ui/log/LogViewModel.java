@@ -28,11 +28,6 @@ import android.net.Uri;
 import androidx.annotation.NonNull;
 import androidx.databinding.library.baseAdapters.BR;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.ViewModelKt;
-import androidx.paging.Pager;
-import androidx.paging.PagingConfig;
-import androidx.paging.PagingData;
-import androidx.paging.rxjava3.PagingRx;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
@@ -47,20 +42,16 @@ import org.proninyaroslav.libretorrent.service.SaveLogWorker;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
-import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Observable;
 
 public class LogViewModel extends AndroidViewModel {
-    private static final int PAGE_SIZE = 50;
-    private static final int PREFETCH_SIZE = 50;
 
     private final TorrentEngine engine;
     private final SettingsRepository pref;
     public LogMutableParams mutableParams = new LogMutableParams();
-    private final LogSourceFactory sourceFactory;
-    private final PagingConfig pageConfig = new PagingConfig(PAGE_SIZE, PREFETCH_SIZE, false);
     private boolean logPaused;
     private boolean recordingStopped;
 
@@ -73,7 +64,6 @@ public class LogViewModel extends AndroidViewModel {
         Logger sessionLogger = engine.getSessionLogger();
         logPaused = sessionLogger.isPaused();
         recordingStopped = !sessionLogger.isRecording();
-        sourceFactory = new LogSourceFactory(sessionLogger);
 
         initMutableParams();
     }
@@ -87,16 +77,6 @@ public class LogViewModel extends AndroidViewModel {
         mutableParams.setLogTorrentFilter(pref.logTorrentFilter());
 
         mutableParams.addOnPropertyChangedCallback(paramsCallback);
-    }
-
-    public Flowable<PagingData<LogEntry>> observeLog() {
-        var viewModelScope = ViewModelKt.getViewModelScope(this);
-        Pager<Integer, LogEntry> pager = new Pager<>(pageConfig, sourceFactory::create);
-
-        var flowable = PagingRx.getFlowable(pager);
-        PagingRx.cachedIn(flowable, viewModelScope);
-
-        return flowable;
     }
 
     public Observable<Logger.DataSetChange> observeDataSetChanged() {
@@ -158,6 +138,23 @@ public class LogViewModel extends AndroidViewModel {
     void resumeLogManually() {
         resumeLog();
         logPaused = false;
+    }
+
+    /* Every entry kept, oldest first; read with the logger held still, as the paged source did */
+    List<LogEntry> getLogEntries() {
+        var logger = engine.getSessionLogger();
+        boolean paused = false;
+        if (!logger.isPaused()) {
+            logger.pause();
+            paused = true;
+        }
+        try {
+            return logger.getEntries(0, logger.getNumEntries());
+        } finally {
+            if (paused) {
+                logger.resume();
+            }
+        }
     }
 
     int getLogEntriesCount() {

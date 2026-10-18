@@ -23,7 +23,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.Formatter;
@@ -43,13 +42,6 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.recyclerview.selection.MutableSelection;
-import androidx.recyclerview.selection.Selection;
-import androidx.recyclerview.selection.SelectionTracker;
-import androidx.recyclerview.selection.StorageStrategy;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -61,6 +53,9 @@ import org.proninyaroslav.libretorrent.core.sorting.FileTreeSorting;
 import org.proninyaroslav.libretorrent.core.utils.Utils;
 import org.proninyaroslav.libretorrent.core.utils.WindowInsetsSide;
 import org.proninyaroslav.libretorrent.databinding.FragmentTorrentDetailsFilesBinding;
+import org.proninyaroslav.libretorrent.ui.compose.ComposeList;
+import org.proninyaroslav.libretorrent.ui.compose.Lists;
+import org.proninyaroslav.libretorrent.ui.compose.RowSelection;
 import org.proninyaroslav.libretorrent.ui.detailtorrent.TorrentDetailsFragmentDirections;
 import org.proninyaroslav.libretorrent.ui.detailtorrent.TorrentDetailsViewModel;
 
@@ -80,24 +75,18 @@ import io.reactivex.rxjava3.subjects.PublishSubject;
  * The fragment for list files of torrent. Part of TorrentDetailsFragment.
  */
 
-public class TorrentsDetailsFilesFragment extends Fragment
-        implements TorrentContentFilesAdapter.ClickListener {
+public class TorrentsDetailsFilesFragment extends Fragment {
     private static final String TAG = TorrentsDetailsFilesFragment.class.getSimpleName();
 
-    private static final String TAG_LIST_FILES_STATE = "list_files_state";
-    private static final String SELECTION_TRACKER_ID = "selection_tracker_0";
     private static final String KEY_CHANGE_PRIORITY_DIALOG_REQUEST = TAG + "_change_priority_dialog";
     private static final long SEARCH_DEBOUNCE_MS = 200;
 
     private AppCompatActivity activity;
     private FragmentTorrentDetailsFilesBinding binding;
     private TorrentDetailsViewModel viewModel;
-    private LinearLayoutManager layoutManager;
-    private SelectionTracker<TorrentContentFileItem> selectionTracker;
+    private RowSelection<TorrentContentFileItem> selectionTracker;
     private ActionMode actionMode;
-    private TorrentContentFilesAdapter adapter;
-    /* Save state scrolling */
-    private Parcelable listFilesState;
+    private final ComposeList<TorrentContentFileItem> files = new ComposeList<>();
     private final CompositeDisposable disposables = new CompositeDisposable();
     private final PublishSubject<String> searchQueryChanges = PublishSubject.create();
 
@@ -195,7 +184,8 @@ public class TorrentsDetailsFilesFragment extends Fragment
                 )
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe((children) -> {
-                    adapter.submitList(children);
+                    files.setByName(viewModel.getSortColumn() == FileTreeSorting.SortingColumns.name);
+                    files.submitList(children);
                     updateFileSize();
                 }));
     }
@@ -212,86 +202,31 @@ public class TorrentsDetailsFilesFragment extends Fragment
         viewModel = provider.get(TorrentDetailsViewModel.class);
         binding.setViewModel(viewModel);
 
-        layoutManager = new LinearLayoutManager(activity);
-        binding.fileList.setLayoutManager(layoutManager);
-        adapter = new TorrentContentFilesAdapter(this);
-        /*
-         * A RecyclerView by default creates another copy of the ViewHolder in order to
-         * fade the views into each other. This causes the problem because the old ViewHolder gets
-         * the payload but then the new one doesn't. So needs to explicitly tell it to reuse the old one.
-         */
-        DefaultItemAnimator animator = new DefaultItemAnimator() {
-            @Override
-            public boolean canReuseUpdatedViewHolder(@NonNull RecyclerView.ViewHolder viewHolder) {
-                return true;
-            }
-        };
-        binding.fileList.setItemAnimator(animator);
-        binding.fileList.setAdapter(adapter);
+        /* The way up to the parent folder is never picked */
+        selectionTracker = new RowSelection<>((key) -> !key.name.equals(BencodeFileTree.PARENT_DIR));
+        Lists.files(binding.fileList, files, selectionTracker, this::onItemClicked, this::onItemCheckedChanged);
 
-        selectionTracker = new SelectionTracker.Builder<>(
-                SELECTION_TRACKER_ID,
-                binding.fileList,
-                new TorrentContentFilesAdapter.KeyProvider(adapter),
-                new TorrentContentFilesAdapter.ItemLookup(binding.fileList),
-                StorageStrategy.createParcelableStorage(TorrentContentFileItem.class))
-                .withSelectionPredicate(new SelectionTracker.SelectionPredicate<>() {
-                    @Override
-                    public boolean canSetStateForKey(@NonNull TorrentContentFileItem key, boolean nextState) {
-                        return !key.name.equals(BencodeFileTree.PARENT_DIR);
-                    }
-
-                    @Override
-                    public boolean canSetStateAtPosition(int position, boolean nextState) {
-                        return true;
-                    }
-
-                    @Override
-                    public boolean canSelectMultiple() {
-                        return true;
-                    }
-                })
-                .build();
-
-        selectionTracker.addObserver(new SelectionTracker.SelectionObserver<>() {
-            @Override
-            public void onSelectionChanged() {
-                super.onSelectionChanged();
-
-                if (selectionTracker.hasSelection() && actionMode == null) {
-                    actionMode = activity.startSupportActionMode(actionModeCallback);
-                    setActionModeTitle(selectionTracker.getSelection().size());
-
-                } else if (!selectionTracker.hasSelection()) {
-                    if (actionMode != null) {
-                        actionMode.finish();
-                    }
-                    actionMode = null;
-
-                } else {
-                    setActionModeTitle(selectionTracker.getSelection().size());
-
-                    /* Show/hide menu items after change selected files */
-                    int size = selectionTracker.getSelection().size();
-                    if (size == 1 || size == 2) {
-                        actionMode.invalidate();
-                    }
-                }
-            }
-
-            @Override
-            public void onSelectionRestored() {
-                super.onSelectionRestored();
-
+        selectionTracker.addObserver(() -> {
+            if (selectionTracker.hasSelection() && actionMode == null) {
                 actionMode = activity.startSupportActionMode(actionModeCallback);
                 setActionModeTitle(selectionTracker.getSelection().size());
+
+            } else if (!selectionTracker.hasSelection()) {
+                if (actionMode != null) {
+                    actionMode.finish();
+                }
+                actionMode = null;
+
+            } else {
+                setActionModeTitle(selectionTracker.getSelection().size());
+
+                /* Show/hide menu items after change selected files */
+                int size = selectionTracker.getSelection().size();
+                if (size == 1 || size == 2) {
+                    actionMode.invalidate();
+                }
             }
         });
-
-        if (savedInstanceState != null) {
-            selectionTracker.onRestoreInstanceState(savedInstanceState);
-        }
-        adapter.setSelectionTracker(selectionTracker);
 
         initSearchAndSort();
     }
@@ -377,39 +312,7 @@ public class TorrentsDetailsFilesFragment extends Fragment
                         viewModel.fileTree.size())));
     }
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        if (layoutManager != null) {
-            listFilesState = layoutManager.onSaveInstanceState();
-            outState.putParcelable(TAG_LIST_FILES_STATE, listFilesState);
-        }
-        if (selectionTracker != null) {
-            selectionTracker.onSaveInstanceState(outState);
-        }
-
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-
-        if (savedInstanceState != null) {
-            listFilesState = savedInstanceState.getParcelable(TAG_LIST_FILES_STATE);
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        if (listFilesState != null && layoutManager != null) {
-            layoutManager.onRestoreInstanceState(listFilesState);
-        }
-    }
-
-    @Override
-    public void onItemClicked(@NonNull TorrentContentFileItem item) {
+    private void onItemClicked(@NonNull TorrentContentFileItem item) {
         if (item.path != null) {
             /* Flattened search result: always a file */
             openFile(item);
@@ -422,8 +325,7 @@ public class TorrentsDetailsFilesFragment extends Fragment
         }
     }
 
-    @Override
-    public void onItemCheckedChanged(@NonNull TorrentContentFileItem item, boolean selected) {
+    private void onItemCheckedChanged(@NonNull TorrentContentFileItem item, boolean selected) {
         var priority = new FilePriority(selected ? FilePriority.Type.NORMAL : FilePriority.Type.IGNORE);
         if (item.path != null) {
             viewModel.applyPriorityByIndex(Collections.singletonList(item.index), priority);
@@ -443,7 +345,7 @@ public class TorrentsDetailsFilesFragment extends Fragment
             MenuItem shareStreamUrl = menu.findItem(R.id.share_stream_url_menu);
             shareStreamUrl.setVisible(false);
 
-            Selection<TorrentContentFileItem> selection = selectionTracker.getSelection();
+            List<TorrentContentFileItem> selection = selectionTracker.getSelection();
             if (selection.size() != 1) {
                 return true;
             }
@@ -488,8 +390,7 @@ public class TorrentsDetailsFilesFragment extends Fragment
         if (!isAdded()) {
             return;
         }
-        var selections = new MutableSelection<TorrentContentFileItem>();
-        selectionTracker.copySelection(selections);
+        List<TorrentContentFileItem> selections = selectionTracker.getSelection();
         boolean searchMode = viewModel.isSearchActive();
 
         disposables.add(Observable.fromIterable(selections)
@@ -509,8 +410,7 @@ public class TorrentsDetailsFilesFragment extends Fragment
 
     private void changePriority(FilePriority.Type priorityType) {
         var priority = new FilePriority(priorityType);
-        MutableSelection<TorrentContentFileItem> selections = new MutableSelection<>();
-        selectionTracker.copySelection(selections);
+        List<TorrentContentFileItem> selections = selectionTracker.getSelection();
         boolean searchMode = viewModel.isSearchActive();
 
         disposables.add(Observable.fromIterable(selections)
@@ -537,8 +437,7 @@ public class TorrentsDetailsFilesFragment extends Fragment
     }
 
     private void shareStreamUrl() {
-        MutableSelection<TorrentContentFileItem> selections = new MutableSelection<>();
-        selectionTracker.copySelection(selections);
+        List<TorrentContentFileItem> selections = selectionTracker.getSelection();
 
         Iterator<TorrentContentFileItem> it = selections.iterator();
         if (!it.hasNext()) {

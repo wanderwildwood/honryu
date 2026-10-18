@@ -50,19 +50,12 @@
                 android:checked="@={viewModel.mutableParams.logging}"
                 android:text="@string/enable_journal" />
 
-            <org.proninyaroslav.libretorrent.ui.customviews.EmptyRecyclerView
+            <androidx.compose.ui.platform.ComposeView
                 android:id="@+id/log_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/enable_log"
-                android:clipToPadding="false"
-                android:paddingHorizontal="4dp"
-                android:paddingTop="8dp"
-                android:scrollbarStyle="outsideOverlay"
-                android:scrollbars="vertical"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                tools:itemCount="3"
-                tools:listitem="@layout/item_log_list" />
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
             <org.proninyaroslav.libretorrent.ui.customviews.EmptyListPlaceholder
                 android:id="@+id/empty_view_log"
@@ -73,30 +66,6 @@
                 app:icon="@drawable/ic_lists_24px"
                 app:text="@string/journal_list_empty"
                 tools:visibility="gone" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_up"
-                style="?attr/floatingActionButtonSmallTertiaryStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/enable_log"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="16dp"
-                android:contentDescription="@string/scroll_up"
-                app:srcCompat="@drawable/ic_keyboard_arrow_up_24px" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_down"
-                style="?attr/floatingActionButtonSmallTertiaryStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                android:contentDescription="@string/scroll_down"
-                app:srcCompat="@drawable/ic_keyboard_arrow_down_24px" />
         </RelativeLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

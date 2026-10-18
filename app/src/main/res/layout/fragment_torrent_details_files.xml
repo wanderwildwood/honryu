@@ -193,17 +193,12 @@
                 </RelativeLayout>
             </LinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
+            <androidx.compose.ui.platform.ComposeView
                 android:id="@+id/file_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/search_sort_bar"
-                android:clipToPadding="false"
-                android:paddingVertical="8dp"
-                android:scrollbars="vertical"
-                android:visibility="@{viewModel.info.metaInfo.fileCount == 0 ? View.GONE : View.VISIBLE}"
-                tools:itemCount="3"
-                tools:listitem="@layout/item_torrent_content_file" />
+                android:visibility="@{viewModel.info.metaInfo.fileCount == 0 ? View.GONE : View.VISIBLE}" />
 
             <RelativeLayout
                 android:layout_width="match_parent"

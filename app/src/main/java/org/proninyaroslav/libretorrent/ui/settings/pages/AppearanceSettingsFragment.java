@@ -46,6 +46,7 @@ import org.proninyaroslav.libretorrent.core.model.data.preferences.PrefTheme;
 import org.proninyaroslav.libretorrent.core.settings.SettingsRepository;
 import org.proninyaroslav.libretorrent.core.utils.LocaleHelper;
 import org.proninyaroslav.libretorrent.core.utils.Utils;
+import org.proninyaroslav.libretorrent.ui.compose.ListJumpPrefs;
 import org.proninyaroslav.libretorrent.ui.settings.CustomPreferenceFragment;
 import org.proninyaroslav.libretorrent.ui.settings.customprefs.ColorPickerPreference;
 
@@ -93,6 +94,17 @@ public class AppearanceSettingsFragment extends CustomPreferenceFragment
         if (locale != null) {
             initLocalePreference(locale);
             bindOnPreferenceChangeListener(locale);
+        }
+
+        /* Kept by the shared list code in its own small store, for every list at once */
+        String keyListJump = getString(R.string.pref_key_list_jump);
+        SwitchPreferenceCompat listJump = findPreference(keyListJump);
+        if (listJump != null) {
+            listJump.setChecked(ListJumpPrefs.INSTANCE.shown(activity));
+            listJump.setOnPreferenceChangeListener((preference, newValue) -> {
+                ListJumpPrefs.INSTANCE.setShown(activity, (Boolean) newValue);
+                return true;
+            });
         }
 
         String keyBlackBackground = getString(R.string.pref_key_theme_black_backgrounds);

@@ -21,7 +21,6 @@ package org.proninyaroslav.libretorrent.ui.log;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,8 +33,6 @@ import androidx.databinding.library.baseAdapters.BR;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -50,26 +47,28 @@ import org.proninyaroslav.libretorrent.ui.NavBarFragmentDirections;
 import org.proninyaroslav.libretorrent.ui.filemanager.FileManagerConfig;
 import org.proninyaroslav.libretorrent.ui.filemanager.FileManagerFragment;
 
+import org.proninyaroslav.libretorrent.ui.compose.ComposeList;
+import org.proninyaroslav.libretorrent.ui.compose.Lists;
+import org.proninyaroslav.libretorrent.ui.compose.OnRow;
+
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
-import kotlin.Unit;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class LogFragment extends Fragment {
     private static final String TAG = LogFragment.class.getSimpleName();
 
     private static final String TAG_AUTO_SCROLL = "auto_scroll";
-    private static final String TAG_SCROLL_POSITION = "scroll_position";
+    private static final long LOG_REFRESH_MS = 500;
 
     private static final String KEY_SAVE_LOG_CHOOSE_DIALOG_REQUEST = TAG + "_save_log_choose_dialog";
 
     private MainActivity activity;
     private FragmentLogBinding binding;
     private LogViewModel viewModel;
-    private LinearLayoutManager layoutManager;
-    private LogAdapter adapter;
-    private Handler handler;
-    private boolean ignoreScrollEvent;
-    private boolean autoScroll = true;
-    private int scrollPosition = 0;
+    private final ComposeList<LogEntry> entries = new ComposeList<>();
     private final CompositeDisposable disposables = new CompositeDisposable();
 
     @Override
@@ -134,56 +133,17 @@ public class LogFragment extends Fragment {
             activity = (MainActivity) requireActivity();
         }
 
-        if (savedInstanceState != null) {
-            autoScroll = savedInstanceState.getBoolean(TAG_AUTO_SCROLL);
-            scrollPosition = savedInstanceState.getInt(TAG_SCROLL_POSITION);
-        }
-
-        handler = new Handler();
+        entries.setFollow(savedInstanceState == null
+                || savedInstanceState.getBoolean(TAG_AUTO_SCROLL, true));
 
         viewModel = new ViewModelProvider(this).get(LogViewModel.class);
         binding.setViewModel(viewModel);
 
         updateToolbarSubtitle();
 
-        layoutManager = new LinearLayoutManager(activity);
-        layoutManager.setStackFromEnd(true);
-        binding.logList.setLayoutManager(layoutManager);
-        binding.logList.setEmptyView(binding.emptyViewLog);
-        binding.logList.addItemDecoration(Utils.buildListDivider(activity));
-
-        /* Disable animation, so as not to blink while updating the list */
-        binding.logList.setItemAnimator(null);
-        binding.logList.setLayoutAnimation(null);
-
-        adapter = new LogAdapter(clickListener);
-        binding.logList.setAdapter(adapter);
-
-        binding.logList.addOnScrollListener(scrollCallback);
-
-        binding.fabUp.setOnClickListener((v) -> {
-            viewModel.pauseLog();
-
-            hideFabUp();
-            autoScroll = false;
-            layoutManager.scrollToPositionWithOffset(0, 0);
-
-            resumeLog();
-        });
-
-        binding.fabDown.setOnClickListener((v) -> {
-            viewModel.pauseLog();
-
-            hideFabUp();
-            ignoreScrollEvent = true;
-            autoScroll = true;
-            layoutManager.scrollToPosition(adapter.getItemCount() - 1);
-
-            resumeLog();
-        });
-
-        hideFabUp();
-        hideFabDown();
+        /* The newest entries are at the foot, and the list keeps to its last page until paged back */
+        entries.setEmptyView(binding.logList, binding.emptyViewLog);
+        Lists.log(binding.logList, entries, clickListener);
 
         binding.appBar.setNavigationOnClickListener((v) ->
                 activity.getOnBackPressedDispatcher().onBackPressed());
@@ -195,7 +155,6 @@ public class LogFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
 
-        handler.removeCallbacksAndMessages(null);
         resumeLog();
     }
 
@@ -203,7 +162,6 @@ public class LogFragment extends Fragment {
     public void onStop() {
         super.onStop();
 
-        adapter.removeOnPagesUpdatedListener(this::handleUpdateAdapter);
         disposables.clear();
         viewModel.mutableParams.removeOnPropertyChangedCallback(paramsCallback);
     }
@@ -213,16 +171,22 @@ public class LogFragment extends Fragment {
         super.onStart();
 
         subscribeLogList();
-        adapter.addOnPagesUpdatedListener(this::handleUpdateAdapter);
         viewModel.mutableParams.addOnPropertyChangedCallback(paramsCallback);
     }
 
     private void subscribeLogList() {
-        disposables.add(viewModel.observeLog()
-                .subscribe((list) -> adapter.submitData(getLifecycle(), list))
-        );
         disposables.add(viewModel.observeDataSetChanged()
-                .subscribe((v) -> adapter.refresh())
+                .map((change) -> true)
+                .startWithItem(true)
+                /* A busy session writes many entries a second; the panel takes a few redraws */
+                .throttleLatest(LOG_REFRESH_MS, TimeUnit.MILLISECONDS, true)
+                .observeOn(Schedulers.io())
+                .map((v) -> viewModel.getLogEntries())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe((list) -> {
+                    entries.submitList(list);
+                    updateToolbarSubtitle();
+                })
         );
     }
 
@@ -238,8 +202,7 @@ public class LogFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putBoolean(TAG_AUTO_SCROLL, autoScroll);
-        outState.putInt(TAG_SCROLL_POSITION, scrollPosition);
+        outState.putBoolean(TAG_AUTO_SCROLL, entries.getFollow());
 
         super.onSaveInstanceState(outState);
     }
@@ -352,108 +315,6 @@ public class LogFragment extends Fragment {
         activity.getRootNavController().navigate(action);
     }
 
-    RecyclerView.OnScrollListener scrollCallback = new RecyclerView.OnScrollListener() {
-        int lastDy = 0;
-
-        @Override
-        public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-            super.onScrolled(recyclerView, dx, dy);
-
-            if (dy > 0 && lastDy <= 0) {
-                hideFabUp();
-                showFabDown();
-
-            } else if (dy < 0 && lastDy >= 0) {
-                showFabUp();
-                hideFabDown();
-            }
-            lastDy = dy;
-        }
-
-        @Override
-        public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-            super.onScrollStateChanged(recyclerView, newState);
-
-            if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-                autoScroll = false;
-                if (lastDy > 0) {
-                    hideFabUp();
-                    showFabDown();
-
-                } else if (lastDy < 0) {
-                    showFabUp();
-                    hideFabDown();
-                }
-
-            } else {
-                int firstPos = -1;
-                if (!autoScroll && newState == RecyclerView.SCROLL_STATE_IDLE)
-                    firstPos = layoutManager.findFirstCompletelyVisibleItemPosition();
-
-                int pos = layoutManager.findLastCompletelyVisibleItemPosition();
-                if (pos == RecyclerView.NO_POSITION) {
-                    autoScroll = false;
-                    return;
-                }
-
-                if (ignoreScrollEvent) {
-                    if (pos == adapter.getItemCount())
-                        ignoreScrollEvent = false;
-                    return;
-                }
-
-                if (pos == 0) {
-                    hideFabUp();
-                }
-
-                if (firstPos == RecyclerView.NO_POSITION) {
-                    firstPos = layoutManager.findFirstCompletelyVisibleItemPosition();
-                }
-
-                scrollPosition = firstPos;
-                autoScroll = pos == adapter.getItemCount() - 1;
-
-                if (autoScroll) {
-                    hideFabUp();
-                    hideFabDown();
-                }
-            }
-        }
-    };
-
-    private void showFabUp() {
-        handler.removeCallbacks(hideFabUpRunnable);
-        binding.fabUp.show();
-        handler.postDelayed(hideFabUpRunnable, 2000);
-    }
-
-    private void hideFabUp() {
-        handler.removeCallbacks(hideFabUpRunnable);
-        binding.fabUp.hide();
-    }
-
-    private void showFabDown() {
-        handler.removeCallbacks(hideFabDownRunnable);
-        binding.fabDown.show();
-        handler.postDelayed(hideFabDownRunnable, 2000);
-    }
-
-    private void hideFabDown() {
-        handler.removeCallbacks(hideFabDownRunnable);
-        binding.fabDown.hide();
-    }
-
-    private final Runnable hideFabUpRunnable = () -> binding.fabUp.hide();
-
-    private final Runnable hideFabDownRunnable = () -> binding.fabDown.hide();
-
-    private Unit handleUpdateAdapter() {
-        scrollLogList();
-        updateToolbarSubtitle();
-
-        return Unit.INSTANCE;
-    }
-
     private void updateToolbarSubtitle() {
         int numEntries = viewModel.getLogEntriesCount();
         if (numEntries > 1) {
@@ -463,23 +324,12 @@ public class LogFragment extends Fragment {
         }
     }
 
-    private void scrollLogList() {
-        if (autoScroll) {
-            layoutManager.scrollToPosition(adapter.getItemCount() - 1);
-        } else {
-            layoutManager.scrollToPositionWithOffset(scrollPosition, 0);
-        }
-    }
-
-    private final LogAdapter.ClickListener clickListener = new LogAdapter.ClickListener() {
-        @Override
-        public void onItemClicked(@NonNull LogEntry entry) {
-            if (viewModel.copyLogEntryToClipboard(entry)) {
-                Snackbar.make(binding.coordinatorLayout,
-                                R.string.text_copied_to_clipboard,
-                                Snackbar.LENGTH_SHORT)
-                        .show();
-            }
+    private final OnRow<LogEntry> clickListener = (entry) -> {
+        if (viewModel.copyLogEntryToClipboard(entry)) {
+            Snackbar.make(binding.coordinatorLayout,
+                            R.string.text_copied_to_clipboard,
+                            Snackbar.LENGTH_SHORT)
+                    .show();
         }
     };
 }
