@@ -36,7 +36,9 @@ import androidx.core.content.ContextCompat;
 
 import org.proninyaroslav.libretorrent.core.RepositoryHelper;
 import org.proninyaroslav.libretorrent.core.settings.SettingsRepository;
+import org.proninyaroslav.libretorrent.R;
 import org.proninyaroslav.libretorrent.core.utils.Utils;
+import org.proninyaroslav.libretorrent.ui.base.EInkDialogBuilder;
 
 import java.util.ArrayList;
 
@@ -44,6 +46,7 @@ public class PermissionManager {
     private ActivityResultLauncher<Intent> manageExternalStoragePermission;
     private final ActivityResultLauncher<String[]> permissions;
     private final Context appContext;
+    private final ComponentActivity activity;
     private final SettingsRepository pref;
     private final boolean hasManageExternalStoragePermission;
 
@@ -52,6 +55,7 @@ public class PermissionManager {
             @NonNull Callback callback
     ) {
         appContext = activity.getApplicationContext();
+        this.activity = activity;
         pref = RepositoryHelper.getSettingsRepository(appContext);
         // MANAGE_EXTERNAL_STORAGE is disabled for the Google Play version
         // so we need to check before requesting permission
@@ -98,10 +102,7 @@ public class PermissionManager {
         if (!checkStoragePermissions()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && hasManageExternalStoragePermission) {
                 if (pref.askManageAllFilesPermission()) {
-                    var uri = Uri.fromParts("package", appContext.getPackageName(), null);
-                    var i = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-                            .setData(uri);
-                    manageExternalStoragePermission.launch(i);
+                    explainAllFilesAccess();
                 }
             } else {
                 permissionsList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -113,6 +114,28 @@ public class PermissionManager {
             permissionsList.add(Manifest.permission.POST_NOTIFICATIONS);
         }
         permissions.launch(permissionsList.toArray(new String[0]));
+    }
+
+    /**
+     * Says why before Android's "All files access" page opens, as Files does, and opens it only
+     * when the button is pressed: arriving on a system page with no word from the app read as
+     * something gone wrong.
+     */
+    private void explainAllFilesAccess() {
+        if (activity.isFinishing()) {
+            return;
+        }
+        new EInkDialogBuilder(activity)
+                .setTitle(R.string.all_files_access_title)
+                .setMessage(R.string.all_files_access_body)
+                .setPositiveButton(R.string.all_files_access_open, (dialog, which) -> {
+                    var uri = Uri.fromParts("package", appContext.getPackageName(), null);
+                    var i = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+                            .setData(uri);
+                    manageExternalStoragePermission.launch(i);
+                })
+                .setNegativeButton(R.string.all_files_access_later, null)
+                .show();
     }
 
     public void setDoNotAskStorage(boolean doNotAsk) {

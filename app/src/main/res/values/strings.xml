@@ -649,4 +649,9 @@
     <string name="list_jump_setting">Letters and page dots</string>
     <string name="list_jump_shown">Shown</string>
     <string name="list_jump_hidden">Hidden</string>
+    <!-- Before Android's "All files access" page opens at first start -->
+    <string name="all_files_access_title">Torrents needs to see your storage.</string>
+    <string name="all_files_access_body">It saves what it downloads into the folder you choose. Android keeps that behind a switch of its own, called “All files access”. The button opens that page; turn the switch on for Torrents and come back.</string>
+    <string name="all_files_access_open">Open the setting</string>
+    <string name="all_files_access_later">Not now</string>
 </resources>
