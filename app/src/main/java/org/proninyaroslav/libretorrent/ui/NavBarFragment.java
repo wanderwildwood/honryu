@@ -96,6 +96,13 @@ public class NavBarFragment extends Fragment {
     }
 
     @NonNull
+    /** The bottom bar hidden while a page covers the screen with its own (Home's search). */
+    public void setBottomBarShown(boolean shown) {
+        if (bottomNav != null) {
+            bottomNav.setVisibility(shown ? View.VISIBLE : View.GONE);
+        }
+    }
+
     public DrawerLayout getDrawerLayout() {
         return drawerLayout;
     }

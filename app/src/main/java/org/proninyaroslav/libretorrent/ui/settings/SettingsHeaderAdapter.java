@@ -21,6 +21,7 @@ package org.proninyaroslav.libretorrent.ui.settings;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.preference.PreferenceGroup;
@@ -38,9 +39,22 @@ import org.proninyaroslav.libretorrent.R;
 public class SettingsHeaderAdapter extends CustomPreferenceGroupAdapter {
     private boolean isSelectable = false;
     private String curOpenItemKey;
+    private int rowHeight = 0;
 
     public SettingsHeaderAdapter(@NonNull PreferenceGroup preferenceGroup) {
         super(preferenceGroup);
+    }
+
+    /**
+     * Each row's height in pixels, so that every header fits on one screen; 0 leaves the rows
+     * their own height.
+     */
+    public void setRowHeight(int px) {
+        if (px == rowHeight) {
+            return;
+        }
+        rowHeight = px;
+        notifyDataSetChanged();
     }
 
     public void setSelectable(boolean selectable) {
@@ -82,6 +96,23 @@ public class SettingsHeaderAdapter extends CustomPreferenceGroupAdapter {
 
         var context = holder.itemView.getContext();
         var item = getItem(position);
+
+        if (rowHeight > 0) {
+            var view = holder.itemView;
+            var params = view.getLayoutParams();
+            params.height = rowHeight;
+            view.setLayoutParams(params);
+            // The row's words sit in its first child, which keeps a 64dp minimum; the rule under
+            // them is the last, and has to stay inside the shorter row.
+            if (view instanceof ViewGroup group && group.getChildCount() > 1) {
+                var words = group.getChildAt(0);
+                var rule = group.getChildAt(group.getChildCount() - 1);
+                words.setMinimumHeight(0);
+                var wordsParams = words.getLayoutParams();
+                wordsParams.height = rowHeight - rule.getLayoutParams().height;
+                words.setLayoutParams(wordsParams);
+            }
+        }
 
         if (item != null && isSelectable && item.getKey().equals(curOpenItemKey)) {
             setSelectableBackground(context, holder);

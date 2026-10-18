@@ -35,6 +35,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.view.ContextThemeWrapper;
@@ -304,7 +305,11 @@ public class HomeFragment extends AbstractListDetailFragment {
     boolean onMenuItemClickListener(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.search_menu) {
-            binding.searchView.show();
+            // Shown at once rather than with show(): with no search bar to grow out of, and
+            // with animations off as on this panel, show() leaves the view hidden for good.
+            binding.searchView.setVisibility(View.VISIBLE);
+            binding.searchView.setVisible(true);
+            binding.searchView.requestFocusAndShowKeyboard();
         } else if (itemId == R.id.about_menu) {
             showAboutDialog();
         } else if (itemId == R.id.shutdown_app_menu) {
@@ -350,6 +355,37 @@ public class HomeFragment extends AbstractListDetailFragment {
         });
 
         viewModel.resetSearch();
+
+        // White behind the search, as every page here is; Material tints it a surface grey.
+        for (var id : new int[] {
+                com.google.android.material.R.id.open_search_view_background,
+                com.google.android.material.R.id.open_search_view_status_bar_spacer,
+                com.google.android.material.R.id.open_search_view_toolbar_container,
+                com.google.android.material.R.id.open_search_view_toolbar}) {
+            View part = binding.searchView.findViewById(id);
+            if (part != null) {
+                part.setBackgroundColor(android.graphics.Color.WHITE);
+            }
+        }
+
+        // Back, from the bar's arrow or the phone's, puts the search away without animating.
+        binding.searchView.getToolbar().setNavigationOnClickListener((v) -> hideSearch());
+        var back = new OnBackPressedCallback(false) {
+            @Override
+            public void handleOnBackPressed() {
+                hideSearch();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), back);
+        binding.searchView.addTransitionListener((searchView, previousState, newState) -> {
+            var shown = newState == SearchView.TransitionState.SHOWN
+                    || newState == SearchView.TransitionState.SHOWING;
+            back.setEnabled(shown);
+            var navBar = activity == null ? null : activity.findNavBarFragment(this);
+            if (navBar != null) {
+                navBar.setBottomBarShown(!shown);
+            }
+        });
     }
 
     private RowSelection<TorrentListItem> createSelectionTracker() {
@@ -1086,7 +1122,16 @@ public class HomeFragment extends AbstractListDetailFragment {
         navController.navigate(action, options.build());
         slidingPaneLayout.open();
 
-        binding.searchView.handleBackInvoked();
+        hideSearch();
+    }
+
+    /** The search view put away at once, for the same reason it is shown at once. */
+    private void hideSearch() {
+        if (binding.searchView.isShowing()) {
+            binding.searchView.clearFocusAndHideKeyboard();
+            binding.searchView.setVisible(false);
+            binding.searchView.setVisibility(View.GONE);
+        }
     }
 
     @SuppressLint("RestrictedApi")

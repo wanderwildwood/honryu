@@ -99,6 +99,30 @@ public class SettingsHeaderFragment extends CustomPreferenceFragment {
         }
 
         super.onViewCreated(view, savedInstanceState);
+
+        // Every header on one screen, the rows made shorter if they must be: a list of eight
+        // that runs a row past the foot leaves the last one cut in half with nothing to say
+        // there is more, and the house lists never scroll a short list.
+        var list = getListView();
+        var context = requireContext();
+        list.setPadding(0, Utils.dpToPx(context, 8), 0, 0);
+        View container = view.findViewById(android.R.id.list_container);
+        container.addOnLayoutChangeListener((v, l, t, r, b, ol, ot, or, ob) -> fitRows(v.getHeight()));
+    }
+
+    private void fitRows(int height) {
+        if (adapter == null || height <= 0) {
+            return;
+        }
+        var count = adapter.getItemCount();
+        if (count == 0) {
+            return;
+        }
+        var list = getListView();
+        var room = height - list.getPaddingTop() - list.getPaddingBottom();
+        var natural = Utils.dpToPx(requireContext(), 64);
+        var row = Math.min(natural, room / count);
+        list.post(() -> adapter.setRowHeight(row >= natural ? 0 : row));
     }
 
     @NonNull
