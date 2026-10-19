@@ -198,6 +198,10 @@ public class FileManagerFragment extends Fragment implements FileManagerAdapter.
             return;
         }
 
+        if (savedInstanceState == null) {
+            activity.askAllFilesAccess();
+        }
+
         FileSystemFacade fs = SystemFacadeHelper.getFileSystemFacade(activity.getApplicationContext());
         pref = PreferenceManager.getDefaultSharedPreferences(activity);
 

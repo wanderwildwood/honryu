@@ -190,6 +190,10 @@ public class MainActivity extends ThemeActivity {
         super.onDestroy();
     }
 
+    public void askAllFilesAccess() {
+        permissionManager.askAllFilesAccess();
+    }
+
     public void showManageAllFilesWarningDialog() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R
                 || Utils.hasManageExternalStoragePermission(getApplicationContext())

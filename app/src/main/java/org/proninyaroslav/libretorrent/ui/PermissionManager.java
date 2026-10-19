@@ -119,7 +119,8 @@ public class PermissionManager {
     /**
      * Says why before Android's "All files access" page opens, as Files does, and opens it only
      * when the button is pressed: arriving on a system page with no word from the app read as
-     * something gone wrong.
+     * something gone wrong. "Not now" is remembered, so a cold start stops asking; the file
+     * browser asks again through {@link #askAllFilesAccess()}, where the switch is needed.
      */
     private void explainAllFilesAccess() {
         if (activity.isFinishing()) {
@@ -134,8 +135,21 @@ public class PermissionManager {
                             .setData(uri);
                     manageExternalStoragePermission.launch(i);
                 })
-                .setNegativeButton(R.string.all_files_access_later, null)
+                .setNegativeButton(R.string.all_files_access_later, (dialog, which) ->
+                        pref.askManageAllFilesPermission(false))
                 .show();
+    }
+
+    /**
+     * Asks for All files access whatever "Not now" said before: for the in-app file browser,
+     * which can't see inside folders or save outside Downloads without it.
+     */
+    public void askAllFilesAccess() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
+                && hasManageExternalStoragePermission
+                && !checkStoragePermissions()) {
+            explainAllFilesAccess();
+        }
     }
 
     public void setDoNotAskStorage(boolean doNotAsk) {
