@@ -363,6 +363,8 @@ public class FileManagerFragment extends Fragment implements FileManagerAdapter.
 
         subscribeAdapter();
         viewModel.curDir.addOnPropertyChangedCallback(currentDirCallback);
+        /* Back from Android's All files access page, the folder can show what it hid before. */
+        viewModel.refreshCurDirectory();
     }
 
     private void registerMediaReceiver() {
