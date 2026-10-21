@@ -97,6 +97,13 @@ public class SettingsHeaderAdapter extends CustomPreferenceGroupAdapter {
         var context = holder.itemView.getContext();
         var item = getItem(position);
 
+        // The title's own 12dp above and below would not fit a shortened row, and cut the words.
+        var title = holder.findViewById(android.R.id.title);
+        if (title != null && title.getParent() instanceof ViewGroup titleBox) {
+            var pad = rowHeight > 0 ? 0 : (int) (12 * context.getResources().getDisplayMetrics().density);
+            titleBox.setPadding(titleBox.getPaddingLeft(), pad, titleBox.getPaddingRight(), pad);
+        }
+
         if (rowHeight > 0) {
             var view = holder.itemView;
             var params = view.getLayoutParams();
