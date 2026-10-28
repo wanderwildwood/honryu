@@ -91,11 +91,8 @@ object Lists {
         val bottom = pxToDp(bottomPadding)
         RowList(
             model,
-            jumpFor(model, { it.name ?: "" }),
             key = { it.torrentId },
             contentPadding = androidx.compose.foundation.layout.PaddingValues(top = 8.dp, bottom = bottom),
-            // The letters stop above the add button.
-            clearBelow = bottom,
         ) { TorrentRow(it, selection, onClick, onPause) }
     }
 
@@ -109,10 +106,8 @@ object Lists {
     ) = view.showList {
         RowList(
             model,
-            jumpFor(model, { if (TextUtils.isEmpty(it.name)) it.url else it.name }),
             key = { it.id },
             contentPadding = androidx.compose.foundation.layout.PaddingValues(top = 8.dp, bottom = pxToDp(bottomPadding)),
-            clearBelow = pxToDp(bottomPadding),
         ) { FeedRow(it, selection, onClick) }
     }
 
@@ -123,7 +118,7 @@ object Lists {
         onClick: OnRow<FeedItemsListItem>,
         onMenu: OnRowMenu<FeedItemsListItem>,
     ) = view.showList {
-        RowList(model, ListJump.Pages, key = { it.id }) { FeedItemRow(it, onClick, onMenu) }
+        RowList(model, key = { it.id }) { FeedItemRow(it, onClick, onMenu) }
     }
 
     @JvmStatic
@@ -135,9 +130,7 @@ object Lists {
         onChecked: OnRowChecked<TorrentContentFileItem>,
     ) = view.showList {
         val items = model.items
-        // The way up to the parent folder heads the list and is not filed under a letter.
-        val skip = if (items.firstOrNull()?.name == TorrentContentFileTree.PARENT_DIR) 1 else 0
-        RowList(model, jumpFor(model, { it.name }, skip), key = null) {
+        RowList(model, key = null) {
             FileRow(it, selection, onClick, onChecked)
         }
     }
@@ -145,7 +138,7 @@ object Lists {
     @JvmStatic
     fun peers(view: ComposeView, model: ComposeList<PeerItem>, onLongClick: OnRow<PeerItem>) =
         view.showList {
-            RowList(model, ListJump.Pages, key = null) { PeerRow(it, onLongClick) }
+            RowList(model, key = null) { PeerRow(it, onLongClick) }
         }
 
     /** The log, newest at the foot, kept to its last page while [ComposeList.follow] is on. */
@@ -170,7 +163,7 @@ object Lists {
                     if (!moving[0]) model.follow = model.state.atLastRow(model.items.size)
                 }
             }
-            RowList(model, ListJump.Pages, key = { it.id }) { LogRow(it, onClick) }
+            RowList(model, key = { it.id }) { LogRow(it, onClick) }
         }
 }
 

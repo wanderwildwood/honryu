@@ -148,50 +148,28 @@ internal fun ComposeView.showList(content: @Composable () -> Unit) {
     setContent { ThemeMMD(colorScheme = monochrome) { content() } }
 }
 
-/** Which jump suits the rows: letters when they are in name order, page dots otherwise. */
-internal fun <T : Any> jumpFor(model: ComposeList<T>, nameOf: ((T) -> String)?, skip: Int = 0): ListJump {
-    if (nameOf == null || !model.byName) return ListJump.Pages
-    val names = model.items.drop(skip).map(nameOf)
-    val letters = names.map(::jumpLetterOf)
-    val rank = letters.map { COLUMN.indexOf(it) }
-    return when {
-        rank.zipWithNext().all { (a, b) -> a <= b } -> ListJump.Letters(names, firstIndex = skip)
-        // Z to A: the same column read upwards.
-        rank.zipWithNext().all { (a, b) -> a >= b } ->
-            ListJump.Letters(letters, firstIndex = skip, labels = COLUMN.reversed())
-        else -> ListJump.Pages
-    }
-}
-
-private val COLUMN = listOf("#") + ('A'..'Z').map { it.toString() }
-
 /**
- * A list of rows split by thin rules, paged on whole rows, with the letters or page dots beside
- * it once it runs to a few screens.
+ * A list of rows split by thin rules, full width, paged on whole rows.
  */
 @Composable
 internal fun <T : Any> RowList(
     model: ComposeList<T>,
-    jump: ListJump?,
     key: ((T) -> Any)?,
     contentPadding: PaddingValues = PaddingValues(vertical = 8.dp),
-    clearBelow: Dp = 0.dp,
     row: @Composable (T) -> Unit,
 ) {
     val items = model.items
-    ListJumpBox(model.state, jump, clearBelow = clearBelow) {
-        PagedColumn(
-            Modifier.fillMaxSize(),
-            state = model.state,
-            contentPadding = contentPadding,
-            isScrollbarVisible = false,
-        ) {
-            itemsIndexed(items, key = key?.let { k -> { _: Int, item: T -> k(item) } }) { i, item ->
-                Column(Modifier.fillMaxWidth()) {
-                    row(item)
-                    if (i < items.lastIndex) {
-                        HorizontalDividerMMD(Modifier.padding(horizontal = 16.dp), thickness = 1.dp)
-                    }
+    PagedColumn(
+        Modifier.fillMaxSize(),
+        state = model.state,
+        contentPadding = contentPadding,
+        isScrollbarVisible = false,
+    ) {
+        itemsIndexed(items, key = key?.let { k -> { _: Int, item: T -> k(item) } }) { i, item ->
+            Column(Modifier.fillMaxWidth()) {
+                row(item)
+                if (i < items.lastIndex) {
+                    HorizontalDividerMMD(Modifier.padding(horizontal = 16.dp), thickness = 1.dp)
                 }
             }
         }
