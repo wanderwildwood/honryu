@@ -42,7 +42,9 @@ nothing in or out; it only keeps the app's own internal messages private to it.
 
 ## What is stored
 
-Your torrents, their files, your feeds and your settings, on the phone and nowhere else.
+Your torrents, their files, your feeds and your settings, on the phone and nowhere else. The
+app does not allow Android's backup: nothing it keeps goes to a cloud backup or is copied to a
+new phone by Android's transfer.
 
 ## Checking for yourself
 

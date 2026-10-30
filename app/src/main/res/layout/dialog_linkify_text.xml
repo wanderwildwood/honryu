@@ -6,11 +6,10 @@
     android:minWidth="@dimen/min_width_dialog"
     android:padding="@dimen/dialog_padding">
 
-    <TextView
+    <org.proninyaroslav.libretorrent.ui.customviews.GuardedLinkTextView
         style="?attr/textAppearanceBodyLarge"
         android:id="@+id/message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:autoLink="web"
         tools:text="Example https://google.com" />
 </LinearLayout>

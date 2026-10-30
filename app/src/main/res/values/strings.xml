@@ -641,9 +641,17 @@
     <string name="honryu_about_privacy">It shares files directly with the other people in each torrent, and they see this phone\'s internet address. It finds them through trackers and the public DHT network.</string>
     <string name="honryu_about_licence">GNU General Public License v3 or later</string>
     <string name="honryu_about_after">After LibreTorrent by Yaroslav Pronin. libtorrent, BSD, through libtorrent4j, MIT. Lato, SIL Open Font License 1.1.</string>
+    <string name="honryu_about_privacy_title">Privacy</string>
+    <string name="honryu_about_terms_title">Terms</string>
+    <string name="honryu_about_licences_title">Licences</string>
+    <string name="honryu_licences_source">Source code: github.com/wanderwildwood/honryu</string>
+    <string name="honryu_licences_licence">This app is free software under the GNU General Public License, version 3 or later, the same terms as LibreTorrent. Copyright wander wildwood for the changes in this fork, and Yaroslav Pronin and contributors for LibreTorrent. The full text follows the list below.</string>
+    <string name="honryu_licences_built_with">Built with</string>
+    <string name="honryu_licences_text_heading">%1$s</string>
     <string name="honryu_about_source" translatable="false">github.com/wanderwildwood/honryu</string>
     <!-- The donation link label, beside a drawing of a llama. A fixed phrase: a verb and an object, so the reader knows what pressing it does -->
     <string name="honryu_about_feed_the_llamas">feed the llamas</string>
+    <string name="honryu_about_no_browser_address">No browser is installed. The address is %1$s.</string>
     <string name="honryu_about_no_browser">There is no browser on this phone to open that with.</string>
     <string name="honryu_about_close">Close</string>
     <!-- Before Android's "All files access" page opens at first start -->

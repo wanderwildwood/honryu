@@ -19,12 +19,11 @@
 
 package org.proninyaroslav.libretorrent.ui.home;
 
+import android.app.Activity;
 import android.app.Dialog;
-import android.content.ActivityNotFoundException;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.widget.Toast;
+
+import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,6 +35,10 @@ import org.proninyaroslav.libretorrent.ui.base.EInkDialogBuilder;
 import org.proninyaroslav.libretorrent.R;
 import org.proninyaroslav.libretorrent.core.system.SystemFacadeHelper;
 import org.proninyaroslav.libretorrent.databinding.DialogAboutBinding;
+import org.proninyaroslav.libretorrent.ui.compose.LegalReaderKt;
+import org.proninyaroslav.libretorrent.ui.compose.LegalRow;
+import org.proninyaroslav.libretorrent.ui.compose.LicenceDataKt;
+import org.proninyaroslav.libretorrent.ui.customviews.GuardedLinksKt;
 
 public class AboutDialog extends DialogFragment {
     @NonNull
@@ -53,6 +56,15 @@ public class AboutDialog extends DialogFragment {
                 .getAppVersionName();
         binding.version.setText(getString(R.string.honryu_about_title,
                 versionName != null ? versionName : ""));
+        binding.privacy.setOnClickListener((v) -> LegalReaderKt.showLegalReader(
+                activity,
+                getString(R.string.honryu_about_privacy_title),
+                LegalReaderKt.markdownRows(LegalReaderKt.readRaw(activity, R.raw.privacy))));
+        binding.terms.setOnClickListener((v) -> LegalReaderKt.showLegalReader(
+                activity,
+                getString(R.string.honryu_about_terms_title),
+                LegalReaderKt.markdownRows(LegalReaderKt.readRaw(activity, R.raw.terms))));
+        binding.licences.setOnClickListener((v) -> showLicences(activity));
         binding.site.setOnClickListener((v) -> open("https://wanderthe.dev"));
         // Straight to the checkout: the site's own Donate button only leads there anyway.
         binding.llama.setOnClickListener((v) -> open("https://square.link/u/AGu8oT10"));
@@ -60,11 +72,35 @@ public class AboutDialog extends DialogFragment {
         return builder.create();
     }
 
-    private void open(String url) {
-        try {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-        } catch (ActivityNotFoundException e) {
-            Toast.makeText(requireContext(), R.string.honryu_about_no_browser, Toast.LENGTH_SHORT).show();
+    private void showLicences(Activity activity) {
+        var rows = new ArrayList<>(LicenceDataKt.licenceHeader(
+                getString(R.string.honryu_licences_source),
+                getString(R.string.honryu_licences_licence),
+                getString(R.string.honryu_licences_built_with)));
+        // The GPL, then each other licence once.
+        rows.add(new LegalRow("GNU General Public License", null, true));
+        rows.addAll(LegalReaderKt.paragraphs(LegalReaderKt.readRaw(activity, R.raw.gpl_3_0)));
+        var names = LicenceDataKt.getLicenceNames();
+        if (names.contains("Apache-2.0")) {
+            rows.add(new LegalRow("Apache License 2.0", null, true));
+            rows.addAll(LegalReaderKt.paragraphs(LegalReaderKt.readRaw(activity, R.raw.apache_2_0)));
         }
+        if (names.contains("MIT")) {
+            rows.add(new LegalRow("MIT License", null, true));
+            rows.addAll(LegalReaderKt.paragraphs(LegalReaderKt.readRaw(activity, R.raw.mit)));
+        }
+        if (names.contains("BSD-3-Clause")) {
+            rows.add(new LegalRow("BSD 3-Clause License", null, true));
+            rows.addAll(LegalReaderKt.paragraphs(LegalReaderKt.readRaw(activity, R.raw.bsd_3_clause)));
+        }
+        if (names.contains("OFL-1.1")) {
+            rows.add(new LegalRow("SIL Open Font License 1.1 (Lato)", null, true));
+            rows.addAll(LegalReaderKt.paragraphs(LegalReaderKt.readRaw(activity, R.raw.ofl_1_1)));
+        }
+        LegalReaderKt.showLegalReader(activity, getString(R.string.honryu_about_licences_title), rows);
+    }
+
+    private void open(String url) {
+        GuardedLinksKt.openGuarded(requireContext(), url);
     }
 }

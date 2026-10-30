@@ -414,13 +414,12 @@
                             android:text="@string/torrent_comment"
                             app:drawableStartCompat="@drawable/ic_comment_24px" />
 
-                        <TextView
+                        <org.proninyaroslav.libretorrent.ui.customviews.GuardedLinkTextView
                             android:id="@+id/comment"
                             style="?attr/textAppearanceBodyLarge"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
-                            android:autoLink="all"
                             android:linksClickable="true"
                             android:text="@{viewModel.info.metaInfo.comment}"
                             android:textIsSelectable="true"

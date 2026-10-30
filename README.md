@@ -4,6 +4,8 @@ A BitTorrent client for an E Ink phone. Black on white, Lato, nothing that slide
 
 *Honryū* is a torrent in the old sense: a rushing stream.
 
+Current version: 0.1.11.
+
 Built for the [Mudita Kompakt](https://mudita.com/products/kompakt/), whose 4.3" panel has
 sixteen greys and a slow redraw.
 

@@ -31,6 +31,7 @@ import com.google.android.material.textfield.TextInputEditText;
  */
 
 public class FixHintTextInputEditText extends TextInputEditText {
+    private SteadyCaret caret;
 
     public FixHintTextInputEditText(@NonNull Context context) {
         super(context);
@@ -46,6 +47,27 @@ public class FixHintTextInputEditText extends TextInputEditText {
             int defStyleAttr
     ) {
         super(context, attrs, defStyleAttr);
+    }
+
+    @Override
+    protected void onDraw(@NonNull android.graphics.Canvas canvas) {
+        super.onDraw(canvas);
+        if (caret == null) {
+            caret = new SteadyCaret(this);
+        }
+        caret.draw(canvas);
+    }
+
+    @Override
+    protected void onSelectionChanged(int selStart, int selEnd) {
+        super.onSelectionChanged(selStart, selEnd);
+        invalidate();
+    }
+
+    @Override
+    protected void onFocusChanged(boolean focused, int direction, @Nullable android.graphics.Rect previouslyFocusedRect) {
+        super.onFocusChanged(focused, direction, previouslyFocusedRect);
+        invalidate();
     }
 
     @Override

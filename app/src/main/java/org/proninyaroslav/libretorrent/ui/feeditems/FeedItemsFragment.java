@@ -183,6 +183,12 @@ public class FeedItemsFragment extends Fragment {
 
         viewModel.markAsRead(item.id);
 
+        // A web address goes through the guarded opener, never the system's WebView shell.
+        if (item.articleUrl.startsWith("http://") || item.articleUrl.startsWith("https://")) {
+            org.proninyaroslav.libretorrent.ui.customviews.GuardedLinksKt
+                    .openGuarded(requireContext(), item.articleUrl);
+            return;
+        }
         var i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(item.articleUrl));
         startActivity(i);
