@@ -659,4 +659,7 @@
     <string name="all_files_access_body">It saves what it downloads into the folder you choose. Android keeps that behind a switch of its own, called “All files access”. The button opens that page; turn the switch on for Torrents and come back.</string>
     <string name="all_files_access_open">Open the setting</string>
     <string name="all_files_access_later">Not now</string>
+    <string name="sound_chooser_silent">Silent</string>
+    <string name="sound_chooser_default">Default</string>
+    <string name="sound_chooser_done">Done</string>
 </resources>

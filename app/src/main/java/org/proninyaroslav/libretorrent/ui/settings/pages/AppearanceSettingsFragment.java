@@ -165,28 +165,19 @@ public class AppearanceSettingsFragment extends CustomPreferenceFragment
             notifySound.setSummary(RingtoneManager.getRingtone(activity.getApplicationContext(), Uri.parse(ringtone))
                     .getTitle(activity.getApplicationContext()));
             /* See https://code.google.com/p/android/issues/detail?id=183255 */
+            // Chosen in the app's own list: Android's picker has no OK button on a Kompakt, so a
+            // sound picked there was lost on going back.
             notifySound.setOnPreferenceClickListener((preference) -> {
-                Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
-                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
-                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true);
-                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true);
-                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI, Settings.System.DEFAULT_NOTIFICATION_URI);
-
                 String curRingtone = pref.notifySound();
-                if (curRingtone != null) {
-                    if (curRingtone.isEmpty()) {
-                        /* Select "Silent" */
-                        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, (Uri) null);
-                    } else {
-                        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, Uri.parse(curRingtone));
-                    }
-
-                } else {
-                    intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, Settings.System.DEFAULT_NOTIFICATION_URI);
-                }
-
-                ringtonePicker.launch(intent);
-
+                Uri current = curRingtone == null ? Settings.System.DEFAULT_NOTIFICATION_URI
+                        : curRingtone.isEmpty() ? null : Uri.parse(curRingtone);
+                SoundChooser.INSTANCE.show(activity, RingtoneManager.TYPE_NOTIFICATION, notifySound.getTitle(), current, true, android.media.AudioAttributes.USAGE_MEDIA, (uri) -> {
+                    Context context = activity.getApplicationContext();
+                    pref.notifySound(uri == null ? "" : uri.toString());
+                    notifySound.setSummary(uri == null ? getString(R.string.sound_chooser_silent)
+                            : RingtoneManager.getRingtone(context, uri).getTitle(context));
+                    return kotlin.Unit.INSTANCE;
+                });
                 return true;
             });
         }
@@ -240,27 +231,6 @@ public class AppearanceSettingsFragment extends CustomPreferenceFragment
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.pref_appearance, rootKey);
     }
-
-    final ActivityResultLauncher<Intent> ringtonePicker = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                Intent data = result.getData();
-                if (result.getResultCode() == Activity.RESULT_OK && data != null) {
-                    Uri ringtone = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
-                    if (ringtone != null) {
-                        String keyNotifySound = getString(R.string.pref_key_notify_sound);
-                        Preference notifySound = findPreference(keyNotifySound);
-                        if (notifySound != null) {
-                            Context context = activity.getApplicationContext();
-                            notifySound.setSummary(
-                                    RingtoneManager.getRingtone(context, ringtone).getTitle(context)
-                            );
-                        }
-                        pref.notifySound(ringtone.toString());
-                    }
-                }
-            }
-    );
 
     private void bindOnPreferenceChangeListener(Preference preference) {
         preference.setOnPreferenceChangeListener(this);
