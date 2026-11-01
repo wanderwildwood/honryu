@@ -21,8 +21,8 @@ android {
         targetSdkVersion 35
         compileSdkVersion 37
         // Torrents 0.1.11, on LibreTorrent 4.1.1. versionCode = major * 1000000 + minor * 1000 + patch
-        versionCode 1013
-        versionName '0.1.13'
+        versionCode 1014
+        versionName '0.1.14'
         vectorDrawables.useSupportLibrary = true
 
         ndk {
