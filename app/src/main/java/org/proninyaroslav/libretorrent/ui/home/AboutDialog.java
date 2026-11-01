@@ -23,7 +23,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 
-import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,8 +35,6 @@ import org.proninyaroslav.libretorrent.R;
 import org.proninyaroslav.libretorrent.core.system.SystemFacadeHelper;
 import org.proninyaroslav.libretorrent.databinding.DialogAboutBinding;
 import org.proninyaroslav.libretorrent.ui.compose.LegalReaderKt;
-import org.proninyaroslav.libretorrent.ui.compose.LegalRow;
-import org.proninyaroslav.libretorrent.ui.compose.LicenceDataKt;
 import org.proninyaroslav.libretorrent.ui.customviews.GuardedLinksKt;
 
 public class AboutDialog extends DialogFragment {
@@ -73,31 +70,7 @@ public class AboutDialog extends DialogFragment {
     }
 
     private void showLicences(Activity activity) {
-        var rows = new ArrayList<>(LicenceDataKt.licenceHeader(
-                getString(R.string.honryu_licences_source),
-                getString(R.string.honryu_licences_licence),
-                getString(R.string.honryu_licences_built_with)));
-        // The GPL, then each other licence once.
-        rows.add(new LegalRow("GNU General Public License", null, true));
-        rows.addAll(LegalReaderKt.paragraphs(LegalReaderKt.readRaw(activity, R.raw.gpl_3_0)));
-        var names = LicenceDataKt.getLicenceNames();
-        if (names.contains("Apache-2.0")) {
-            rows.add(new LegalRow("Apache License 2.0", null, true));
-            rows.addAll(LegalReaderKt.paragraphs(LegalReaderKt.readRaw(activity, R.raw.apache_2_0)));
-        }
-        if (names.contains("MIT")) {
-            rows.add(new LegalRow("MIT License", null, true));
-            rows.addAll(LegalReaderKt.paragraphs(LegalReaderKt.readRaw(activity, R.raw.mit)));
-        }
-        if (names.contains("BSD-3-Clause")) {
-            rows.add(new LegalRow("BSD 3-Clause License", null, true));
-            rows.addAll(LegalReaderKt.paragraphs(LegalReaderKt.readRaw(activity, R.raw.bsd_3_clause)));
-        }
-        if (names.contains("OFL-1.1")) {
-            rows.add(new LegalRow("SIL Open Font License 1.1 (Lato)", null, true));
-            rows.addAll(LegalReaderKt.paragraphs(LegalReaderKt.readRaw(activity, R.raw.ofl_1_1)));
-        }
-        LegalReaderKt.showLegalReader(activity, getString(R.string.honryu_about_licences_title), rows);
+        LegalReaderKt.showLicences(activity, getString(R.string.honryu_about_licences_title));
     }
 
     private void open(String url) {

@@ -97,7 +97,7 @@ fun showLegalReader(activity: Activity, title: String, rows: List<LegalRow>): Al
     val view = ComposeView(activity).apply {
         layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height)
         showList {
-            PagedColumn(Modifier.fillMaxSize(), isScrollbarVisible = false) {
+            PagedColumn(Modifier.fillMaxSize()) {
                 itemsIndexed(rows) { _, row ->
                     Box(
                         Modifier
@@ -122,6 +122,33 @@ fun showLegalReader(activity: Activity, title: String, rows: List<LegalRow>): Al
                     }
                 }
             }
+        }
+    }
+    return EInkDialogBuilder(activity)
+        .setTitle(title)
+        .setView(view)
+        .setPositiveButton(R.string.honryu_about_close, null)
+        .show()
+}
+
+/**
+ * The shared Licences page in a dialog: the short page, and a page of its own for each full text.
+ * The dialog's own Close button leaves it; a full text has its own Back.
+ */
+fun showLicences(activity: Activity, title: String): AlertDialog {
+    val height = (activity.resources.displayMetrics.heightPixels * 0.7f).toInt()
+    val view = ComposeView(activity).apply {
+        layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height)
+        showList {
+            LicencesScreen(
+                rememberLicencesData(),
+                rememberLicencesLabels(),
+                onBack = {},
+                // The dialog has no side padding for a custom view: 24 dp lines the text up with About's.
+                modifier = Modifier.fillMaxSize().padding(start = 24.dp, end = 12.dp),
+                showBackButton = false,
+                showTitle = false,
+            )
         }
     }
     return EInkDialogBuilder(activity)

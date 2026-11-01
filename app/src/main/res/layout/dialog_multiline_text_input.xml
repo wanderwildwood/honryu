@@ -11,7 +11,7 @@
         android:layout_marginLeft="@dimen/dialog_padding"
         android:layout_marginRight="@dimen/dialog_padding">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <org.proninyaroslav.libretorrent.ui.customviews.FixHintTextInputEditText
             android:id="@+id/multiline_text_input_dialog"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

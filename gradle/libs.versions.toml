@@ -51,6 +51,7 @@ mmd = { module = "com.mudita:MMD", version.ref = "mmd" }
 acra-dialog = { group = "ch.acra", name = "acra-dialog", version.ref = "acra" }
 acra-mail = { group = "ch.acra", name = "acra-mail", version.ref = "acra" }
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 auto-service = { group = "com.google.auto.service", name = "auto-service", version.ref = "autoService" }
 colorpickerview = { group = "com.github.skydoves", name = "colorpickerview", version.ref = "colorpickerview" }

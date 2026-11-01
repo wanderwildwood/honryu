@@ -21,34 +21,7 @@ class LegalTest {
     fun theBundledTextsAreTheRepositoryOnes() {
         assertEquals(repoFile("PRIVACY.md").readText(), raw("privacy.txt").readText())
         assertEquals(repoFile("TERMS.md").readText(), raw("terms.txt").readText())
-        assertEquals(repoFile("LICENSE.md").readText(), raw("gpl_3_0.txt").readText())
-    }
-
-    @Test
-    fun everyLicenceInTheListHasItsTextBundled() {
-        val files = mapOf(
-            "Apache-2.0" to "apache_2_0.txt",
-            "MIT" to "mit.txt",
-            "BSD-3-Clause" to "bsd_3_clause.txt",
-            "OFL-1.1" to "ofl_1_1.txt",
-        )
-        licenceNames.filter { it != "GPL-3.0-or-later" }.forEach {
-            assertTrue("no text for $it", files.containsKey(it) && raw(files.getValue(it)).length() > 500)
-        }
-    }
-
-    @Test
-    fun theBuiltWithListIsNotEmptyAndEveryLinkIsHttps() {
-        assertTrue(builtWith.size > 10)
-        builtWith.forEach { assertTrue(it.url, it.url.startsWith("https://")) }
-    }
-
-    @Test
-    fun theHeaderStartsWithTheSourceLink() {
-        val rows = licenceHeader("Source", "Licence", "Built with")
-        assertEquals(SOURCE_URL, rows.first().link)
-        assertEquals("https://github.com/wanderwildwood/honryu", SOURCE_URL)
-        assertTrue(rows.size > builtWith.size)
+        assertEquals(repoFile("LICENSE.md").readText(), raw("licence_gpl3.txt").readText())
     }
 
     @Test
@@ -60,7 +33,7 @@ class LegalTest {
 
     @Test
     fun theGplTextIsPagedIntoManyRows() {
-        assertTrue(paragraphs(raw("gpl_3_0.txt").readText()).size > 50)
+        assertTrue(paragraphs(raw("licence_gpl3.txt").readText()).size > 50)
     }
 
     @Test

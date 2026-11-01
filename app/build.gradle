@@ -166,6 +166,7 @@ dependencies {
     implementation libs.appcompat
     implementation libs.fragment
     implementation libs.activity
+    implementation libs.activity.compose
     implementation libs.lifecycle.livedata.core
     implementation libs.lifecycle.viewmodel
     implementation libs.paging.runtime

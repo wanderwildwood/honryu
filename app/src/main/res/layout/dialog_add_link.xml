@@ -25,7 +25,7 @@
             android:layout_toStartOf="@+id/clipboard_button"
             app:hintEnabled="false">
 
-            <com.google.android.material.textfield.TextInputEditText
+            <org.proninyaroslav.libretorrent.ui.customviews.FixHintTextInputEditText
                 android:id="@+id/link"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

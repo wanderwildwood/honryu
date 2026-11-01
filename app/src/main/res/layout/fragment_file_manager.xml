@@ -118,7 +118,7 @@
                     android:minWidth="@dimen/text_filed_max_width"
                     android:visibility="@{viewModel.config.showMode == FileManagerConfig.Mode.SAVE_FILE ? View.VISIBLE : View.GONE}">
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <org.proninyaroslav.libretorrent.ui.customviews.FixHintTextInputEditText
                         android:id="@+id/file_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

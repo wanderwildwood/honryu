@@ -163,7 +163,6 @@ internal fun <T : Any> RowList(
         Modifier.fillMaxSize(),
         state = model.state,
         contentPadding = contentPadding,
-        isScrollbarVisible = false,
     ) {
         itemsIndexed(items, key = key?.let { k -> { _: Int, item: T -> k(item) } }) { i, item ->
             Column(Modifier.fillMaxWidth()) {

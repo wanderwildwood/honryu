@@ -83,7 +83,7 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent">
 
-                            <com.google.android.material.textfield.TextInputEditText
+                            <org.proninyaroslav.libretorrent.ui.customviews.FixHintTextInputEditText
                                 android:id="@+id/file_or_dir_path"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
