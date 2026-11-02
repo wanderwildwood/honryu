@@ -646,9 +646,8 @@
     <string name="honryu_about_licences_title">Licences</string>
     <string name="honryu_licences_back">Back</string>
     <string name="honryu_licences_source_head">Source code</string>
-    <string name="honryu_licences_licence_head">Licence</string>
-    <string name="honryu_licences_licence">This app is free software under the GNU General Public License, version 3 or later, the same terms as LibreTorrent. Copyright wander wildwood for the changes in this fork, and Yaroslav Pronin and contributors for LibreTorrent. The full texts follow.</string>
-    <string name="honryu_licences_built_with">Built with</string>
+    <string name="honryu_licences_no_text">%s needs no licence text here.</string>
+    <string name="honryu_licences_licence">This app is free software under the GNU General Public License, version 3 or later, the same terms as LibreTorrent. Copyright wander wildwood for the changes in this fork, and Yaroslav Pronin and contributors for LibreTorrent. What it is built on keeps its own licences, each on its own page.</string>
     <string name="honryu_licences_full_head">Full texts</string>
     <string name="honryu_licences_full_gpl">GNU General Public License v3 (full text)</string>
     <string name="honryu_licences_full_apache">Apache License 2.0 (full text)</string>
