@@ -79,8 +79,7 @@
         <dialog
             android:id="@+id/aboutDialog"
             android:name="org.proninyaroslav.libretorrent.ui.home.AboutDialog"
-            android:label="AboutDialog"
-            tools:layout="@layout/dialog_about" />
+            android:label="AboutDialog" />
         <dialog
             android:id="@+id/deleteTorrentDialog"
             android:name="org.proninyaroslav.libretorrent.ui.home.DeleteTorrentDialog"

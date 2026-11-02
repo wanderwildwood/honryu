@@ -654,11 +654,10 @@
     <string name="honryu_licences_full_mit">MIT License (full text)</string>
     <string name="honryu_licences_full_bsd">BSD 3-Clause License (full text)</string>
     <string name="honryu_licences_full_ofl">SIL Open Font License 1.1 (full text)</string>
-    <string name="honryu_about_source" translatable="false">github.com/wanderwildwood/honryu</string>
     <!-- The donation link label, beside a drawing of a llama. A fixed phrase: a verb and an object, so the reader knows what pressing it does -->
-    <string name="honryu_about_feed_the_llamas">feed the llamas</string>
+    <string name="honryu_about_feed_the_llamas">Feed the llamas</string>
     <string name="honryu_about_no_browser_address">No browser is installed. The address is %1$s.</string>
-    <string name="honryu_about_no_browser">There is no browser on this phone to open that with.</string>
+    <string name="honryu_about_terms">Torrents is free software under the GNU General Public License. It comes with no warranty, to the extent the law allows. You decide what you download, share and open, and you are responsible for having the right to; the developer is not responsible for what you download or for what others share with you.</string>
     <string name="honryu_about_close">Close</string>
     <!-- Before Android's "All files access" page opens at first start -->
     <string name="all_files_access_title">Torrents needs to see your storage.</string>
