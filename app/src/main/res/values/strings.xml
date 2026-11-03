@@ -643,11 +643,11 @@
     <string name="honryu_about_after">After LibreTorrent by Yaroslav Pronin. libtorrent, BSD, through libtorrent4j, MIT. Lato, SIL Open Font License 1.1.</string>
     <string name="honryu_about_privacy_title">Privacy</string>
     <string name="honryu_about_terms_title">Terms</string>
-    <string name="honryu_about_licences_title">Licences</string>
+    <string name="honryu_about_licences_title">Licenses</string>
     <string name="honryu_licences_back">Back</string>
     <string name="honryu_licences_source_head">Source code</string>
-    <string name="honryu_licences_no_text">%s needs no licence text here.</string>
-    <string name="honryu_licences_licence">This app is free software under the GNU General Public License, version 3 or later, the same terms as LibreTorrent. Copyright wander wildwood for the changes in this fork, and Yaroslav Pronin and contributors for LibreTorrent. What it is built on keeps its own licences, each on its own page.</string>
+    <string name="honryu_licences_no_text">%s needs no license text here.</string>
+    <string name="honryu_licences_licence">This app is free software under the GNU General Public License, version 3 or later, the same terms as LibreTorrent. Copyright wander wildwood for the changes in this fork, and Yaroslav Pronin and contributors for LibreTorrent. What it is built on keeps its own licenses, each on its own page.</string>
     <string name="honryu_licences_full_head">Full texts</string>
     <string name="honryu_licences_full_gpl">GNU General Public License v3 (full text)</string>
     <string name="honryu_licences_full_apache">Apache License 2.0 (full text)</string>
