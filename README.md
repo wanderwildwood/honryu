@@ -7,7 +7,7 @@ A BitTorrent client for an E Ink phone. Black on white, Lato, nothing that slide
 Current version: 0.1.11.
 
 Built for the [Mudita Kompakt](https://mudita.com/products/kompakt/), whose 4.3" panel has
-sixteen greys and a slow redraw.
+sixteen grays and a slow redraw.
 
 ## Screenshots
 
@@ -26,12 +26,12 @@ What is mine is how it looks on this screen.
 
 ## What changed for E Ink
 
-**One appearance.** The light, dark, black and dynamic-colour themes are gone. The panel can
-only show dark marks on a light ground, and a theme setting it cannot honour is a setting
+**One appearance.** The light, dark, black and dynamic-color themes are gone. The panel can
+only show dark marks on a light ground, and a theme setting it cannot honor is a setting
 that lies.
 
-**Black and white only.** Every colour in the theme is black or white, so nothing arrives as
-a muddy mid-grey. Status, progress and choices are carried by shape and words.
+**Black and white only.** Every color in the theme is black or white, so nothing arrives as
+a muddy mid-gray. Status, progress and choices are carried by shape and words.
 
 **Mudita's type and components.** Lato at [MMD](https://github.com/mudita/MMD)'s sizes;
 switches, chips, progress bars, menus, dialogs and the bottom bar drawn the way MMD draws
@@ -70,7 +70,7 @@ by design.
 See [PRIVACY.md](PRIVACY.md). In short: the other people in a torrent see your internet
 address, and nothing else is sent anywhere.
 
-## Licence
+## License
 
 **GNU General Public License v3.0 or later.** See [LICENSE.md](LICENSE.md).
 

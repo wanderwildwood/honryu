@@ -23,11 +23,11 @@ GNU General Public License, version 3 or later, under which it is released, appl
 developer is not liable for loss of data, loss of access, or any damage that comes from using
 it.
 
-## Licence
+## License
 
 Free software under the GNU General Public License, version 3 or later, the same terms as
 LibreTorrent. The source is at <https://github.com/wanderwildwood/honryu>. The full text and
-the list of everything the app is built with are under About, Licences.
+the list of everything the app is built with are under About, Licenses.
 
 ## Changes
 
