@@ -44,7 +44,10 @@ nothing in or out; it only keeps the app's own internal messages private to it.
 
 Your torrents, their files, your feeds and your settings, on the phone and nowhere else. The
 app does not allow Android's backup: nothing it keeps goes to a cloud backup or is copied to a
-new phone by Android's transfer.
+new phone by Android's transfer. **Save the torrent list** (Settings, Storage) writes each
+torrent's magnet link, name, folder and settings to one file you choose through the phone's own
+file picker, and only when you ask; **Restore the torrent list** reads such a file the same way,
+checks all of it first, and adds the torrents that are not here yet.
 
 ## Checking for yourself
 

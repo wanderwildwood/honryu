@@ -69,4 +69,21 @@
             android:title="@string/pref_save_torrent_files_in_title"
             app:singleLineTitle="false" />
     </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_torrent_list_title">
+
+        <Preference
+            android:key="pref_key_save_torrent_list"
+            android:persistent="false"
+            android:summary="@string/save_torrent_list_summary"
+            android:title="@string/save_torrent_list"
+            app:singleLineTitle="false" />
+
+        <Preference
+            android:key="pref_key_restore_torrent_list"
+            android:persistent="false"
+            android:summary="@string/restore_torrent_list_summary"
+            android:title="@string/restore_torrent_list"
+            app:singleLineTitle="false" />
+    </PreferenceCategory>
 </PreferenceScreen>
