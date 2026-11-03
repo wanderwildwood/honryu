@@ -25,6 +25,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import android.os.Handler;
+import android.os.Looper;
+import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.preference.Preference;
@@ -35,6 +41,8 @@ import com.google.android.material.snackbar.Snackbar;
 import org.proninyaroslav.libretorrent.MainActivity;
 import org.proninyaroslav.libretorrent.R;
 import org.proninyaroslav.libretorrent.core.RepositoryHelper;
+import org.proninyaroslav.libretorrent.core.backup.TorrentList;
+import org.proninyaroslav.libretorrent.core.backup.TorrentListFiles;
 import org.proninyaroslav.libretorrent.core.exception.UnknownUriException;
 import org.proninyaroslav.libretorrent.core.settings.SettingsRepository;
 import org.proninyaroslav.libretorrent.core.system.FileSystemFacade;
@@ -58,6 +66,33 @@ public class StorageSettingsFragment extends CustomPreferenceFragment
     private FileSystemFacade fs;
     /* Preference that is associated with the current dir selection dialog */
     private String dirChooserBindPref;
+
+    private static final String KEY_SAVE_TORRENT_LIST = "pref_key_save_torrent_list";
+    private static final String KEY_RESTORE_TORRENT_LIST = "pref_key_restore_torrent_list";
+    /* How long the restore row waits for its second tap */
+    private static final long ARMED_MS = 6000;
+    private final Handler handler = new Handler(Looper.getMainLooper());
+    private boolean restoreArmed;
+    private final Runnable disarm = () -> setRestoreArmed(false);
+
+    private final ActivityResultLauncher<String> saveTorrentList = registerForActivityResult(
+            new ActivityResultContracts.CreateDocument("application/json"),
+            (uri) -> {
+                if (uri == null) return;
+                var app = requireContext().getApplicationContext();
+                inBackground(() -> {
+                    boolean ok = TorrentListFiles.save(app, uri);
+                    return app.getString(ok ? R.string.torrent_list_saved : R.string.torrent_list_not_saved);
+                });
+            });
+
+    private final ActivityResultLauncher<String[]> restoreTorrentList = registerForActivityResult(
+            new ActivityResultContracts.OpenDocument(),
+            (uri) -> {
+                if (uri == null) return;
+                var app = requireContext().getApplicationContext();
+                inBackground(() -> restoreMessage(app, TorrentListFiles.restore(app, uri)));
+            });
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -206,10 +241,87 @@ public class StorageSettingsFragment extends CustomPreferenceFragment
             bindOnPreferenceChangeListener(posixDiskIo);
         }
 
+        Preference saveList = findPreference(KEY_SAVE_TORRENT_LIST);
+        if (saveList != null) {
+            saveList.setOnPreferenceClickListener((preference) -> {
+                try {
+                    saveTorrentList.launch("torrents-" + java.time.LocalDate.now() + ".json");
+                } catch (Exception e) {
+                    Log.w(TAG, "no file picker", e);
+                }
+                return true;
+            });
+        }
+        Preference restoreList = findPreference(KEY_RESTORE_TORRENT_LIST);
+        if (restoreList != null) {
+            restoreList.setOnPreferenceClickListener((preference) -> {
+                if (!restoreArmed) {
+                    setRestoreArmed(true);
+                    return true;
+                }
+                setRestoreArmed(false);
+                try {
+                    restoreTorrentList.launch(new String[]{"application/json", "text/plain", "application/octet-stream"});
+                } catch (Exception e) {
+                    Log.w(TAG, "no file picker", e);
+                }
+                return true;
+            });
+        }
+
         var navBarFragment = activity.findNavBarFragment(this);
         if (navBarFragment != null) {
             setChooseFolderDialogListener(navBarFragment);
         }
+    }
+
+    /* The first tap arms the row, which says what a second tap within six seconds does */
+    private void setRestoreArmed(boolean armed) {
+        restoreArmed = armed;
+        handler.removeCallbacks(disarm);
+        Preference p = findPreference(KEY_RESTORE_TORRENT_LIST);
+        if (p != null) {
+            p.setTitle(armed ? R.string.restore_torrent_list_armed : R.string.restore_torrent_list);
+        }
+        if (armed) {
+            handler.postDelayed(disarm, ARMED_MS);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        handler.removeCallbacks(disarm);
+        super.onDestroy();
+    }
+
+    private interface Work {
+        String run();
+    }
+
+    /* Saving and restoring read and write files and the database: off the main thread, the outcome said in a toast */
+    private void inBackground(Work work) {
+        var app = requireContext().getApplicationContext();
+        new Thread(() -> {
+            String message = work.run();
+            handler.post(() -> Toast.makeText(app, message, Toast.LENGTH_LONG).show());
+        }, "torrent-list").start();
+    }
+
+    private static String restoreMessage(Context context, TorrentListFiles.Result r) {
+        if (r instanceof TorrentListFiles.Result.Done done) {
+            return context.getResources().getQuantityString(R.plurals.torrent_list_restored, done.getAdded(), done.getAdded(), done.getAlreadyHere());
+        } else if (r instanceof TorrentListFiles.Result.Refused refused) {
+            TorrentList.BackupException.Kind kind = refused.getKind();
+            if (kind == TorrentList.BackupException.Kind.NEWER) {
+                return context.getString(R.string.torrent_list_newer);
+            } else if (kind == TorrentList.BackupException.Kind.DAMAGED) {
+                return context.getString(R.string.torrent_list_damaged);
+            }
+            return context.getString(R.string.torrent_list_not_ours);
+        } else if (r instanceof TorrentListFiles.Result.NotRunning) {
+            return context.getString(R.string.torrent_list_not_running);
+        }
+        return context.getString(R.string.torrent_list_unreadable);
     }
 
     private void setChooseFolderDialogListener(@NonNull NavBarFragment navBarFragment) {
