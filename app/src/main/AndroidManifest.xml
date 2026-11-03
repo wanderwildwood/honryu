@@ -49,6 +49,8 @@
     <application
         android:name="MainApplication"
         android:allowBackup="false"
+        android:dataExtractionRules="@xml/no_backup"
+        android:fullBackupContent="false"
         android:banner="@drawable/ic_banner"
         android:enableOnBackInvokedCallback="true"
         android:icon="@drawable/ic_launcher_mudita"
