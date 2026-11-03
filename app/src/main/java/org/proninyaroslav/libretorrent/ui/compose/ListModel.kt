@@ -28,7 +28,6 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mudita.mmd.ThemeMMD
-import com.mudita.mmd.components.divider.HorizontalDividerMMD
 import kotlinx.coroutines.flow.first
 
 /**
@@ -168,7 +167,7 @@ internal fun <T : Any> RowList(
             Column(Modifier.fillMaxWidth()) {
                 row(item)
                 if (i < items.lastIndex) {
-                    HorizontalDividerMMD(Modifier.padding(horizontal = 16.dp), thickness = 1.dp)
+                    DottedRule()
                 }
             }
         }
