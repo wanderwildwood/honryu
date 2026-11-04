@@ -22,6 +22,7 @@ import org.proninyaroslav.libretorrent.ui.compose.AboutSection
 import org.proninyaroslav.libretorrent.ui.compose.HouseAboutDialog
 import org.proninyaroslav.libretorrent.ui.compose.LicencesScreen
 import org.proninyaroslav.libretorrent.ui.compose.SOURCE_URL
+import org.proninyaroslav.libretorrent.ui.compose.houseTypography
 import org.proninyaroslav.libretorrent.ui.compose.monochrome
 import org.proninyaroslav.libretorrent.ui.compose.rememberLicencesData
 import org.proninyaroslav.libretorrent.ui.compose.rememberLicencesLabels
@@ -37,7 +38,7 @@ class AboutDialog : DialogFragment() {
         ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                ThemeMMD(colorScheme = monochrome) { AboutContent(onDismiss = { dismissAllowingStateLoss() }) }
+                ThemeMMD(colorScheme = monochrome, typography = houseTypography) { AboutContent(onDismiss = { dismissAllowingStateLoss() }) }
             }
         }
 

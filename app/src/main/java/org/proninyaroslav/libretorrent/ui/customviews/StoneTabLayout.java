@@ -110,7 +110,8 @@ public final class StoneTabLayout {
         return last == null ? 0 : last.view.getRight();
     }
 
-    /** titleMedium bold with 14dp stones if the whole row fits, else titleSmall with 8dp, else 14sp with 4dp. */
+    /** titleMedium bold with 14dp stones if the whole row fits, else titleSmall with 8dp, else
+     *  the same 16sp (the house floor) with 4dp, and the row scrolls. */
     private static void fit(TabLayout tabs) {
         Context c = tabs.getContext();
         int width = tabs.getWidth();
@@ -119,7 +120,7 @@ public final class StoneTabLayout {
         int gaps = Math.max(0, n - 1) * 6 + 24;
         if (rowWidth(tabs, 20) + px(c, n * 28 + gaps) <= width) size(tabs, 20, 14);
         else if (rowWidth(tabs, 16) + px(c, n * 16 + gaps) <= width) size(tabs, 16, 8);
-        else size(tabs, 14, 4);
+        else size(tabs, 16, 4);
     }
 
     private static float rowWidth(TabLayout tabs, int sp) {

@@ -144,7 +144,7 @@ class RowSelection<K : Any> @JvmOverloads constructor(private val canSelect: (K)
 /** Puts a list on a ComposeView, in the house theme. */
 internal fun ComposeView.showList(content: @Composable () -> Unit) {
     setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-    setContent { ThemeMMD(colorScheme = monochrome) { content() } }
+    setContent { ThemeMMD(colorScheme = monochrome, typography = houseTypography) { content() } }
 }
 
 /**
