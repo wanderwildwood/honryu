@@ -25,8 +25,8 @@ import com.google.android.material.tabs.TabLayout;
  * A TabLayout drawn as StoneTabs: the chosen tab a black stone (4dp corners) with its label in
  * white, the others a plain label in black, all of them bold, set from the left at their own
  * widths, and a 1dp rule beneath the row. A row that would not fit at 20sp steps down to 16sp
- * with tighter stones, as StoneTabs does; one that still would not (six tabs) goes to 14sp, the
- * floor, with the tightest stones, rather than hiding its last tab off the edge.
+ * with tighter stones, as StoneTabs does; one that still would not (six tabs) stays at 16sp, the
+ * floor, with the tightest stones and scrolls, rather than hiding its last tab off the edge.
  *
  * Call {@link #apply(TabLayout)} once the tabs exist (after TabLayoutMediator.attach()).
  */

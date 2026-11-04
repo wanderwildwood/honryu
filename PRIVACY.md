@@ -58,7 +58,7 @@ aapt2 dump badging honryu.apk | grep uses-permission
 <!-- shared-about privacy section -->
 ## Who we are
 
-Torrents is made by wander wildwood, an independent developer: one person, not a company. wander wildwood is the data controller for anything the app itself handles, and that is very little. Torrents keeps what you put in it on your phone, apart from what it sends to each torrent's peers and trackers, the public DHT network and the sites of the links and feeds you add as described above, and sends nothing to the developer, so the developer holds no data about you.
+Torrents is made by wander wildwood, an independent developer: one person, not a company. wander wildwood is the data controller for anything the app itself handles, and that is very little. What you put in Torrents stays on your phone. The only things that go out are the ones described above: your internet address and the pieces of the files you download or share, to the other people in each torrent; what you are downloading and your address, to that torrent's trackers and the public DHT network; and a request for each link or RSS feed you add, to the site it points to. A crash report goes only if you press Report and send it from your own mail app. The developer receives nothing and holds no data about you.
 
 ## How to contact us
 
