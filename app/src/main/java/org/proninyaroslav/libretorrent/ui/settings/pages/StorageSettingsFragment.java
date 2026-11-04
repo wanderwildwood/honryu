@@ -29,6 +29,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -52,7 +53,11 @@ import org.proninyaroslav.libretorrent.ui.NavBarFragment;
 import org.proninyaroslav.libretorrent.ui.NavBarFragmentDirections;
 import org.proninyaroslav.libretorrent.ui.filemanager.FileManagerConfig;
 import org.proninyaroslav.libretorrent.ui.filemanager.FileManagerFragment;
+import org.proninyaroslav.libretorrent.ui.compose.ArmedWatch;
 import org.proninyaroslav.libretorrent.ui.settings.CustomPreferenceFragment;
+
+import kotlin.Unit;
+import kotlin.jvm.functions.Function0;
 
 public class StorageSettingsFragment extends CustomPreferenceFragment
         implements Preference.OnPreferenceChangeListener {
@@ -69,11 +74,21 @@ public class StorageSettingsFragment extends CustomPreferenceFragment
 
     private static final String KEY_SAVE_TORRENT_LIST = "pref_key_save_torrent_list";
     private static final String KEY_RESTORE_TORRENT_LIST = "pref_key_restore_torrent_list";
-    /* How long the restore row waits for its second tap */
-    private static final long ARMED_MS = 6000;
     private final Handler handler = new Handler(Looper.getMainLooper());
-    private boolean restoreArmed;
-    private final Runnable disarm = () -> setRestoreArmed(false);
+    /* The restore row stays armed, with no timer, until the person does something else:
+       a tap anywhere else, Back (which only disarms) or leaving the screen. */
+    private ArmedWatch armedWatch;
+    private final Function0<Unit> disarmRestore = () -> {
+        showRestoreArmed(false);
+        return Unit.INSTANCE;
+    };
+    /* Added with this page's view, so it comes before the settings panes' own Back */
+    private final OnBackPressedCallback backDisarms = new OnBackPressedCallback(false) {
+        @Override
+        public void handleOnBackPressed() {
+            armedWatch.disarm();
+        }
+    };
 
     private final ActivityResultLauncher<String> saveTorrentList = registerForActivityResult(
             new ActivityResultContracts.CreateDocument("application/json"),
@@ -108,6 +123,8 @@ public class StorageSettingsFragment extends CustomPreferenceFragment
         super.onViewCreated(view, savedInstanceState);
 
         binding.appBar.setTitle(R.string.pref_header_storage);
+        requireActivity().getOnBackPressedDispatcher()
+                .addCallback(getViewLifecycleOwner(), backDisarms);
     }
 
     @Override
@@ -117,6 +134,7 @@ public class StorageSettingsFragment extends CustomPreferenceFragment
         if (activity == null) {
             activity = (MainActivity) requireActivity();
         }
+        armedWatch = ArmedWatch.Companion.of(activity);
 
         if (savedInstanceState != null) {
             dirChooserBindPref = savedInstanceState.getString(TAG_DIR_CHOOSER_BIND_PREF);
@@ -255,11 +273,13 @@ public class StorageSettingsFragment extends CustomPreferenceFragment
         Preference restoreList = findPreference(KEY_RESTORE_TORRENT_LIST);
         if (restoreList != null) {
             restoreList.setOnPreferenceClickListener((preference) -> {
-                if (!restoreArmed) {
-                    setRestoreArmed(true);
+                if (!armedWatch.isArmed(disarmRestore)) {
+                    showRestoreArmed(true);
+                    armedWatch.arm(disarmRestore);
                     return true;
                 }
-                setRestoreArmed(false);
+                armedWatch.done(disarmRestore);
+                showRestoreArmed(false);
                 try {
                     restoreTorrentList.launch(new String[]{"application/json", "text/plain", "application/octet-stream"});
                 } catch (Exception e) {
@@ -275,23 +295,20 @@ public class StorageSettingsFragment extends CustomPreferenceFragment
         }
     }
 
-    /* The first tap arms the row, which says what a second tap within six seconds does */
-    private void setRestoreArmed(boolean armed) {
-        restoreArmed = armed;
-        handler.removeCallbacks(disarm);
+    /* The first tap arms the row, which then says what a second tap does */
+    private void showRestoreArmed(boolean armed) {
         Preference p = findPreference(KEY_RESTORE_TORRENT_LIST);
         if (p != null) {
             p.setTitle(armed ? R.string.restore_torrent_list_armed : R.string.restore_torrent_list);
         }
-        if (armed) {
-            handler.postDelayed(disarm, ARMED_MS);
-        }
+        backDisarms.setEnabled(armed);
     }
 
     @Override
-    public void onDestroy() {
-        handler.removeCallbacks(disarm);
-        super.onDestroy();
+    public void onDestroyView() {
+        /* Leaving the screen disarms the row; nothing is left armed behind it */
+        if (armedWatch != null) armedWatch.done(disarmRestore);
+        super.onDestroyView();
     }
 
     private interface Work {
