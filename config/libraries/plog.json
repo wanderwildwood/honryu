@@ -1,0 +1,14 @@
+{
+  "uniqueId": "plog",
+  "name": "plog (native)",
+  "description": "Logging inside libdatachannel. Built into libtorrent4j's native library (libtorrent4j.so), the torrent engine; Gradle does not list it on its own.",
+  "developers": [
+    {
+      "name": "Sergey Podobry"
+    }
+  ],
+  "website": "https://github.com/SergiusTheBest/plog",
+  "licenses": [
+    "plog-mit"
+  ]
+}

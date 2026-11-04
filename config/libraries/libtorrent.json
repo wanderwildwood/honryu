@@ -1,0 +1,14 @@
+{
+  "uniqueId": "libtorrent",
+  "name": "libtorrent (native)",
+  "description": "The BitTorrent engine. Built into libtorrent4j's native library (libtorrent4j.so), the torrent engine; Gradle does not list it on its own.",
+  "developers": [
+    {
+      "name": "Arvid Norberg"
+    }
+  ],
+  "website": "https://www.libtorrent.org/",
+  "licenses": [
+    "libtorrent-bsd"
+  ]
+}

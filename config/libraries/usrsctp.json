@@ -1,0 +1,14 @@
+{
+  "uniqueId": "usrsctp",
+  "name": "usrsctp (native)",
+  "description": "The SCTP stack under libdatachannel. Built into libtorrent4j's native library (libtorrent4j.so), the torrent engine; Gradle does not list it on its own.",
+  "developers": [
+    {
+      "name": "Randall Stewart and Michael Tuexen"
+    }
+  ],
+  "website": "https://github.com/sctplab/usrsctp",
+  "licenses": [
+    "usrsctp-bsd"
+  ]
+}

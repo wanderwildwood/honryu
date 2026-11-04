@@ -1,0 +1,14 @@
+{
+  "uniqueId": "libffi",
+  "name": "libffi (native, inside JNA)",
+  "description": "Built into JNA's native dispatch libraries, which JNA's jar carries for desktop systems; Gradle does not list it on its own.",
+  "developers": [
+    {
+      "name": "Anthony Green, Red Hat, Inc and others"
+    }
+  ],
+  "website": "https://sourceware.org/libffi/",
+  "licenses": [
+    "libffi-mit"
+  ]
+}

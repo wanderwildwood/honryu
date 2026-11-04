@@ -1,0 +1,14 @@
+{
+  "uniqueId": "openssl",
+  "name": "OpenSSL 3.5.2 (native)",
+  "description": "Encryption for trackers, peers and web seeds. Built into libtorrent4j's native library (libtorrent4j.so), the torrent engine; Gradle does not list it on its own.",
+  "developers": [
+    {
+      "name": "The OpenSSL Project"
+    }
+  ],
+  "website": "https://www.openssl.org/",
+  "licenses": [
+    "openssl-apache"
+  ]
+}

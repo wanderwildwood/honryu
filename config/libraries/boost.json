@@ -1,0 +1,14 @@
+{
+  "uniqueId": "boost",
+  "name": "Boost (native)",
+  "description": "The C++ libraries libtorrent is written with (Asio, Beast, JSON and others). Built into libtorrent4j's native library (libtorrent4j.so), the torrent engine; Gradle does not list it on its own.",
+  "developers": [
+    {
+      "name": "The Boost authors"
+    }
+  ],
+  "website": "https://www.boost.org/",
+  "licenses": [
+    "boost-bsl"
+  ]
+}

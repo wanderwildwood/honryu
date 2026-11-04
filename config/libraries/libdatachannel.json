@@ -1,0 +1,14 @@
+{
+  "uniqueId": "libdatachannel",
+  "name": "libdatachannel (native)",
+  "description": "WebRTC data channels, for WebTorrent peers. Its source is at the address below. Built into libtorrent4j's native library (libtorrent4j.so), the torrent engine; Gradle does not list it on its own.",
+  "developers": [
+    {
+      "name": "Paul-Louis Ageneau"
+    }
+  ],
+  "website": "https://github.com/paullouisageneau/libdatachannel",
+  "licenses": [
+    "libdatachannel-mpl"
+  ]
+}

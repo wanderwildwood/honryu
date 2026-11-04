@@ -1,0 +1,14 @@
+{
+  "uniqueId": "libjuice",
+  "name": "libjuice (native)",
+  "description": "Connections through NAT (ICE), used by libdatachannel. Its source is at the address below. Built into libtorrent4j's native library (libtorrent4j.so), the torrent engine; Gradle does not list it on its own.",
+  "developers": [
+    {
+      "name": "Paul-Louis Ageneau"
+    }
+  ],
+  "website": "https://github.com/paullouisageneau/libjuice",
+  "licenses": [
+    "libjuice-mpl"
+  ]
+}

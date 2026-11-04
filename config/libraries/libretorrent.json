@@ -1,0 +1,14 @@
+{
+  "uniqueId": "libretorrent",
+  "name": "LibreTorrent 4.1.1, the app this is a fork of",
+  "description": "Torrents is a fork of LibreTorrent; most of its code is LibreTorrent's.",
+  "developers": [
+    {
+      "name": "Yaroslav Pronin"
+    }
+  ],
+  "website": "https://gitlab.com/proninyaroslav/libretorrent",
+  "licenses": [
+    "GPL-3.0-or-later"
+  ]
+}

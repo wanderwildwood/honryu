@@ -1,0 +1,14 @@
+{
+  "uniqueId": "try_signal",
+  "name": "try_signal (native)",
+  "description": "Safe access to memory-mapped files in libtorrent. Built into libtorrent4j's native library (libtorrent4j.so), the torrent engine; Gradle does not list it on its own.",
+  "developers": [
+    {
+      "name": "Arvid Norberg"
+    }
+  ],
+  "website": "https://github.com/arvidn/try_signal",
+  "licenses": [
+    "try-signal-bsd"
+  ]
+}

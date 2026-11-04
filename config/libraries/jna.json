@@ -1,0 +1,7 @@
+{
+  "uniqueId": "net.java.dev.jna:jna",
+  "licenses": [
+    "jna-dual",
+    "Apache-2.0"
+  ]
+}
