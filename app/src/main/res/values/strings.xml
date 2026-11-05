@@ -638,6 +638,7 @@
 
     <!-- About, in the house order: name and version, what it sends, licence, whose work, source, llama -->
     <string name="honryu_about_title">Torrents %1$s</string>
+    <string name="honryu_about_what">A BitTorrent client for an E Ink phone: magnet links and torrent files, choosing which files to fetch, RSS feeds, a scheduler and a proxy with a kill switch. LibreTorrent underneath, in black and white.</string>
     <string name="honryu_about_privacy">It shares files directly with the other people in each torrent, and they see this phone\'s internet address. It finds them through trackers and the public DHT network.</string>
     <string name="honryu_about_licence">GNU General Public License v3 or later</string>
     <string name="honryu_about_after">After LibreTorrent by Yaroslav Pronin. libtorrent, BSD, through libtorrent4j, MIT. Lato, SIL Open Font License 1.1.</string>
@@ -647,7 +648,7 @@
     <string name="honryu_licences_back">Back</string>
     <string name="honryu_licences_source_head">Source code</string>
     <string name="honryu_licences_no_text">%s needs no license text here.</string>
-    <string name="honryu_licences_licence">This app is free software under the GNU General Public License, version 3 or later, the same terms as LibreTorrent. Copyright wander wildwood for the changes in this fork, and Yaroslav Pronin and contributors for LibreTorrent. What it is built on keeps its own licenses, each on its own page.</string>
+    <string name="honryu_licences_licence">This app is free software under the GNU General Public License, version 3 or later, the same terms as LibreTorrent. Copyright wander wildwood for the changes in this fork, and Yaroslav Pronin and contributors for LibreTorrent. What it is built on keeps its own licenses, listed below.</string>
     <string name="honryu_licences_full_head">Full texts</string>
     <string name="honryu_licences_full_gpl">GNU General Public License v3 (full text)</string>
     <string name="honryu_licences_full_apache">Apache License 2.0 (full text)</string>

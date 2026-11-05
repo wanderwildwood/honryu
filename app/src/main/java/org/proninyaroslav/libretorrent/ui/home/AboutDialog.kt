@@ -20,7 +20,6 @@ import org.proninyaroslav.libretorrent.ui.compose.AboutData
 import org.proninyaroslav.libretorrent.ui.compose.AboutLabels
 import org.proninyaroslav.libretorrent.ui.compose.AboutSection
 import org.proninyaroslav.libretorrent.ui.compose.HouseAboutDialog
-import org.proninyaroslav.libretorrent.ui.compose.LicencesScreen
 import org.proninyaroslav.libretorrent.ui.compose.SOURCE_URL
 import org.proninyaroslav.libretorrent.ui.compose.houseTypography
 import org.proninyaroslav.libretorrent.ui.compose.monochrome
@@ -29,9 +28,9 @@ import org.proninyaroslav.libretorrent.ui.compose.rememberLicencesLabels
 
 /**
  * This app's About: only the words and the address. The dialog, its one Close button, the
- * Licences row, the links and the llama are the shared HouseAbout.kt, the same in every app.
- * The fragment is an empty, transparent shell that the navigation graph can open; the dialog
- * itself is the Compose one.
+ * drawers (Licenses among them), the links and the llama are the shared HouseAbout.kt, the same
+ * in every app. The fragment is an empty, transparent shell that the navigation graph can open;
+ * the dialog itself is the Compose one.
  */
 class AboutDialog : DialogFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
@@ -59,6 +58,7 @@ private fun AboutContent(onDismiss: () -> Unit) {
     val data = AboutData(
         title = stringResource(R.string.honryu_about_title, version),
         sections = listOf(
+            AboutSection(null, stringResource(R.string.honryu_about_what)),
             AboutSection(stringResource(R.string.honryu_about_privacy_title), stringResource(R.string.honryu_about_privacy)),
             AboutSection(stringResource(R.string.privacy_who_title), stringResource(R.string.privacy_who)),
             AboutSection(stringResource(R.string.privacy_contact_title), stringResource(R.string.privacy_contact)),
@@ -77,7 +77,5 @@ private fun AboutContent(onDismiss: () -> Unit) {
         writeTo = { address -> context.getString(R.string.about_write_to, address) },
         noMailApp = { address -> context.getString(R.string.about_no_mail_app, address) },
     )
-    HouseAboutDialog(data, labels, R.drawable.llama, onDismiss) { modifier, back ->
-        LicencesScreen(rememberLicencesData(), rememberLicencesLabels(), onBack = back, modifier = modifier)
-    }
+    HouseAboutDialog(data, labels, R.drawable.llama, onDismiss, rememberLicencesData(), rememberLicencesLabels())
 }
