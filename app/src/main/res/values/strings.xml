@@ -683,6 +683,7 @@
     <string name="torrent_list_damaged">That list is damaged, so it was not used. Nothing was changed.</string>
     <string name="torrent_list_unreadable">That file could not be read. Nothing was changed.</string>
     <string name="torrent_list_not_running">The torrent engine did not start, so nothing was added. Try again in a moment.</string>
+    <string name="show_in_cabinet">Show in Cabinet</string>
     <!-- shared-about: contact row + privacy section (edit in /opt/projects/shared-about) -->
     <string name="about_write_to">Write to %1$s</string>
     <string name="about_no_mail_app">No email app is installed. The address is %1$s.</string>

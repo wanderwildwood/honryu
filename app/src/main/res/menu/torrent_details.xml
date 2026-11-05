@@ -43,4 +43,11 @@
         android:id="@+id/torrent_speed_limit"
         android:title="@string/torrent_speed_limit"
         app:showAsAction="never" />
+
+    <!-- Last, and only while Cabinet is installed and the torrent has a plain path -->
+    <item
+        android:id="@+id/show_in_cabinet_menu"
+        android:title="@string/show_in_cabinet"
+        android:visible="false"
+        app:showAsAction="never" />
 </menu>

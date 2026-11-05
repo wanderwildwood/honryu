@@ -26,6 +26,7 @@ import android.util.Log;
 import android.webkit.MimeTypeMap;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.core.util.Pair;
 import androidx.databinding.Observable;
@@ -312,6 +313,21 @@ public class TorrentDetailsViewModel extends ViewModel {
             node = fileTree;
 
         updateCurDir(node);
+    }
+
+    /*
+     * The plain path of the torrent's own top-level file or folder, for Cabinet's
+     * "show this file"; null before the metadata is in or when the folder has no plain path
+     */
+    @Nullable
+    public String getShowInCabinetPath() {
+        Torrent torrent = info.getTorrent();
+        TorrentMetaInfo metaInfo = info.getMetaInfo();
+        if (torrent == null || metaInfo == null || metaInfo.fileList.isEmpty()) {
+            return null;
+        }
+
+        return ShowInCabinet.path(torrent.downloadPath, metaInfo.fileList.get(0).getPath());
     }
 
     public Single<Uri> getFilePath(@NonNull String name) {

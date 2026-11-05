@@ -19,6 +19,7 @@
 
 package org.proninyaroslav.libretorrent.ui.detailtorrent;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -77,6 +78,7 @@ public class TorrentDetailsFragment extends Fragment {
     private String torrentId;
     private int currentFragPos = DetailPagerAdapter.Page.INFO.position;
     private boolean downloadingMetadata = false;
+    private boolean cabinetInstalled = false;
     private TorrentDetailsViewModel viewModel;
     private final CompositeDisposable disposables = new CompositeDisposable();
 
@@ -252,6 +254,8 @@ public class TorrentDetailsFragment extends Fragment {
                 addTrackersDialog();
             } else if (itemId == R.id.torrent_speed_limit) {
                 speedLimitDialog();
+            } else if (itemId == R.id.show_in_cabinet_menu) {
+                showInCabinet();
             }
 
             return true;
@@ -262,6 +266,8 @@ public class TorrentDetailsFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
+        cabinetInstalled = ShowInCabinet.isInstalled(activity);
+        updateShowInCabinet();
         subscribeTorrentInfo();
         subscribeFreeSpaceError();
     }
@@ -287,7 +293,10 @@ public class TorrentDetailsFragment extends Fragment {
         disposables.add(viewModel.observeTorrentMetaInfo()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe((metaInfo) -> viewModel.updateInfo(metaInfo),
+                .subscribe((metaInfo) -> {
+                            viewModel.updateInfo(metaInfo);
+                            updateShowInCabinet();
+                        },
                         (Throwable e) -> {
                             Log.e(TAG, "Getting meta info error: " + Log.getStackTraceString(e));
                             Snackbar.make(
@@ -324,6 +333,7 @@ public class TorrentDetailsFragment extends Fragment {
         boolean alreadyPaused = oldTi != null && oldTi.stateCode == TorrentStateCode.PAUSED;
 
         viewModel.updateInfo(torrent, ti);
+        updateShowInCabinet();
 
         if (ti == null || torrent == null) {
             return;
@@ -376,6 +386,30 @@ public class TorrentDetailsFragment extends Fragment {
         saveTorrentFile.setVisible(torrent == null || !torrent.downloadingMetadata);
 
         binding.appBar.invalidateMenu();
+    }
+
+    /* Shown only when Cabinet is installed and the torrent has a plain path to show */
+    private void updateShowInCabinet() {
+        MenuItem item = binding.appBar.getMenu().findItem(R.id.show_in_cabinet_menu);
+        if (item == null) {
+            return;
+        }
+        boolean show = cabinetInstalled && viewModel.getShowInCabinetPath() != null;
+        if (item.isVisible() != show) {
+            item.setVisible(show);
+        }
+    }
+
+    private void showInCabinet() {
+        String path = viewModel.getShowInCabinetPath();
+        if (path == null) {
+            return;
+        }
+        try {
+            startActivity(ShowInCabinet.intent(path));
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+        }
     }
 
     private void deleteTorrentDialog() {
