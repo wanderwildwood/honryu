@@ -31,7 +31,6 @@ import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.preference.Preference;
@@ -54,6 +53,8 @@ import org.proninyaroslav.libretorrent.ui.NavBarFragmentDirections;
 import org.proninyaroslav.libretorrent.ui.filemanager.FileManagerConfig;
 import org.proninyaroslav.libretorrent.ui.filemanager.FileManagerFragment;
 import org.proninyaroslav.libretorrent.ui.compose.ArmedWatch;
+import org.proninyaroslav.libretorrent.ui.compose.FilesCreateDocument;
+import org.proninyaroslav.libretorrent.ui.compose.FilesOpenDocument;
 import org.proninyaroslav.libretorrent.ui.settings.CustomPreferenceFragment;
 
 import kotlin.Unit;
@@ -91,7 +92,7 @@ public class StorageSettingsFragment extends CustomPreferenceFragment
     };
 
     private final ActivityResultLauncher<String> saveTorrentList = registerForActivityResult(
-            new ActivityResultContracts.CreateDocument("application/json"),
+            new FilesCreateDocument("application/json"),
             (uri) -> {
                 if (uri == null) return;
                 var app = requireContext().getApplicationContext();
@@ -102,7 +103,7 @@ public class StorageSettingsFragment extends CustomPreferenceFragment
             });
 
     private final ActivityResultLauncher<String[]> restoreTorrentList = registerForActivityResult(
-            new ActivityResultContracts.OpenDocument(),
+            new FilesOpenDocument(false),
             (uri) -> {
                 if (uri == null) return;
                 var app = requireContext().getApplicationContext();

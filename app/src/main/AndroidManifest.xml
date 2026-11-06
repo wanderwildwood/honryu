@@ -44,7 +44,7 @@
             <category android:name="android.intent.category.BROWSABLE" />
             <data android:scheme="https" />
         </intent>
-        <!-- Cabinet, for "Show in Cabinet" in a torrent's menu -->
+        <!-- Cabinet, for "Show in Cabinet" in a torrent's menu and for choosing files -->
         <package android:name="com.wanderwildwood.tana" />
     </queries>
 

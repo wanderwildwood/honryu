@@ -40,7 +40,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.WindowInsetsCompat;
@@ -57,6 +56,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.proninyaroslav.libretorrent.ui.base.EInkDialogBuilder;
+import org.proninyaroslav.libretorrent.ui.compose.FilesOpenDocument;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 
@@ -129,7 +129,7 @@ public class FileManagerFragment extends Fragment implements FileManagerAdapter.
         super.onCreate(savedInstanceState);
 
         openDocumentLauncher = registerForActivityResult(
-                new ActivityResultContracts.OpenDocument(),
+                new FilesOpenDocument(true),
                 this::onSystemFileChosen
         );
 
