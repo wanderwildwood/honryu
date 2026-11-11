@@ -21,7 +21,6 @@ package org.proninyaroslav.libretorrent.ui.home;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.InsetDrawable;
 import android.os.Bundle;
 import android.text.Editable;
@@ -1136,9 +1135,6 @@ public class HomeFragment extends AbstractListDetailFragment {
 
     @SuppressLint("RestrictedApi")
     private void showFabMenu(View v) {
-        getAddTorrentFab().setImageResource(R.drawable.add_to_close_anim);
-        startFabIconAnim();
-
         var popupWrapper = new ContextThemeWrapper(activity, R.style.App_Components_FloatingActionButton_Menu);
         var popup = new PopupMenu(popupWrapper, v, Gravity.TOP);
         popup.getMenuInflater().inflate(R.menu.home_fab, popup.getMenu());
@@ -1164,11 +1160,6 @@ public class HomeFragment extends AbstractListDetailFragment {
             }
         }
 
-        popup.setOnDismissListener((menu) -> {
-            getAddTorrentFab().setImageResource(R.drawable.close_to_add_anim);
-            startFabIconAnim();
-        });
-
         popup.setOnMenuItemClickListener((item) -> {
             int itemId = item.getItemId();
             if (itemId == R.id.create_torrent) {
@@ -1183,10 +1174,6 @@ public class HomeFragment extends AbstractListDetailFragment {
         });
 
         popup.show();
-    }
-
-    private void startFabIconAnim() {
-        ((AnimatedVectorDrawable) getAddTorrentFab().getDrawable()).start();
     }
 
     private void setContextualAppBarTitle(int itemCount) {

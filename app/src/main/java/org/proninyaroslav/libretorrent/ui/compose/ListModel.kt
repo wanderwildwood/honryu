@@ -155,6 +155,7 @@ internal fun <T : Any> RowList(
     model: ComposeList<T>,
     key: ((T) -> Any)?,
     contentPadding: PaddingValues = PaddingValues(vertical = 8.dp),
+    barClearBelow: androidx.compose.ui.unit.Dp = 0.dp,
     row: @Composable (T) -> Unit,
 ) {
     val items = model.items
@@ -163,6 +164,7 @@ internal fun <T : Any> RowList(
         state = model.state,
         contentPadding = contentPadding,
         showCutRow = true,
+        barClearBelow = barClearBelow,
     ) {
         itemsIndexed(items, key = key?.let { k -> { _: Int, item: T -> k(item) } }) { i, item ->
             Column(Modifier.fillMaxWidth()) {

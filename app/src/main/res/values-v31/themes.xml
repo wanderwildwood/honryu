@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- No splash: Android 12 and later always draw a launch screen, so it is told to draw nothing:
+         a transparent mark on the first screen's own white, for no time at all. These attributes
+         are new in 31 and the app still installs on 24, hence this folder. -->
+    <style name="AppTheme" parent="BaseTheme">
+        <item name="android:windowSplashScreenBackground">@color/md_theme_background</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/splash_nothing</item>
+        <item name="android:windowSplashScreenAnimationDuration">0</item>
+    </style>
+</resources>

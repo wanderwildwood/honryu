@@ -77,6 +77,9 @@ fun interface OnRowMenu<T> {
     fun onRowMenu(menuId: Int, item: T)
 }
 
+/** A floating add button's height and its margin: how far above the foot the scrollbar ends. */
+private val FAB_CLEAR = 72.dp
+
 object Lists {
     /** The torrents on Home, and the same rows under search. */
     @JvmStatic
@@ -93,6 +96,8 @@ object Lists {
             model,
             key = { it.torrentId },
             contentPadding = androidx.compose.foundation.layout.PaddingValues(top = 8.dp, bottom = bottom),
+            // The scrollbar ends above the add button, so its lower arrow is not under the button.
+            barClearBelow = FAB_CLEAR,
         ) { TorrentRow(it, selection, onClick, onPause) }
     }
 
@@ -108,6 +113,7 @@ object Lists {
             model,
             key = { it.id },
             contentPadding = androidx.compose.foundation.layout.PaddingValues(top = 8.dp, bottom = pxToDp(bottomPadding)),
+            barClearBelow = FAB_CLEAR,
         ) { FeedRow(it, selection, onClick) }
     }
 

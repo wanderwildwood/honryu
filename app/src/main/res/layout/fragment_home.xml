@@ -41,7 +41,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:contentDescription="@string/add_torrent_title"
-        app:srcCompat="@drawable/add_to_close_anim" />
+        app:srcCompat="@drawable/ic_add_fab" />
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_layout"
