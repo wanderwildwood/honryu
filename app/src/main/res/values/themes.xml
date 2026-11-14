@@ -223,7 +223,10 @@
         <item name="android:taskToBackExitAnimation">@null</item>
     </style>
 
-    <style name="AppTheme" parent="BaseTheme" />
+    <style name="AppTheme" parent="BaseTheme">
+        <!-- No start-up window: in dark mode it would flash white before the first frame. -->
+        <item name="android:windowDisablePreview">true</item>
+    </style>
 
 
     <style name="AppTheme.Translucent">
