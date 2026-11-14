@@ -39,6 +39,8 @@
 
     <!-- Web links: lets the guarded opener see which browsers are installed -->
     <queries>
+        <!-- Home, whose dark mode switch this app follows when Home is installed. -->
+        <package android:name="com.wanderwildwood.iori" />
         <intent>
             <action android:name="android.intent.action.VIEW" />
             <category android:name="android.intent.category.BROWSABLE" />
@@ -61,6 +63,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+
+        <!-- Starts dark mode before the first screen is drawn. Holds no data. -->
+        <provider
+            android:name="org.proninyaroslav.libretorrent.ui.compose.DarkModeInit"
+            android:authorities="${applicationId}.darkmodeinit"
+            android:exported="false" />
 
         <activity
             android:name=".MainActivity"
