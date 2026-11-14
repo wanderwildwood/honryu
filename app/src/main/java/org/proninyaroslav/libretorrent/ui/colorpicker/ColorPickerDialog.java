@@ -34,6 +34,7 @@ import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
 
 import org.proninyaroslav.libretorrent.R;
 import org.proninyaroslav.libretorrent.databinding.DialogColorPickerBinding;
+import org.proninyaroslav.libretorrent.ui.compose.DarkMode;
 
 public class ColorPickerDialog extends DialogFragment {
     public static final String KEY_RESULT_COLOR = "color";
@@ -72,6 +73,8 @@ public class ColorPickerDialog extends DialogFragment {
 
         var bubbleFlag = new CustomBubbleFlag(requireActivity());
         bubbleFlag.setFlagMode(FlagMode.ALWAYS);
+        DarkMode.INSTANCE.keep(binding.colorPicker);
+        DarkMode.INSTANCE.keep(binding.brightnessSlide);
         binding.colorPicker.setFlagView(bubbleFlag);
         binding.colorPicker.attachBrightnessSlider(binding.brightnessSlide);
 

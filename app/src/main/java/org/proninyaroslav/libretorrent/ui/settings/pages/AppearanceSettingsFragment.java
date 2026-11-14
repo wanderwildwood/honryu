@@ -46,6 +46,7 @@ import org.proninyaroslav.libretorrent.core.model.data.preferences.PrefTheme;
 import org.proninyaroslav.libretorrent.core.settings.SettingsRepository;
 import org.proninyaroslav.libretorrent.core.utils.LocaleHelper;
 import org.proninyaroslav.libretorrent.core.utils.Utils;
+import org.proninyaroslav.libretorrent.ui.compose.DarkMode;
 import org.proninyaroslav.libretorrent.ui.settings.CustomPreferenceFragment;
 import org.proninyaroslav.libretorrent.ui.settings.customprefs.ColorPickerPreference;
 
@@ -107,6 +108,13 @@ public class AppearanceSettingsFragment extends CustomPreferenceFragment
         if (dynamicColors != null) {
             dynamicColors.setChecked(pref.dynamicColors());
             bindOnPreferenceChangeListener(dynamicColors);
+        }
+
+        String keyDarkMode = getString(R.string.pref_key_dark_mode);
+        SwitchPreferenceCompat darkMode = findPreference(keyDarkMode);
+        if (darkMode != null) {
+            darkMode.setChecked(DarkMode.INSTANCE.getOn());
+            bindOnPreferenceChangeListener(darkMode);
         }
 
         String keyTorrentFinishNotify = getString(R.string.pref_key_torrent_finish_notify);
@@ -265,6 +273,9 @@ public class AppearanceSettingsFragment extends CustomPreferenceFragment
 
         } else if (preference.getKey().equals(getString(R.string.pref_key_theme_black_backgrounds))) {
             pref.blackBackgrounds((boolean) newValue);
+
+        } else if (preference.getKey().equals(getString(R.string.pref_key_dark_mode))) {
+            DarkMode.INSTANCE.set(activity, (boolean) newValue);
 
         } else  if (preference.getKey().equals(getString(R.string.pref_key_torrent_finish_notify))) {
             pref.torrentFinishNotify((boolean) newValue);

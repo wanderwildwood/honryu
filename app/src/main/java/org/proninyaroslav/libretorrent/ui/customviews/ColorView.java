@@ -30,6 +30,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 
 import org.proninyaroslav.libretorrent.R;
+import org.proninyaroslav.libretorrent.ui.compose.DarkMode;
 
 /*
  * Display the selected color
@@ -64,6 +65,7 @@ public class ColorView extends View {
         }
         borderPaint.setStrokeWidth(BORDER_WIDTH);
         borderPaint.setStyle(Paint.Style.STROKE);
+        DarkMode.INSTANCE.keep(this);
     }
 
     @Override
