@@ -53,6 +53,11 @@ public class MainApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        // Dark mode is started by a provider, and Android starts a provider only in the app's
+        // main process. The crash report screen runs in one of its own (":acra"), where it
+        // stayed light; so it is started here as well. Starting it twice does nothing.
+        org.proninyaroslav.libretorrent.ui.compose.DarkMode.INSTANCE.init(this);
+
         CoreConfigurationBuilder builder = new CoreConfigurationBuilder();
         builder
                 .withBuildConfigClass(BuildConfig.class)
