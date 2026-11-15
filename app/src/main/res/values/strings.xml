@@ -639,7 +639,7 @@
     <!-- About, in the house order: name and version, what it sends, licence, whose work, source, llama -->
     <string name="honryu_about_title">Torrents %1$s</string>
     <string name="honryu_about_what">A BitTorrent client for an E Ink phone: magnet links and torrent files, choosing which files to fetch, RSS feeds, a scheduler and a proxy with a kill switch. LibreTorrent underneath, in black and white.</string>
-    <string name="honryu_about_privacy">It shares files directly with the other people in each torrent, and they see this phone\'s internet address. It finds them through trackers and the public DHT network.</string>
+    <string name="honryu_about_privacy">It shares files directly with the other people in each torrent, and they see this phone\'s internet address. It finds them through trackers and the public DHT network. \"Feed the llamas\" in About opens a donation page (square.link) in your browser, only when you press it. The app sends nothing there; if you give, the payment is handled on that page by Square, not by this app.</string>
     <string name="honryu_about_licence">GNU General Public License v3 or later</string>
     <string name="honryu_about_after">After LibreTorrent by Yaroslav Pronin. libtorrent, BSD, through libtorrent4j, MIT. Lato, SIL Open Font License 1.1.</string>
     <string name="honryu_about_privacy_title">Privacy</string>
@@ -656,7 +656,7 @@
     <!-- The donation link label, beside a drawing of a llama. A fixed phrase: a verb and an object, so the reader knows what pressing it does -->
     <string name="honryu_about_feed_the_llamas">Feed the llamas</string>
     <string name="honryu_about_no_browser_address">No browser is installed. The address is %1$s.</string>
-    <string name="honryu_about_terms">Torrents is free software under the GNU General Public License. It comes with no warranty, to the extent the law allows. You decide what you download, share and open, and you are responsible for having the right to; the developer is not responsible for what you download or for what others share with you.</string>
+    <string name="honryu_about_terms">Torrents is free software under the GNU General Public License. It comes with no warranty, to the extent the law allows. You decide what you download, share and open, and you are responsible for having the right to; the developer is not responsible for what you download or for what others share with you. A donation through \"Feed the llamas\" is voluntary and unlocks nothing: the app is the same with or without one.</string>
     <string name="honryu_about_close">Close</string>
     <!-- Before Android's "All files access" page opens at first start -->
     <string name="all_files_access_title">Torrents needs to see your storage.</string>
