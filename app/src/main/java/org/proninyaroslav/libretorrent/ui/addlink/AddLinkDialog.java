@@ -19,6 +19,7 @@
 
 package org.proninyaroslav.libretorrent.ui.addlink;
 
+import android.view.inputmethod.InputMethodManager;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ClipData;
@@ -184,6 +185,13 @@ public class AddLinkDialog extends DialogFragment {
         alert = builder.create();
         alert.setCanceledOnTouchOutside(false);
         alert.setOnShowListener((DialogInterface dialog) -> {
+            // The field is what the dialog is for: once it is up, the cursor goes in and the
+            // keyboard comes up.
+            binding.link.post(() -> {
+                binding.link.requestFocus();
+                InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) imm.showSoftInput(binding.link, InputMethodManager.SHOW_IMPLICIT);
+            });
             Button addButton = alert.getButton(AlertDialog.BUTTON_POSITIVE);
             addButton.setOnClickListener((v) -> addLink());
 

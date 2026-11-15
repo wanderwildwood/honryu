@@ -19,6 +19,7 @@
 
 package org.proninyaroslav.libretorrent.ui.addfeed;
 
+import android.view.inputmethod.InputMethodManager;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ClipData;
@@ -242,6 +243,13 @@ public class AddFeedDialog extends DialogFragment {
         alert = builder.create();
         alert.setCanceledOnTouchOutside(false);
         alert.setOnShowListener((DialogInterface dialog) -> {
+            // The field is what the dialog is for: once it is up, the cursor goes in and the
+            // keyboard comes up.
+            binding.url.post(() -> {
+                binding.url.requestFocus();
+                InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) imm.showSoftInput(binding.url, InputMethodManager.SHOW_IMPLICIT);
+            });
             if (viewModel.getMode() == AddFeedViewModel.Mode.EDIT) {
                 Button editButton = alert.getButton(AlertDialog.BUTTON_POSITIVE);
                 Button deleteButton = alert.getButton(AlertDialog.BUTTON_NEUTRAL);

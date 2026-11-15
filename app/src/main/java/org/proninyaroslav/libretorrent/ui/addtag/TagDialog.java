@@ -19,6 +19,7 @@
 
 package org.proninyaroslav.libretorrent.ui.addtag;
 
+import android.view.inputmethod.InputMethodManager;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -163,6 +164,13 @@ public class TagDialog extends DialogFragment {
         alert = builder.create();
         alert.setCanceledOnTouchOutside(false);
         alert.setOnShowListener((DialogInterface dialog) -> {
+            // The field is what the dialog is for: once it is up, the cursor goes in and the
+            // keyboard comes up.
+            binding.name.post(() -> {
+                binding.name.requestFocus();
+                InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) imm.showSoftInput(binding.name, InputMethodManager.SHOW_IMPLICIT);
+            });
             Button addButton = alert.getButton(AlertDialog.BUTTON_POSITIVE);
             addButton.setOnClickListener((v) -> addTag());
 
