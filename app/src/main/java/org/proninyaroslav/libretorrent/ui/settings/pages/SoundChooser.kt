@@ -3,7 +3,7 @@ package org.proninyaroslav.libretorrent.ui.settings.pages
 import android.content.Context
 import android.graphics.Typeface
 import android.media.AudioAttributes
-import android.media.Ringtone
+import android.media.MediaPlayer
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Handler
@@ -55,26 +55,15 @@ object SoundChooser {
         }
 
         var chosen = uris.indexOfFirst { it == current }.let { if (it >= 0) it else if (current == null && showSilent) 0 else -1 }
-        var playing: Ringtone? = null
+        var playing: MediaPlayer? = null
         // The row whose sound the phone could not play, said on the row itself until the next press.
         var unplayable = -1
         val handler = Handler(Looper.getMainLooper())
-        val stop = Runnable { playing?.stop() }
-        fun preview(which: Int) {
-            val uri = uris[which]
-            handler.removeCallbacks(stop)
-            playing?.stop()
-            playing = uri?.let { u ->
-                runCatching {
-                    RingtoneManager.getRingtone(context, u)?.apply {
-                        audioAttributes = AudioAttributes.Builder().setUsage(usage).build()
-                        play()
-                    }
-                }.getOrNull()
-            }
-            unplayable = if (uri != null && playing == null) which else -1
-            if (playing != null) handler.postDelayed(stop, PREVIEW_MS)
+        fun stopPreview() {
+            playing?.let { runCatching { it.stop() }; it.release() }
+            playing = null
         }
+        val stop = Runnable { stopPreview() }
 
         val adapter = object : ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, titles) {
             override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -86,11 +75,46 @@ object SoundChooser {
                 return row
             }
         }
+
+        // A MediaPlayer, not a Ringtone: a Ringtone that cannot open its sound gives no sign of it
+        // and plays the system's fallback sound or nothing, so the row could not say so.
+        fun preview(which: Int) {
+            val uri = uris[which]
+            handler.removeCallbacks(stop)
+            stopPreview()
+            unplayable = -1
+            if (uri == null) return
+            val player = MediaPlayer()
+            player.setOnErrorListener { mp, _, _ ->
+                if (playing === mp) {
+                    handler.removeCallbacks(stop)
+                    stopPreview()
+                    unplayable = which
+                    adapter.notifyDataSetChanged()
+                }
+                true
+            }
+            player.setOnCompletionListener { mp -> if (playing === mp) { handler.removeCallbacks(stop); stopPreview() } }
+            val started = runCatching {
+                player.setAudioAttributes(AudioAttributes.Builder().setUsage(usage).build())
+                player.setDataSource(context, uri)
+                player.prepare()
+                player.start()
+            }.isSuccess
+            if (!started) {
+                player.release()
+                unplayable = which
+                return
+            }
+            playing = player
+            handler.postDelayed(stop, PREVIEW_MS)
+        }
+
         val dialog = AlertDialog.Builder(context)
             .setTitle(title)
             .setAdapter(adapter, null)
             .setPositiveButton(R.string.sound_chooser_done, null)
-            .setOnDismissListener { handler.removeCallbacks(stop); playing?.stop() }
+            .setOnDismissListener { handler.removeCallbacks(stop); stopPreview() }
             .create()
         dialog.window?.setWindowAnimations(0)
         dialog.show()
