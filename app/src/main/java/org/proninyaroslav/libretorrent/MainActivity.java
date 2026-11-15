@@ -181,6 +181,31 @@ public class MainActivity extends ThemeActivity {
         }
     }
 
+    // A notice stays until the next press (see Notices): the presses are handed to it here.
+    @Override
+    public boolean dispatchTouchEvent(android.view.MotionEvent ev) {
+        org.proninyaroslav.libretorrent.ui.Notices.pressed(ev);
+        return super.dispatchTouchEvent(ev);
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(android.view.KeyEvent event) {
+        org.proninyaroslav.libretorrent.ui.Notices.pressed(event);
+        return super.dispatchKeyEvent(event);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        org.proninyaroslav.libretorrent.ui.Notices.front(this);
+    }
+
+    @Override
+    protected void onPause() {
+        org.proninyaroslav.libretorrent.ui.Notices.front(null);
+        super.onPause();
+    }
+
     @Override
     protected void onDestroy() {
         if (viewModel != null) {

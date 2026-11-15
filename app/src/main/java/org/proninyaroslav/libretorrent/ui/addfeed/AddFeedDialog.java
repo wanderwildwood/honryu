@@ -34,7 +34,6 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -316,10 +315,8 @@ public class AddFeedDialog extends DialogFragment {
         }
 
         if (!viewModel.addChannel()) {
-            Toast.makeText(activity,
-                            R.string.error_cannot_add_channel,
-                            Toast.LENGTH_SHORT)
-                    .show();
+            binding.layoutUrl.setErrorEnabled(true);
+            binding.layoutUrl.setError(getString(R.string.error_cannot_add_channel));
             return;
         }
 
@@ -332,10 +329,8 @@ public class AddFeedDialog extends DialogFragment {
         }
 
         if (!viewModel.updateChannel()) {
-            Toast.makeText(activity,
-                            R.string.error_cannot_edit_channel,
-                            Toast.LENGTH_SHORT)
-                    .show();
+            binding.layoutUrl.setErrorEnabled(true);
+            binding.layoutUrl.setError(getString(R.string.error_cannot_edit_channel));
             return;
         }
 
@@ -344,10 +339,8 @@ public class AddFeedDialog extends DialogFragment {
 
     private void deleteChannel() {
         if (!viewModel.deleteChannel()) {
-            Toast.makeText(activity,
-                            R.string.error_cannot_delete_channel,
-                            Toast.LENGTH_SHORT)
-                    .show();
+            binding.layoutUrl.setErrorEnabled(true);
+            binding.layoutUrl.setError(getString(R.string.error_cannot_delete_channel));
             return;
         }
 

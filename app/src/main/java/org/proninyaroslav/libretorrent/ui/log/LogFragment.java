@@ -35,6 +35,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.snackbar.Snackbar;
+import org.proninyaroslav.libretorrent.ui.Notices;
 
 import org.proninyaroslav.libretorrent.MainActivity;
 import org.proninyaroslav.libretorrent.R;
@@ -285,10 +286,9 @@ public class LogFragment extends Fragment {
         }
 
         if (recording) {
-            Snackbar.make(binding.coordinatorLayout,
+            Notices.stay(Snackbar.make(binding.coordinatorLayout,
                             getString(R.string.journal_started_recording),
-                            Snackbar.LENGTH_SHORT)
-                    .show();
+                            Snackbar.LENGTH_SHORT));
 
             viewModel.startLogRecording();
 
@@ -326,10 +326,9 @@ public class LogFragment extends Fragment {
 
     private final OnRow<LogEntry> clickListener = (entry) -> {
         if (viewModel.copyLogEntryToClipboard(entry)) {
-            Snackbar.make(binding.coordinatorLayout,
+            Notices.stay(Snackbar.make(binding.coordinatorLayout,
                             R.string.text_copied_to_clipboard,
-                            Snackbar.LENGTH_SHORT)
-                    .show();
+                            Snackbar.LENGTH_SHORT));
         }
     };
 }

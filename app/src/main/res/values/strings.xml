@@ -666,6 +666,8 @@
     <string name="sound_chooser_silent">Silent</string>
     <string name="sound_chooser_default">Default</string>
     <string name="sound_chooser_done">Done</string>
+    <!-- Under a sound in the list of sounds, when the phone could not play it -->
+    <string name="sound_chooser_cannot_play">This sound could not be played.</string>
     <string name="pref_torrent_list_title">Torrent list</string>
     <string name="save_torrent_list">Save the torrent list</string>
     <string name="save_torrent_list_summary">Saves each torrent\'s magnet link, name, folder and settings to one file you pick. Not the downloaded files.</string>

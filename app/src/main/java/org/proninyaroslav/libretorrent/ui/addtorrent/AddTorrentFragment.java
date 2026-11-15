@@ -28,7 +28,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,6 +42,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
+import org.proninyaroslav.libretorrent.ui.Notices;
 
 import org.proninyaroslav.libretorrent.BR;
 import org.proninyaroslav.libretorrent.R;
@@ -283,7 +283,7 @@ public class AddTorrentFragment extends Fragment {
             }
         } catch (Exception e) {
             if (e instanceof TorrentAlreadyExistsException) {
-                Toast.makeText(activity, R.string.torrent_exist, Toast.LENGTH_SHORT).show();
+                Notices.say(activity, R.string.torrent_exist);
                 activity.getOnBackPressedDispatcher().onBackPressed();
             } else {
                 handleAddException(e);
@@ -321,12 +321,12 @@ public class AddTorrentFragment extends Fragment {
 
     private void showErrorDialog(String message, boolean indefinite, Throwable e) {
         if (e == null) {
-            Snackbar.make(
+            Notices.stay(Snackbar.make(
                     activity,
                     binding.coordinatorLayout,
                     message,
                     indefinite ? Snackbar.LENGTH_INDEFINITE : Snackbar.LENGTH_LONG
-            ).show();
+            ));
         } else {
             var action = AddTorrentFragmentDirections.actionErrorReportDialog(message);
             action.setException(e);

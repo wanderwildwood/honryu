@@ -24,7 +24,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.widget.Toast;
+import org.proninyaroslav.libretorrent.ui.Notices;
 
 import androidx.annotation.NonNull;
 import androidx.work.Data;
@@ -111,19 +111,13 @@ public class SaveLogWorker extends Worker
 
     private void showFailToast()
     {
-        handler.post(() -> Toast.makeText(appContext,
-                R.string.journal_save_log_failed,
-                Toast.LENGTH_SHORT)
-                .show()
+        handler.post(() -> Notices.say(appContext, R.string.journal_save_log_failed)
         );
     }
 
     private void showSuccessToast(String fileName)
     {
-        handler.post(() -> Toast.makeText(appContext,
-                appContext.getString(R.string.journal_save_log_success, fileName),
-                Toast.LENGTH_LONG)
-                .show()
+        handler.post(() -> Notices.say(appContext, appContext.getString(R.string.journal_save_log_success, fileName))
         );
     }
 }

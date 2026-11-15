@@ -29,7 +29,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,6 +42,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.proninyaroslav.libretorrent.ui.base.EInkDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
+import org.proninyaroslav.libretorrent.ui.Notices;
 
 import org.proninyaroslav.libretorrent.MainActivity;
 import org.proninyaroslav.libretorrent.R;
@@ -94,7 +94,7 @@ public class CreateTorrentFragment extends Fragment {
                             case DIR_CHOOSER -> message = getString(R.string.unable_to_open_folder);
                             case SAVE_FILE -> message = getString(R.string.unable_to_create_file);
                         }
-                        Snackbar.make(activity, binding.coordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
+                        Notices.stay(Snackbar.make(activity, binding.coordinatorLayout, message, Snackbar.LENGTH_SHORT));
                     } else {
                         if (resultValue.config().showMode == FileManagerConfig.Mode.SAVE_FILE) {
                             viewModel.mutableParams.setSavePath(uri);
@@ -235,12 +235,12 @@ public class CreateTorrentFragment extends Fragment {
 
         viewModel.getState().observe(getViewLifecycleOwner(), (state) -> {
             if (state.status == CreateTorrentViewModel.BuildState.Status.BUILDING) {
-                Snackbar.make(
+                Notices.stay(Snackbar.make(
                         activity,
                         binding.coordinatorLayout,
                         getString(R.string.creating_torrent_progress),
                         Snackbar.LENGTH_LONG
-                ).show();
+                ));
                 binding.createButton.setEnabled(false);
             } else {
                 binding.createButton.setEnabled(true);
@@ -307,12 +307,12 @@ public class CreateTorrentFragment extends Fragment {
 
         } else if (err instanceof IOException) {
             if (err.getMessage() != null && err.getMessage().contains("content total size can't be 0")) {
-                Snackbar.make(
+                Notices.stay(Snackbar.make(
                         activity,
                         binding.coordinatorLayout,
                         getString(R.string.folder_is_empty),
                         Snackbar.LENGTH_SHORT
-                ).show();
+                ));
             } else {
                 errorReportDialog(err);
             }
@@ -324,10 +324,7 @@ public class CreateTorrentFragment extends Fragment {
     private void handleFinish() {
         Uri savePath = viewModel.mutableParams.getSavePath();
         if (savePath != null) {
-            Toast.makeText(activity.getApplicationContext(),
-                            getString(R.string.torrent_saved_to, savePath.getPath()),
-                            Toast.LENGTH_SHORT)
-                    .show();
+            Notices.say(activity.getApplicationContext(), getString(R.string.torrent_saved_to, savePath.getPath()));
         }
         if (viewModel.mutableParams.isStartSeeding()) {
             try {

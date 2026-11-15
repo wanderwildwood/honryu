@@ -39,6 +39,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.snackbar.Snackbar;
+import org.proninyaroslav.libretorrent.ui.Notices;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.proninyaroslav.libretorrent.R;
@@ -123,12 +124,12 @@ public class AddTorrentInfoFragment extends Fragment {
                     }
                     var uri = resultValue.uri();
                     if ((uri) == null) {
-                        Snackbar.make(
+                        Notices.stay(Snackbar.make(
                                 activity,
                                 binding.coordinatorLayout,
                                 getString(R.string.unable_to_open_folder),
                                 Snackbar.LENGTH_SHORT
-                        ).show();
+                        ));
                     } else {
                         viewModel.mutableParams.getDirPath().set(uri);
                     }

@@ -25,7 +25,7 @@ import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
-import android.widget.Toast;
+import org.proninyaroslav.libretorrent.ui.Notices;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -81,11 +81,7 @@ public class ProxySettingsFragment extends CustomPreferenceFragment
         super.onDestroy();
 
         if (proxyChanged) {
-            Toast.makeText(
-                    activity,
-                    R.string.proxy_settings_apply_after_reboot,
-                    Toast.LENGTH_SHORT
-            ).show();
+            Notices.say(activity, R.string.proxy_settings_apply_after_reboot);
         }
     }
 

@@ -30,7 +30,6 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -189,18 +188,12 @@ public class TagDialog extends DialogFragment {
                         this::dismiss,
                         (e) -> {
                             if (e instanceof AddTagViewModel.TagAlreadyExistsException) {
-                                Toast.makeText(
-                                        activity,
-                                        R.string.tag_already_exists,
-                                        Toast.LENGTH_SHORT
-                                ).show();
+                                binding.nameLayout.setErrorEnabled(true);
+                                binding.nameLayout.setError(getString(R.string.tag_already_exists));
                             } else {
                                 Log.e(TAG, Log.getStackTraceString(e));
-                                Toast.makeText(
-                                        activity,
-                                        R.string.add_tag_failed,
-                                        Toast.LENGTH_SHORT
-                                ).show();
+                                binding.nameLayout.setErrorEnabled(true);
+                                binding.nameLayout.setError(getString(R.string.add_tag_failed));
                             }
                         }
                 )

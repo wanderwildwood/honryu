@@ -58,6 +58,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.proninyaroslav.libretorrent.ui.base.EInkDialogBuilder;
 import org.proninyaroslav.libretorrent.ui.compose.FilesOpenDocument;
 import com.google.android.material.snackbar.Snackbar;
+import org.proninyaroslav.libretorrent.ui.Notices;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 
 import org.proninyaroslav.libretorrent.MainActivity;
@@ -140,11 +141,11 @@ public class FileManagerFragment extends Fragment implements FileManagerAdapter.
                 (key, result) -> {
                     var name = result.getString(InputNameDialog.KEY_RESULT_NAME);
                     if (!viewModel.createDirectory(name)) {
-                        Snackbar.make(
+                        Notices.stay(Snackbar.make(
                                 binding.coordinatorLayout,
                                 R.string.error_dialog_new_folder,
                                 Snackbar.LENGTH_SHORT
-                        ).show();
+                        ));
                     } else {
                         try {
                             viewModel.openDirectory(name);
@@ -408,10 +409,9 @@ public class FileManagerFragment extends Fragment implements FileManagerAdapter.
     }
 
     private void permissionDeniedToast() {
-        Snackbar.make(binding.coordinatorLayout,
+        Notices.stay(Snackbar.make(binding.coordinatorLayout,
                         R.string.permission_denied,
-                        Snackbar.LENGTH_SHORT)
-                .show();
+                        Snackbar.LENGTH_SHORT));
     }
 
     /*
@@ -546,11 +546,11 @@ public class FileManagerFragment extends Fragment implements FileManagerAdapter.
                 permissionDeniedToast();
             }
         } else {
-            Snackbar.make(
+            Notices.stay(Snackbar.make(
                     binding.coordinatorLayout,
                     R.string.error_open_dir,
                     Snackbar.LENGTH_SHORT
-            ).show();
+            ));
         }
     }
 

@@ -44,6 +44,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.snackbar.Snackbar;
+import org.proninyaroslav.libretorrent.ui.Notices;
 
 import org.proninyaroslav.libretorrent.R;
 import org.proninyaroslav.libretorrent.core.model.filetree.BencodeFileTree;
@@ -477,11 +478,11 @@ public class TorrentsDetailsFilesFragment extends Fragment {
 
     private void handleOpenFileError(Throwable err) {
         Log.e(TAG, "Unable to open file: " + Log.getStackTraceString(err));
-        Snackbar.make(
+        Notices.stay(Snackbar.make(
                 activity,
                 binding.coordinatorLayout,
                 getString(R.string.unable_to_open_file),
                 Snackbar.LENGTH_SHORT
-        ).show();
+        ));
     }
 }

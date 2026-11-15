@@ -28,7 +28,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -41,6 +40,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.slidingpanelayout.widget.SlidingPaneLayout;
 
 import com.google.android.material.snackbar.Snackbar;
+import org.proninyaroslav.libretorrent.ui.Notices;
 import com.google.gson.JsonSyntaxException;
 
 import org.proninyaroslav.libretorrent.MainActivity;
@@ -475,10 +475,7 @@ public class FeedFragment extends AbstractListDetailFragment {
         }
 
         if (viewModel.copyFeedUrlToClipboard(it.next())) {
-            Toast.makeText(activity,
-                            R.string.link_copied_to_clipboard,
-                            Toast.LENGTH_SHORT)
-                    .show();
+            Notices.say(activity, R.string.link_copied_to_clipboard);
         }
     }
 
@@ -542,11 +539,10 @@ public class FeedFragment extends AbstractListDetailFragment {
 
     private void restoreFeedsBackupErrorDialog(Throwable e) {
         if (e instanceof JsonSyntaxException) {
-            Snackbar.make(binding.coordinatorLayout,
+            Notices.stay(Snackbar.make(binding.coordinatorLayout,
                             R.string.error_import_invalid_format,
                             Snackbar.LENGTH_SHORT
-                    )
-                    .show();
+                    ));
         } else {
             var action = FeedFragmentDirections.actionErrorReportDialog(
                             getString(R.string.error_restore_feeds_backup)
@@ -564,10 +560,7 @@ public class FeedFragment extends AbstractListDetailFragment {
                         })
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(() -> Toast.makeText(activity,
-                                        R.string.backup_feeds_successfully,
-                                        Toast.LENGTH_SHORT)
-                                .show(), this::restoreFeedsBackupErrorDialog)
+                        .subscribe(() -> Notices.say(activity, R.string.backup_feeds_successfully), this::restoreFeedsBackupErrorDialog)
         );
     }
 
@@ -576,10 +569,7 @@ public class FeedFragment extends AbstractListDetailFragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe((feedIdList) -> {
-                    Toast.makeText(activity,
-                                    R.string.restore_feeds_backup_successfully,
-                                    Toast.LENGTH_SHORT)
-                            .show();
+                    Notices.say(activity, R.string.restore_feeds_backup_successfully);
                     viewModel.refreshFeeds(feedIdList);
                 }, this::backupFeedsErrorDialog));
     }

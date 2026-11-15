@@ -23,7 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
+import org.proninyaroslav.libretorrent.ui.Notices;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -1359,12 +1359,9 @@ public class TorrentEngine {
 
         @Override
         public void onIpFilterParsed(int ruleCount) {
-            disposables.add(Completable.fromRunnable(() -> Toast.makeText(appContext,
-                                    (ruleCount > 0 ?
+            disposables.add(Completable.fromRunnable(() -> Notices.say(appContext, (ruleCount > 0 ?
                                             appContext.getString(R.string.ip_filter_add_success) :
-                                            appContext.getString(R.string.ip_filter_add_error, ruleCount)),
-                                    Toast.LENGTH_LONG)
-                            .show())
+                                            appContext.getString(R.string.ip_filter_add_error, ruleCount))))
                     .subscribeOn(AndroidSchedulers.mainThread())
                     .subscribe()
             );
@@ -1558,10 +1555,7 @@ public class TorrentEngine {
             if (pref.applyProxy()) {
                 pref.applyProxy(false);
                 setProxy();
-                Toast.makeText(appContext,
-                                R.string.proxy_settings_applied,
-                                Toast.LENGTH_SHORT)
-                        .show();
+                Notices.say(appContext, R.string.proxy_settings_applied);
             }
 
         } else if (key.equals(appContext.getString(R.string.pref_key_auto_manage))) {

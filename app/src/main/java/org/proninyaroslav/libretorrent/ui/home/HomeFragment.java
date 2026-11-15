@@ -55,6 +55,7 @@ import androidx.slidingpanelayout.widget.SlidingPaneLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.search.SearchView;
 import com.google.android.material.snackbar.Snackbar;
+import org.proninyaroslav.libretorrent.ui.Notices;
 
 import org.proninyaroslav.libretorrent.MainActivity;
 import org.proninyaroslav.libretorrent.R;
@@ -184,12 +185,12 @@ public class HomeFragment extends AbstractListDetailFragment {
                     }
                     var uri = resultValue.uri();
                     if (uri == null) {
-                        Snackbar.make(
+                        Notices.stay(Snackbar.make(
                                 activity,
                                 binding.coordinatorLayout,
                                 getString(R.string.error_open_torrent_file),
                                 Snackbar.LENGTH_SHORT
-                        ).show();
+                        ));
                     } else {
                         var action = NavBarFragmentDirections.actionAddTorrent(uri);
                         activity.getRootNavController().navigate(action);
@@ -867,11 +868,11 @@ public class HomeFragment extends AbstractListDetailFragment {
                                         },
                                         (e) -> {
                                             Log.e(TAG, Log.getStackTraceString(e));
-                                            Snackbar.make(
+                                            Notices.stay(Snackbar.make(
                                                     binding.coordinatorLayout,
                                                     R.string.tag_deleting_failed,
                                                     Snackbar.LENGTH_LONG
-                                            ).show();
+                                            ));
                                         }));
                     }
                     return true;

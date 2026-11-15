@@ -41,6 +41,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.proninyaroslav.libretorrent.ui.base.EInkDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
+import org.proninyaroslav.libretorrent.ui.Notices;
 import com.google.android.material.tabs.TabLayoutMediator;
 import org.proninyaroslav.libretorrent.ui.customviews.StoneTabLayout;
 
@@ -169,10 +170,9 @@ public class TorrentDetailsFragment extends Fragment {
                     } else {
                         try {
                             viewModel.copyTorrentFile(uri);
-                            Snackbar.make(binding.coordinatorLayout,
+                            Notices.stay(Snackbar.make(binding.coordinatorLayout,
                                             getString(R.string.save_torrent_file_successfully),
-                                            Snackbar.LENGTH_SHORT)
-                                    .show();
+                                            Snackbar.LENGTH_SHORT));
 
                         } catch (IOException | UnknownUriException e) {
                             saveErrorTorrentFileDialog(e);
@@ -299,12 +299,12 @@ public class TorrentDetailsFragment extends Fragment {
                         },
                         (Throwable e) -> {
                             Log.e(TAG, "Getting meta info error: " + Log.getStackTraceString(e));
-                            Snackbar.make(
+                            Notices.stay(Snackbar.make(
                                     activity,
                                     binding.coordinatorLayout,
                                     getString(R.string.error_fetch_link),
                                     Snackbar.LENGTH_LONG
-                            ).show();
+                            ));
                         }));
 
         disposables.add(viewModel.observeTorrentInfoPair()
@@ -362,10 +362,9 @@ public class TorrentDetailsFragment extends Fragment {
     };
 
     private void showFreeSpaceErrorToast() {
-        Snackbar.make(binding.coordinatorLayout,
+        Notices.stay(Snackbar.make(binding.coordinatorLayout,
                         R.string.error_free_space,
-                        Snackbar.LENGTH_LONG)
-                .show();
+                        Snackbar.LENGTH_LONG));
     }
 
     private void invalidateMenu() {

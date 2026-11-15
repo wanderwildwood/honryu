@@ -27,7 +27,6 @@ import android.view.View;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -37,6 +36,7 @@ import androidx.preference.Preference;
 import androidx.preference.SwitchPreferenceCompat;
 
 import com.google.android.material.snackbar.Snackbar;
+import org.proninyaroslav.libretorrent.ui.Notices;
 
 import org.proninyaroslav.libretorrent.MainActivity;
 import org.proninyaroslav.libretorrent.R;
@@ -316,12 +316,12 @@ public class StorageSettingsFragment extends CustomPreferenceFragment
         String run();
     }
 
-    /* Saving and restoring read and write files and the database: off the main thread, the outcome said in a toast */
+    /* Saving and restoring read and write files and the database: off the main thread, the outcome said until the next press (Notices) */
     private void inBackground(Work work) {
         var app = requireContext().getApplicationContext();
         new Thread(() -> {
             String message = work.run();
-            handler.post(() -> Toast.makeText(app, message, Toast.LENGTH_LONG).show());
+            handler.post(() -> Notices.say(app, message));
         }, "torrent-list").start();
     }
 
@@ -353,12 +353,12 @@ public class StorageSettingsFragment extends CustomPreferenceFragment
                     }
                     var uri = resultValue.uri();
                     if (uri == null) {
-                        Snackbar.make(
+                        Notices.stay(Snackbar.make(
                                 activity,
                                 binding.coordinatorLayout,
                                 getString(R.string.error_select_folder),
                                 Snackbar.LENGTH_SHORT
-                        ).show();
+                        ));
                     } else {
                         Preference p = findPreference(dirChooserBindPref);
                         if (p == null) {
@@ -428,11 +428,11 @@ public class StorageSettingsFragment extends CustomPreferenceFragment
             pref.watchDirDeleteFile((boolean) newValue);
         } else if (preference.getKey().equals(getString(R.string.pref_key_posix_disk_io))) {
             pref.posixDiskIo((boolean) newValue);
-            Snackbar.make(
+            Notices.stay(Snackbar.make(
                     binding.coordinatorLayout,
                     R.string.apply_settings_after_reboot,
                     Snackbar.LENGTH_LONG
-            ).show();
+            ));
         }
 
         return true;

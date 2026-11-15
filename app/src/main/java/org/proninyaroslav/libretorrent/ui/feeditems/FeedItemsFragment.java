@@ -35,6 +35,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.snackbar.Snackbar;
+import org.proninyaroslav.libretorrent.ui.Notices;
 
 import org.proninyaroslav.libretorrent.MainActivity;
 import org.proninyaroslav.libretorrent.R;
@@ -174,10 +175,9 @@ public class FeedItemsFragment extends Fragment {
 
     private void openArticle(FeedItemsListItem item) {
         if (TextUtils.isEmpty(item.articleUrl)) {
-            Snackbar.make(binding.coordinatorLayout,
+            Notices.stay(Snackbar.make(binding.coordinatorLayout,
                             R.string.feed_item_url_not_found,
-                            Snackbar.LENGTH_SHORT)
-                    .show();
+                            Snackbar.LENGTH_SHORT));
             return;
         }
 
@@ -196,10 +196,9 @@ public class FeedItemsFragment extends Fragment {
 
     private void openDownloadUrl(FeedItemsListItem item) {
         if (TextUtils.isEmpty(item.downloadUrl)) {
-            Snackbar.make(binding.coordinatorLayout,
+            Notices.stay(Snackbar.make(binding.coordinatorLayout,
                             R.string.feed_item_url_not_found,
-                            Snackbar.LENGTH_SHORT)
-                    .show();
+                            Snackbar.LENGTH_SHORT));
             return;
         }
 
