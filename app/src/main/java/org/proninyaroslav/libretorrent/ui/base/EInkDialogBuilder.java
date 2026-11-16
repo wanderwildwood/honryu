@@ -14,6 +14,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 
+import org.proninyaroslav.libretorrent.ui.compose.DarkMode;
+
 /*
  * A dialog as EInkDialog draws it in the Compose apps: white, a 2dp black rim, 12dp corners.
  * With nothing dimmed behind it, the rim is what separates it from the page.
@@ -48,6 +50,8 @@ public class EInkDialogBuilder extends MaterialAlertDialogBuilder {
         if (window != null) {
             window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
             window.setElevation(0f);
+            // White ink on a black page while dark mode is on, like the app's own screens.
+            DarkMode.INSTANCE.window(window.getDecorView());
         }
         return dialog;
     }

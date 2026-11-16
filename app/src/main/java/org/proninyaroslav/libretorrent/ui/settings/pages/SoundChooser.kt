@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import org.proninyaroslav.libretorrent.R
+import org.proninyaroslav.libretorrent.ui.compose.DarkMode
 
 /**
  * Chooses one of the phone's own sounds in a list of the app's own: a press chooses it and plays
@@ -118,6 +119,7 @@ object SoundChooser {
             .create()
         dialog.window?.setWindowAnimations(0)
         dialog.show()
+        DarkMode.window(dialog.listView)
         // AlertDialog closes on a press of a list item; this list stays open until Done.
         dialog.listView.setOnItemClickListener { _, _, which, _ ->
             chosen = which
