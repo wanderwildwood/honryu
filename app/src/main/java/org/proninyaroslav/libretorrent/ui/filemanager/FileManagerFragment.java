@@ -55,6 +55,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import org.proninyaroslav.libretorrent.ui.base.DarkDropDown;
+import org.proninyaroslav.libretorrent.ui.base.HouseMenu;
 import org.proninyaroslav.libretorrent.ui.base.EInkDialogBuilder;
 import org.proninyaroslav.libretorrent.ui.compose.FilesOpenDocument;
 import com.google.android.material.snackbar.Snackbar;
@@ -238,6 +240,7 @@ public class FileManagerFragment extends Fragment implements FileManagerAdapter.
             binding.appBar.setTitle(title);
         }
 
+        HouseMenu.overflow(binding.appBar);
         binding.appBar.setOnMenuItemClickListener(this::onMenuItemClickListener);
         binding.appBar.setNavigationOnClickListener((v) ->
                 activity.getOnBackPressedDispatcher().onBackPressed());
@@ -303,6 +306,7 @@ public class FileManagerFragment extends Fragment implements FileManagerAdapter.
 
         ((MaterialAutoCompleteTextView) binding.storageMenuTextView)
                 .setSimpleItems(buildSpinnerMenuItems(storageItems));
+        DarkDropDown.on(binding.storageMenuTextView);
         binding.storageMenuTextView.setText(viewModel.curDir.get(), false);
         binding.storageMenuTextView.setTag(storageMenuPos);
         binding.storageMenuTextView.setListSelection(storageMenuPos);
@@ -647,6 +651,7 @@ public class FileManagerFragment extends Fragment implements FileManagerAdapter.
 
         ((MaterialAutoCompleteTextView) binding.storageMenuTextView)
                 .setSimpleItems(buildSpinnerMenuItems(storageList));
+        DarkDropDown.on(binding.storageMenuTextView);
 
         viewModel.refreshCurDirectory();
     }

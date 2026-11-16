@@ -19,16 +19,12 @@
 
 package org.proninyaroslav.libretorrent.ui.home;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.drawable.InsetDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.Formatter;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,9 +33,6 @@ import android.view.ViewGroup;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.view.ContextThemeWrapper;
-import androidx.appcompat.view.menu.MenuBuilder;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.DefaultLifecycleObserver;
@@ -55,6 +48,7 @@ import androidx.slidingpanelayout.widget.SlidingPaneLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.search.SearchView;
 import com.google.android.material.snackbar.Snackbar;
+import org.proninyaroslav.libretorrent.ui.base.HouseMenu;
 import org.proninyaroslav.libretorrent.ui.Notices;
 
 import org.proninyaroslav.libretorrent.MainActivity;
@@ -290,8 +284,10 @@ public class HomeFragment extends AbstractListDetailFragment {
                 navBarFragment.getDrawerLayout().open();
             }
         });
+        HouseMenu.overflow(binding.homeAppBar);
         binding.homeAppBar.setOnMenuItemClickListener(this::onMenuItemClickListener);
 
+        HouseMenu.overflow(binding.contextualAppBar);
         binding.contextualAppBar.setOnMenuItemClickListener(this::onContextualMenuItemClickListener);
         binding.contextualAppBar.setNavigationOnClickListener((v) -> finishContextualMode());
     }
@@ -849,9 +845,7 @@ public class HomeFragment extends AbstractListDetailFragment {
             chip.setCloseIcon(ResourcesCompat.getDrawable(
                     getResources(), R.drawable.ic_more_vert_24px, null));
             chip.setOnCloseIconClickListener((v) -> {
-                var popup = new PopupMenu(v.getContext(), v);
-                popup.inflate(R.menu.tag_item_popup);
-                popup.setOnMenuItemClickListener((menuItem) -> {
+                HouseMenu.show(v, R.menu.tag_item_popup, (menuItem) -> {
                     var menuId = menuItem.getItemId();
                     if (menuId == R.id.edit_tag_menu) {
                         var action = HomeFragmentDirections
@@ -877,7 +871,6 @@ public class HomeFragment extends AbstractListDetailFragment {
                     }
                     return true;
                 });
-                popup.show();
             });
             chip.setOnClickListener((v) -> updateTagsGroup(noTagsChip));
             drawerBinding.drawerTagsChipGroup.addView(chip);
@@ -1134,34 +1127,8 @@ public class HomeFragment extends AbstractListDetailFragment {
         }
     }
 
-    @SuppressLint("RestrictedApi")
     private void showFabMenu(View v) {
-        var popupWrapper = new ContextThemeWrapper(activity, R.style.App_Components_FloatingActionButton_Menu);
-        var popup = new PopupMenu(popupWrapper, v, Gravity.TOP);
-        popup.getMenuInflater().inflate(R.menu.home_fab, popup.getMenu());
-
-        if (popup.getMenu() instanceof MenuBuilder menuBuilder) {
-            menuBuilder.setOptionalIconsVisible(true);
-            var items = menuBuilder.getVisibleItems();
-            for (int i = 0; i < items.size(); i++) {
-                int iconMarginPx = (int) TypedValue.applyDimension(
-                        TypedValue.COMPLEX_UNIT_DIP,
-                        12.0f,
-                        getResources().getDisplayMetrics()
-                );
-                var item = items.get(i);
-                if (item.getIcon() != null) {
-                    item.setIcon(new InsetDrawable(item.getIcon(), iconMarginPx, 0, iconMarginPx, 0) {
-                        @Override
-                        public int getIntrinsicWidth() {
-                            return getIntrinsicHeight() + iconMarginPx + iconMarginPx;
-                        }
-                    });
-                }
-            }
-        }
-
-        popup.setOnMenuItemClickListener((item) -> {
+        HouseMenu.show(v, R.menu.home_fab, (item) -> {
             int itemId = item.getItemId();
             if (itemId == R.id.create_torrent) {
                 createTorrentDialog();
@@ -1173,8 +1140,6 @@ public class HomeFragment extends AbstractListDetailFragment {
 
             return true;
         });
-
-        popup.show();
     }
 
     private void setContextualAppBarTitle(int itemCount) {

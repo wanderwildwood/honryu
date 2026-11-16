@@ -35,6 +35,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.snackbar.Snackbar;
+import org.proninyaroslav.libretorrent.ui.base.HouseMenu;
 import org.proninyaroslav.libretorrent.ui.Notices;
 
 import org.proninyaroslav.libretorrent.MainActivity;
@@ -110,6 +111,7 @@ public class FeedItemsFragment extends Fragment {
 
         binding.appBar.setNavigationOnClickListener((v) ->
                 activity.getOnBackPressedDispatcher().onBackPressed());
+        HouseMenu.overflow(binding.appBar);
         binding.appBar.setOnMenuItemClickListener((item) -> {
             int itemId = item.getItemId();
             if (itemId == R.id.refresh_feed_channel_menu) {

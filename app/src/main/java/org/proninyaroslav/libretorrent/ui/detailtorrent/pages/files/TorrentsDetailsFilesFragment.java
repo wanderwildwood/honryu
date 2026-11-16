@@ -44,6 +44,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.snackbar.Snackbar;
+import org.proninyaroslav.libretorrent.ui.base.HouseMenu;
 import org.proninyaroslav.libretorrent.ui.Notices;
 
 import org.proninyaroslav.libretorrent.R;
@@ -363,6 +364,7 @@ public class TorrentsDetailsFilesFragment extends Fragment {
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             mode.getMenuInflater().inflate(R.menu.torrent_details_files_action_mode, menu);
+            HouseMenu.overflow(activity, mode);
             Utils.showActionModeStatusBar(activity, true);
 
             return true;

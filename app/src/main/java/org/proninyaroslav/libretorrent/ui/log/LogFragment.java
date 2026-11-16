@@ -35,6 +35,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.snackbar.Snackbar;
+import org.proninyaroslav.libretorrent.ui.base.HouseMenu;
 import org.proninyaroslav.libretorrent.ui.Notices;
 
 import org.proninyaroslav.libretorrent.MainActivity;
@@ -148,6 +149,7 @@ public class LogFragment extends Fragment {
 
         binding.appBar.setNavigationOnClickListener((v) ->
                 activity.getOnBackPressedDispatcher().onBackPressed());
+        HouseMenu.overflow(binding.appBar);
         binding.appBar.setOnMenuItemClickListener(this::onMenuItemSelected);
         invalidateMenu();
     }

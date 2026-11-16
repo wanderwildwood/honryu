@@ -40,6 +40,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.slidingpanelayout.widget.SlidingPaneLayout;
 
 import com.google.android.material.snackbar.Snackbar;
+import org.proninyaroslav.libretorrent.ui.base.HouseMenu;
 import org.proninyaroslav.libretorrent.ui.Notices;
 import com.google.gson.JsonSyntaxException;
 
@@ -217,6 +218,7 @@ public class FeedFragment extends AbstractListDetailFragment {
 
         binding.addChannel.setOnClickListener((v) -> showAddFeedDialog(null));
 
+        HouseMenu.overflow(binding.appBar);
         binding.appBar.setOnMenuItemClickListener(this::onMenuItemClickListener);
 
         var args = FeedFragmentArgs.fromBundle(getArguments());
@@ -402,6 +404,7 @@ public class FeedFragment extends AbstractListDetailFragment {
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             mode.getMenuInflater().inflate(R.menu.feed_action_mode, menu);
+            HouseMenu.overflow(activity, mode);
             Utils.showActionModeStatusBar(activity, true);
 
             return true;

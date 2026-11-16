@@ -40,6 +40,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import org.proninyaroslav.libretorrent.ui.base.DarkDropDown;
 import org.proninyaroslav.libretorrent.ui.base.EInkDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import org.proninyaroslav.libretorrent.ui.Notices;
@@ -191,6 +192,8 @@ public class CreateTorrentFragment extends Fragment {
             }
         });
 
+        DarkDropDown.on(binding.pieceSize);
+        DarkDropDown.on(binding.torrentVersion);
         var piecesSizeAdapter = binding.pieceSize.getAdapter();
         var currentSize = piecesSizeAdapter.getItem(
                 viewModel.mutableParams.getPieceSizeIndex()

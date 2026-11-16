@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -380,15 +381,27 @@ private fun FeedItemRow(item: FeedItemsListItem, onClick: OnRow<FeedItemsListIte
             ) {
                 Icon(painterResource(R.drawable.ic_more_vert_24px), contentDescription = stringResource(R.string.menu), tint = Color.Black)
             }
-            DropdownMenuMMD(expanded = menu, onDismissRequest = { menu = false }) {
+            // The house list (ui/base/HouseMenu draws the same for the bars): white, a thin black
+            // rim, no shadow, a dotted rule between rows, and dark with the rest in dark mode.
+            DropdownMenuMMD(
+                expanded = menu,
+                onDismissRequest = { menu = false },
+                shape = RoundedCornerShape(12.dp),
+                containerColor = MaterialTheme.colorScheme.surface,
+                tonalElevation = 0.dp,
+                shadowElevation = 0.dp,
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.onSurface),
+            ) {
+                DarkWindow()
                 val entries = buildList {
                     add(R.id.open_article_menu to R.string.feed_item_open_article_url)
                     if (item.read) add(R.id.mark_as_unread_menu to R.string.mark_as_unread)
                     else add(R.id.mark_as_read_menu to R.string.mark_as_read)
                 }
-                entries.forEach { (id, text) ->
+                entries.forEachIndexed { index, (id, text) ->
+                    if (index > 0) DottedRule(start = 12.dp)
                     DropdownMenuItemMMD(
-                        text = { TextMMD(stringResource(text), style = label) },
+                        text = { TextMMD(stringResource(text), style = MaterialTheme.typography.bodyLarge) },
                         onClick = {
                             menu = false
                             onMenu.onRowMenu(id, item)

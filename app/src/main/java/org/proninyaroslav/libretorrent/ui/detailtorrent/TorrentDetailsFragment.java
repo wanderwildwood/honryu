@@ -39,6 +39,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import org.proninyaroslav.libretorrent.ui.base.HouseMenu;
 import org.proninyaroslav.libretorrent.ui.base.EInkDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import org.proninyaroslav.libretorrent.ui.Notices;
@@ -236,6 +237,7 @@ public class TorrentDetailsFragment extends Fragment {
 
         binding.appBar.setNavigationOnClickListener((v) ->
                 activity.getOnBackPressedDispatcher().onBackPressed());
+        HouseMenu.overflow(binding.appBar);
         binding.appBar.setOnMenuItemClickListener((item) -> {
             int itemId = item.getItemId();
             if (itemId == R.id.pause_resume_torrent_menu) {

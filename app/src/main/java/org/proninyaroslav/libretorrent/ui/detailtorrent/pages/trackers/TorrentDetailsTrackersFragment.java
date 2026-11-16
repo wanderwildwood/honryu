@@ -46,6 +46,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.proninyaroslav.libretorrent.ui.base.HouseMenu;
 import org.proninyaroslav.libretorrent.R;
 import org.proninyaroslav.libretorrent.core.utils.Utils;
 import org.proninyaroslav.libretorrent.core.utils.WindowInsetsSide;
@@ -296,6 +297,7 @@ public class TorrentDetailsTrackersFragment extends Fragment {
         @Override
         public boolean onCreateActionMode(androidx.appcompat.view.ActionMode mode, Menu menu) {
             mode.getMenuInflater().inflate(R.menu.torrent_details_trackers_action_mode, menu);
+            HouseMenu.overflow(activity, mode);
             Utils.showActionModeStatusBar(activity, true);
 
             return true;
