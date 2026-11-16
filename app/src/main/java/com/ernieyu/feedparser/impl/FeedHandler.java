@@ -5,15 +5,27 @@ import com.ernieyu.feedparser.FeedType;
 
 import org.apache.commons.text.StringEscapeUtils;
 import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import java.io.StringReader;
 import java.util.Stack;
 
 /**
  * SAX parser content handler to process feed XML.
  */
 class FeedHandler extends DefaultHandler {
+
+    /**
+     * A feed is untrusted: an external entity it names (a file on the phone, an address on the
+     * network) is read as nothing, never opened.
+     */
+    @Override
+    public InputSource resolveEntity(String publicId, String systemId) {
+        return new InputSource(new StringReader(""));
+    }
+
     private static final String RDF = "rdf";
     private static final String RSS = "rss";
     private static final String FEED = "feed";
