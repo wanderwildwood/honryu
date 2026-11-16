@@ -289,6 +289,9 @@
     <string name="torrent_added_date">Added</string>
     <string name="torrent_availability">Availability</string>
     <string name="share_stream_url">Share stream URL…</string>
+    <string name="streaming_off_title">Streaming is off</string>
+    <string name="streaming_off_message">A player can only stream a file from this app while streaming is on. Turn it on here, or in Settings, Streaming.</string>
+    <string name="streaming_turn_on">Turn on</string>
     <string name="magnet_include_file_priorities">Include file priorities?</string>
     <string name="magnet_more_about_bep53">More info at https://www.bittorrent.org/beps/bep_0053.html</string>
     <string name="tracker_list_empty">No trackers</string>

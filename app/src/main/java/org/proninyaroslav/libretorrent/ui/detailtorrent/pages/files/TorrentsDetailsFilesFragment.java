@@ -44,10 +44,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.snackbar.Snackbar;
+import org.proninyaroslav.libretorrent.ui.base.EInkDialogBuilder;
 import org.proninyaroslav.libretorrent.ui.base.HouseMenu;
 import org.proninyaroslav.libretorrent.ui.Notices;
 
 import org.proninyaroslav.libretorrent.R;
+import org.proninyaroslav.libretorrent.core.RepositoryHelper;
+import org.proninyaroslav.libretorrent.core.settings.SettingsRepository;
 import org.proninyaroslav.libretorrent.core.model.filetree.BencodeFileTree;
 import org.proninyaroslav.libretorrent.core.model.filetree.FilePriority;
 import org.proninyaroslav.libretorrent.core.sorting.BaseSorting;
@@ -376,7 +379,7 @@ public class TorrentsDetailsFilesFragment extends Fragment {
             if (itemId == R.id.change_priority_menu) {
                 showPriorityDialog();
             } else if (itemId == R.id.share_stream_url_menu) {
-                shareStreamUrl();
+                shareStreamUrlOrAsk();
                 mode.finish();
             }
             return true;
@@ -439,14 +442,36 @@ public class TorrentsDetailsFilesFragment extends Fragment {
         return items.stream().map((item) -> item.index).toList();
     }
 
-    private void shareStreamUrl() {
+    /*
+     * A stream address is no use while the streaming server is off (as it is from the start on
+     * a new install): say so, and offer to turn it on, rather than hand out an address that
+     * nothing answers.
+     */
+    private void shareStreamUrlOrAsk() {
         List<TorrentContentFileItem> selections = selectionTracker.getSelection();
-
         Iterator<TorrentContentFileItem> it = selections.iterator();
         if (!it.hasNext()) {
             return;
         }
         int fileIndex = it.next().index;
+
+        SettingsRepository pref = RepositoryHelper.getSettingsRepository(activity.getApplicationContext());
+        if (pref.enableStreaming()) {
+            shareStreamUrl(fileIndex);
+            return;
+        }
+        new EInkDialogBuilder(activity)
+                .setTitle(R.string.streaming_off_title)
+                .setMessage(R.string.streaming_off_message)
+                .setPositiveButton(R.string.streaming_turn_on, (dialog, which) -> {
+                    pref.enableStreaming(true);
+                    shareStreamUrl(fileIndex);
+                })
+                .setNegativeButton(R.string.cancel, null)
+                .show();
+    }
+
+    private void shareStreamUrl(int fileIndex) {
 
         Intent sharingIntent = new Intent(Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");

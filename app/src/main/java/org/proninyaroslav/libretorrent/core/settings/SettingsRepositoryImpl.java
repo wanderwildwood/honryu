@@ -169,7 +169,9 @@ public class SettingsRepositoryImpl implements SettingsRepository {
         static final boolean feedStartTorrents = true;
         static final boolean feedRemoveDuplicates = true;
         /* Streaming settings */
-        static final boolean enableStreaming = true;
+        // Off for a new install: the server is only needed to hand a file to a player. An
+        // install from before this default changed keeps it on (see enableStreaming()).
+        static final boolean enableStreaming = false;
         static final String streamingHostname = "127.0.0.1";
         static final int streamingPort = 8800;
         /* Logging settings */
@@ -1352,8 +1354,26 @@ public class SettingsRepositoryImpl implements SettingsRepository {
 
     @Override
     public boolean enableStreaming() {
-        return pref.getBoolean(appContext.getString(R.string.pref_key_streaming_enable),
-                Default.enableStreaming);
+        String key = appContext.getString(R.string.pref_key_streaming_enable);
+        if (!pref.contains(key)) {
+            // Never set: until 0.1.26 that meant on, and someone may stream with it. An app
+            // that was updated keeps it on; a new install starts with it off. Written once,
+            // so the answer does not change with a later update.
+            boolean on = wasUpdated() || Default.enableStreaming;
+            pref.edit().putBoolean(key, on).apply();
+            return on;
+        }
+        return pref.getBoolean(key, Default.enableStreaming);
+    }
+
+    /** Whether this install came from an update rather than a fresh install. */
+    private boolean wasUpdated() {
+        try {
+            var info = appContext.getPackageManager().getPackageInfo(appContext.getPackageName(), 0);
+            return info.lastUpdateTime > info.firstInstallTime;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @Override
