@@ -13,7 +13,6 @@
     <SwitchPreferenceCompat
         android:key="@string/pref_key_dark_mode"
         android:persistent="false"
-        android:summary="@string/settings_dark_note"
         android:title="@string/settings_dark"
         app:singleLineTitle="false" />
 
