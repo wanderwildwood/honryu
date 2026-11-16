@@ -1,5 +1,6 @@
 package org.proninyaroslav.libretorrent.ui.home
 
+import org.proninyaroslav.libretorrent.ui.compose.DarkSelection
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -37,7 +38,7 @@ class AboutDialog : DialogFragment() {
         ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                ThemeMMD(colorScheme = monochrome, typography = houseTypography) { AboutContent(onDismiss = { dismissAllowingStateLoss() }) }
+                ThemeMMD(colorScheme = monochrome, typography = houseTypography) { DarkSelection { AboutContent(onDismiss = { dismissAllowingStateLoss() }) } }
             }
         }
 
