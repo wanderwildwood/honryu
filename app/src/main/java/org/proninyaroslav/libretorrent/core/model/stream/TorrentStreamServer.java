@@ -38,6 +38,9 @@ import org.proninyaroslav.libretorrent.core.model.TorrentEngine;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -62,6 +65,23 @@ public class TorrentStreamServer extends NanoHTTPD {
         DLNA_FILE_TYPES.put("mkv", new DLNAFileType("mkv", "video/x-matroska", "DLNA.ORG_PN=AVC_MKV_MP_HD_AC3;DLNA.ORG_OP=01;DLNA.ORG_CI=0;DLNA.ORG_FLAGS=01700000000000000000000000000000", "Streaming"));
     }
 
+    /*
+     * A key made fresh each time the app starts and put in every stream address the app hands
+     * out. The server answers no request without it, so another app on the phone (or, with the
+     * address changed in Settings, another machine on the network) cannot read a torrent's files
+     * by guessing its hash.
+     */
+    private static final String KEY = newKey();
+
+    private static String newKey() {
+        byte[] bytes = new byte[16];
+        new SecureRandom().nextBytes(bytes);
+        StringBuilder sb = new StringBuilder();
+        for (byte b : bytes)
+            sb.append(String.format(Locale.US, "%02x", b));
+        return sb.toString();
+    }
+
     private TorrentEngine engine;
 
     public TorrentStreamServer(@NonNull String host, int port) {
@@ -84,7 +104,7 @@ public class TorrentStreamServer extends NanoHTTPD {
     }
 
     /*
-     * URL format: http://'hostname':'port'/stream?file='file_index'&torrent='torrent_hash'
+     * URL format: http://'hostname':'port'/stream?file='file_index'&torrent='torrent_hash'&key='key'
      */
 
     public static String makeStreamUrl(@NonNull String hostname, int port,
@@ -92,10 +112,11 @@ public class TorrentStreamServer extends NanoHTTPD {
         try {
             return new URI("http", null, hostname, port,
                     "/stream",
-                    String.format(Locale.getDefault(),
-                            "file=%d&torrent=%s",
+                    String.format(Locale.US,
+                            "file=%d&torrent=%s&key=%s",
                             fileIndex,
-                            torrentId),
+                            torrentId,
+                            KEY),
                     null)
                     .toString();
         } catch (URISyntaxException e) {
@@ -126,6 +147,11 @@ public class TorrentStreamServer extends NanoHTTPD {
         Map<String, String> params = httpSession.getParms();
         if (params.size() < 2)
             return newFixedLengthResponse(BAD_REQUEST, "", "");
+
+        String key = params.get("key");
+        if (key == null || !MessageDigest.isEqual(
+                key.getBytes(StandardCharsets.UTF_8), KEY.getBytes(StandardCharsets.UTF_8)))
+            return newFixedLengthResponse(FORBIDDEN, "", "");
 
         String torrentId = Objects.requireNonNull(params.get("torrent"));
 
