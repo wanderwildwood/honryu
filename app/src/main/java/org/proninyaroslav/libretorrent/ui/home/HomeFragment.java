@@ -373,6 +373,10 @@ public class HomeFragment extends AbstractListDetailFragment {
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), back);
+        // Added after the search's, so it is asked first: Back with torrents picked lets go of
+        // the picks (in the search results too) and only a second Back leaves.
+        selectionBack.setEnabled(false);
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), selectionBack);
         binding.searchView.addTransitionListener((searchView, previousState, newState) -> {
             var shown = newState == SearchView.TransitionState.SHOWN
                     || newState == SearchView.TransitionState.SHOWING;
@@ -383,6 +387,14 @@ public class HomeFragment extends AbstractListDetailFragment {
             }
         });
     }
+
+    /* On while any torrent is picked; see onSelectionUpdated. */
+    private final OnBackPressedCallback selectionBack = new OnBackPressedCallback(false) {
+        @Override
+        public void handleOnBackPressed() {
+            finishContextualMode();
+        }
+    };
 
     private RowSelection<TorrentListItem> createSelectionTracker() {
         var tracker = new RowSelection<TorrentListItem>();
@@ -397,6 +409,8 @@ public class HomeFragment extends AbstractListDetailFragment {
      * the contextual app bar at a time - whichever most recently gained a selection.
      */
     private void onSelectionUpdated(RowSelection<TorrentListItem> tracker) {
+        selectionBack.setEnabled(selectionTracker.hasSelection()
+                || (searchSelectionTracker != null && searchSelectionTracker.hasSelection()));
         var addTorrentFab = getAddTorrentFab();
         if (tracker.hasSelection()) {
             activeSelectionTracker = tracker;
