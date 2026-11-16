@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Cleartext http stays permitted, for things the app does not choose: RSS feeds of torrents,
+    many of which are offered over http and nothing else, and .torrent files linked from them or
+    typed as an http address. A feed or a link can be anywhere, so Android cannot scope this to
+    a list of domains, and it is permitted app-wide. The app has no fixed server of its own.
+
+    Trackers, web seeds and peers are reached by libtorrent on its own sockets and are not
+    governed by this file; the streaming server listens on the phone itself (127.0.0.1 unless
+    changed in Settings) for a player on the same phone.
+
+    The cost is real: a feed or a .torrent fetched over http can be read, or changed, by whoever
+    else is on the path. Only the system's certificates are trusted, never a user-added one.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>

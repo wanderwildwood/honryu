@@ -62,7 +62,7 @@
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true">
+        android:networkSecurityConfig="@xml/network_security_config">
 
         <!-- Starts dark mode before the first screen is drawn. Holds no data. -->
         <provider
