@@ -31,6 +31,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
@@ -242,12 +243,15 @@ public class AddFeedDialog extends DialogFragment {
         alert = builder.create();
         alert.setCanceledOnTouchOutside(false);
         // A request from the field alone is dropped while the window is new: the window asks.
-        // The window also shrinks to the space above the keyboard: the buttons keep their
-        // place and the body, which scrolls, takes what is left (left to Android, it panned
-        // or squeezed the dialog and pushed the field or the buttons out of sight).
-        if (alert.getWindow() != null)
+        // The dialog sits at the top, where the keyboard leaves it the most room, and gives
+        // up to the keyboard only what the keyboard covers: the buttons keep their place and
+        // the body, which scrolls, takes what is left. Centered and left to Android, it was
+        // squeezed until the field and the buttons were out of sight.
+        if (alert.getWindow() != null) {
             alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE
                     | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            alert.getWindow().setGravity(Gravity.TOP);
+        }
         alert.setOnShowListener((DialogInterface dialog) -> {
             // The field is what the dialog is for: once it is up, the cursor goes in, and the
             // window (set above) asks for the keyboard.
