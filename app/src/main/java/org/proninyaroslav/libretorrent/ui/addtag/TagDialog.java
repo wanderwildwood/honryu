@@ -163,8 +163,12 @@ public class TagDialog extends DialogFragment {
         alert = builder.create();
         alert.setCanceledOnTouchOutside(false);
         // A request from the field alone is dropped while the window is new: the window asks.
+        // The window also shrinks to the space above the keyboard: the buttons keep their
+        // place and the body, which scrolls, takes what is left (left to Android, it panned
+        // or squeezed the dialog and pushed the field or the buttons out of sight).
         if (alert.getWindow() != null)
-            alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+            alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE
+                    | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         alert.setOnShowListener((DialogInterface dialog) -> {
             // The field is what the dialog is for: once it is up, the cursor goes in, and the
             // window (set above) asks for the keyboard.

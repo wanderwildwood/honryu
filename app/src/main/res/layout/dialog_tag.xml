@@ -10,6 +10,12 @@
             type="org.proninyaroslav.libretorrent.ui.addtag.AddTagViewModel" />
     </data>
 
+    <!-- Scrolls, so that with the keyboard up the dialog's buttons keep their place and the
+         field and the color row are a short scroll away rather than cut off. -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -77,4 +83,5 @@
             </RelativeLayout>
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </layout>
