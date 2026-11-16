@@ -1149,14 +1149,22 @@ public class SettingsRepositoryImpl implements SettingsRepository {
 
     @Override
     public String proxyPassword() {
-        return pref.getString(appContext.getString(R.string.pref_key_proxy_password),
-                Default.proxyPassword);
+        String key = appContext.getString(R.string.pref_key_proxy_password);
+        String stored = pref.getString(key, Default.proxyPassword);
+        if (stored != null && !stored.isEmpty() && !SealedSecret.isSealed(stored)) {
+            // Saved in the clear by an earlier version: sealed where it lies, once.
+            String sealed = SealedSecret.seal(stored);
+            if (SealedSecret.isSealed(sealed))
+                pref.edit().putString(key, sealed).apply();
+            return stored;
+        }
+        return SealedSecret.open(stored);
     }
 
     @Override
     public void proxyPassword(String val) {
         pref.edit()
-                .putString(appContext.getString(R.string.pref_key_proxy_password), val)
+                .putString(appContext.getString(R.string.pref_key_proxy_password), SealedSecret.seal(val))
                 .apply();
     }
 
