@@ -24,9 +24,9 @@ What is mine is how it looks on this screen.
 
 ## What changed for E Ink
 
-**One appearance.** The light, dark, black and dynamic-color themes are gone. The panel can
-only show dark marks on a light ground, and a theme setting it cannot honor is a setting
-that lies.
+**One Dark mode switch.** The light, dark, black and dynamic-color themes are gone. Black on
+white is the default; the Dark mode switch in Settings turns the app white on black. It follows
+Home's switch when Home is installed, and the phone's own dark setting where it has one.
 
 **Black and white only.** Every color in the theme is black or white, so nothing arrives as
 a muddy mid-gray. Status, progress and choices are carried by shape and words.
