@@ -266,12 +266,14 @@ public class FeedFetcherWorker extends Worker {
                     pattern = Pattern.compile(filter);
 
                 } catch (PatternSyntaxException e) {
-                    /* TODO: maybe there is an option better? */
+                    /* A line that is not a pattern matches nothing; the other lines still count */
                     Log.e(TAG, "Invalid pattern: " + filter);
-                    return true;
+                    continue;
                 }
 
-                return pattern.matcher(item.title).matches();
+                if (pattern.matcher(item.title).matches()) {
+                    return true;
+                }
             } else {
                 String[] words = filter.split(repo.getFilterSeparator());
                 for (String word : words) {
