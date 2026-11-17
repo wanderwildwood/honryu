@@ -59,6 +59,7 @@ public class MainApplication extends Application {
         // main process. The crash report screen runs in one of its own (":acra"), where it
         // stayed light; so it is started here as well. Starting it twice does nothing.
         org.proninyaroslav.libretorrent.ui.compose.DarkMode.INSTANCE.init(this);
+        org.proninyaroslav.libretorrent.ui.base.DarkDialogs.init(this);
 
         CoreConfigurationBuilder builder = new CoreConfigurationBuilder();
         builder
