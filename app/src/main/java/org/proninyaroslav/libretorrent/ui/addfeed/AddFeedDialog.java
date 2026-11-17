@@ -31,7 +31,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
@@ -47,6 +46,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.proninyaroslav.libretorrent.ui.base.EInkDialogBuilder;
+import org.proninyaroslav.libretorrent.ui.base.KeyboardRoom;
 
 import org.proninyaroslav.libretorrent.R;
 import org.proninyaroslav.libretorrent.core.utils.Utils;
@@ -242,16 +242,9 @@ public class AddFeedDialog extends DialogFragment {
 
         alert = builder.create();
         alert.setCanceledOnTouchOutside(false);
-        // A request from the field alone is dropped while the window is new: the window asks.
-        // The dialog sits at the top, where the keyboard leaves it the most room, and gives
-        // up to the keyboard only what the keyboard covers: the buttons keep their place and
-        // the body, which scrolls, takes what is left. Centered and left to Android, it was
-        // squeezed until the field and the buttons were out of sight.
-        if (alert.getWindow() != null) {
-            alert.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE
-                    | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-            alert.getWindow().setGravity(Gravity.TOP);
-        }
+        // A request from the field alone is dropped while the window is new: the window asks
+        // (KeyboardRoom), and keeps the dialog whole above the keyboard.
+        KeyboardRoom.fit(alert, activity);
         alert.setOnShowListener((DialogInterface dialog) -> {
             // The field is what the dialog is for: once it is up, the cursor goes in, and the
             // window (set above) asks for the keyboard.
