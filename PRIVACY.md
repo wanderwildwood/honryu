@@ -22,7 +22,9 @@ or set a proxy under *Settings → Network*, and turn on *Require proxy for all 
 
 When the app crashes it offers to report it. Nothing is sent unless you press *Report*,
 which opens your own mail app with the report addressed to `email@wanderthe.dev`, where you
-can read it, change it or throw it away before it goes.
+can read it, change it or throw it away before it goes. The report holds the error itself, the
+app's version, the phone's model and Android version, the times, and anything you write in
+it; not your settings or the system log.
 
 ## Permissions
 

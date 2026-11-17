@@ -25,8 +25,10 @@ import android.database.CursorWindow;
 import android.util.Log;
 
 import android.app.Application;
+import java.util.Arrays;
 
 import org.acra.ACRA;
+import org.acra.ReportField;
 import org.acra.config.CoreConfigurationBuilder;
 import org.acra.config.DialogConfigurationBuilder;
 import org.acra.config.MailSenderConfigurationBuilder;
@@ -61,7 +63,24 @@ public class MainApplication extends Application {
         CoreConfigurationBuilder builder = new CoreConfigurationBuilder();
         builder
                 .withBuildConfigClass(BuildConfig.class)
-                .withReportFormat(StringFormat.JSON);
+                .withReportFormat(StringFormat.JSON)
+                // What a report carries, and nothing more: the crash and what it ran on. ACRA's
+                // default also takes the settings (the proxy login among them) and the system
+                // log (with feed and tracker addresses), which the report screen never shows.
+                .withReportContent(Arrays.asList(
+                        ReportField.REPORT_ID,
+                        ReportField.APP_VERSION_CODE,
+                        ReportField.APP_VERSION_NAME,
+                        ReportField.PACKAGE_NAME,
+                        ReportField.ANDROID_VERSION,
+                        ReportField.PHONE_MODEL,
+                        ReportField.BRAND,
+                        ReportField.PRODUCT,
+                        ReportField.STACK_TRACE,
+                        ReportField.USER_COMMENT,
+                        ReportField.CUSTOM_DATA,
+                        ReportField.USER_APP_START_DATE,
+                        ReportField.USER_CRASH_DATE));
         builder.withPluginConfigurations(new MailSenderConfigurationBuilder()
                 .withMailTo("email@wanderthe.dev")
                 .build());
