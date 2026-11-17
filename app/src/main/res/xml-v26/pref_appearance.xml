@@ -9,6 +9,13 @@
         android:summary="@string/pref_locale_summary"
         app:singleLineTitle="false" />
 
+    <!-- Not stored here: DarkMode keeps the state (and follows Home's switch). -->
+    <SwitchPreferenceCompat
+        android:key="@string/pref_key_dark_mode"
+        android:persistent="false"
+        android:title="@string/settings_dark"
+        app:singleLineTitle="false" />
+
     <PreferenceCategory android:title="@string/pref_notification_category">
 
         <SwitchPreferenceCompat
