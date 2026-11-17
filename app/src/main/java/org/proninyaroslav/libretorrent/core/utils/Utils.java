@@ -77,6 +77,7 @@ import org.proninyaroslav.libretorrent.core.exception.FetchLinkException;
 import org.proninyaroslav.libretorrent.core.filter.TorrentFilter;
 import org.proninyaroslav.libretorrent.core.filter.TorrentFilterCollection;
 import org.proninyaroslav.libretorrent.core.model.data.metainfo.BencodeFileItem;
+import org.proninyaroslav.libretorrent.core.settings.SessionSettings;
 import org.proninyaroslav.libretorrent.core.settings.SettingsRepository;
 import org.proninyaroslav.libretorrent.core.sorting.BaseSorting;
 import org.proninyaroslav.libretorrent.core.sorting.TorrentSorting;
@@ -94,9 +95,12 @@ import org.proninyaroslav.libretorrent.ui.home.drawer.model.DrawerStatusFilter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
+import java.net.PasswordAuthentication;
+import java.net.Proxy;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
@@ -107,6 +111,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -418,6 +423,30 @@ public class Utils {
             throw new FetchLinkException("No network connection");
         }
 
+        /*
+         * Feeds and links go the way the torrents do: through the proxy when one is set, and
+         * not at all when the proxy is required for all connections but cannot carry them.
+         */
+        SettingsRepository pref = RepositoryHelper.getSettingsRepository(context);
+        SessionSettings.ProxyType proxyType = SessionSettings.ProxyType.fromValue(pref.proxyType());
+        FetchRoute route = FetchRoute.of(proxyType, pref.proxyAddress(), pref.proxyPort(),
+                pref.proxyRequireAllConnections());
+        if (route.kind == FetchRoute.Kind.REFUSE) {
+            throw new FetchLinkException("The proxy is required for all connections and cannot carry this one");
+        }
+        boolean viaProxy = route.kind == FetchRoute.Kind.PROXY;
+        String proxyAuthorization = null;
+        if (viaProxy && pref.proxyRequiresAuth()) {
+            String login = pref.proxyLogin() == null ? "" : pref.proxyLogin();
+            String password = pref.proxyPassword() == null ? "" : pref.proxyPassword();
+            if (proxyType == SessionSettings.ProxyType.HTTP) {
+                proxyAuthorization = "Basic " + Base64.getEncoder().encodeToString(
+                        (login + ":" + password).getBytes(StandardCharsets.UTF_8));
+            } else {
+                ProxyLogin.set(pref.proxyAddress().trim(), login, password);
+            }
+        }
+
         try {
             String currentUrl = url;
             for (int redirects = 0; ; redirects++) {
@@ -425,8 +454,13 @@ public class Utils {
                     throw new FetchLinkException("Too many redirects while fetching " + url);
                 }
 
-                URL urlObj = validatePublicHttpUrl(currentUrl);
-                var connection = (HttpURLConnection) urlObj.openConnection();
+                URL urlObj = validatePublicHttpUrl(currentUrl, !viaProxy);
+                var connection = (HttpURLConnection) (viaProxy
+                        ? urlObj.openConnection(route.proxy)
+                        : urlObj.openConnection());
+                if (proxyAuthorization != null) {
+                    connection.setRequestProperty("Proxy-Authorization", proxyAuthorization);
+                }
 
                 /*
                  * Redirects are handled manually so that every redirect target is
@@ -480,7 +514,8 @@ public class Utils {
      * a malicious RSS/Atom feed item (or torrent URL) could make the app issue
      * requests to localhost, LAN or other internal/reserved addresses.
      */
-    private static URL validatePublicHttpUrl(@NonNull String url) throws FetchLinkException {
+    private static URL validatePublicHttpUrl(@NonNull String url,
+                                             boolean resolveLocally) throws FetchLinkException {
         URL urlObj;
         try {
             urlObj = new URL(url);
@@ -496,6 +531,29 @@ public class Utils {
         String host = urlObj.getHost();
         if (TextUtils.isEmpty(host)) {
             throw new FetchLinkException("Missing host in URL: " + url);
+        }
+
+        if (!resolveLocally) {
+            /*
+             * Through a proxy the name is the proxy's to look up: no DNS query from here. An
+             * address written as numbers is still checked (that needs no lookup), and so is
+             * the one name that always means this phone.
+             */
+            String bare = host.startsWith("[") && host.endsWith("]")
+                    ? host.substring(1, host.length() - 1) : host;
+            if (bare.equalsIgnoreCase("localhost") || bare.toLowerCase().endsWith(".localhost")) {
+                throw new FetchLinkException("URL names a disallowed address: " + host);
+            }
+            if (bare.matches("[0-9.]+") || bare.contains(":")) {
+                try {
+                    if (isDisallowedAddress(InetAddress.getByName(bare))) {
+                        throw new FetchLinkException("URL resolves to a disallowed address: " + bare);
+                    }
+                } catch (UnknownHostException e) {
+                    throw new FetchLinkException("Malformed address in URL: " + host);
+                }
+            }
+            return urlObj;
         }
 
         InetAddress[] addresses;
@@ -1035,5 +1093,35 @@ public class Utils {
     // Always light: an E Ink panel shows black on white, and a dark theme is a setting it cannot honour.
     public static void applyNightMode(@NonNull Application application) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+    }
+
+    /*
+     * The SOCKS5 proxy's login. Java asks for it through the process-wide Authenticator; this one
+     * answers only a SOCKS request from the proxy's own host, and nothing else.
+     */
+    private static final class ProxyLogin extends Authenticator {
+        private static volatile String host;
+        private static volatile PasswordAuthentication login;
+        private static boolean installed;
+
+        static synchronized void set(@NonNull String proxyHost, @NonNull String user, @NonNull String password) {
+            host = proxyHost;
+            login = new PasswordAuthentication(user, password.toCharArray());
+            if (!installed) {
+                Authenticator.setDefault(new ProxyLogin());
+                installed = true;
+            }
+        }
+
+        @Override
+        protected PasswordAuthentication getPasswordAuthentication() {
+            String protocol = getRequestingProtocol();
+            String asking = getRequestingHost();
+            if (protocol != null && protocol.toUpperCase().startsWith("SOCKS")
+                    && asking != null && asking.equalsIgnoreCase(host)) {
+                return login;
+            }
+            return null;
+        }
     }
 }
