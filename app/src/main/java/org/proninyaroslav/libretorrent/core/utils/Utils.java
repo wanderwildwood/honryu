@@ -379,7 +379,14 @@ public class Utils {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Postpone the service start until the main thread is free to avoid ANR
             new Handler(Looper.getMainLooper())
-                    .post(() -> context.startForegroundService(i));
+                    .post(() -> {
+                        try {
+                            context.startForegroundService(i);
+                        } catch (IllegalStateException e) {
+                            /* Android 12+ refuses a foreground service started from the background */
+                            Log.w(TAG, "Service not started: " + e);
+                        }
+                    });
         } else {
             context.startService(i);
         }
@@ -416,6 +423,9 @@ public class Utils {
      * is re-validated against SSRF_DISALLOWED_ADDRESS rules before being followed.
      */
     private static final int FETCH_MAX_REDIRECTS = 5;
+    /* No feed or .torrent file comes near this; a server that sends more is refused. */
+    private static final int FETCH_MAX_BYTES = 32 * 1024 * 1024;
+    private static final int FETCH_TIMEOUT_MS = 30_000;
 
     public static byte[] fetchHttpUrl(@NonNull Context context,
                                       @NonNull String url) throws FetchLinkException {
@@ -468,6 +478,8 @@ public class Utils {
                  */
                 connection.setInstanceFollowRedirects(false);
                 connection.setRequestMethod("GET");
+                connection.setConnectTimeout(FETCH_TIMEOUT_MS);
+                connection.setReadTimeout(FETCH_TIMEOUT_MS);
 
                 int responseCode = connection.getResponseCode();
                 if (isRedirect(responseCode)) {
@@ -486,6 +498,9 @@ public class Utils {
                         byte[] buffer = new byte[1024];
                         int bytesRead;
                         while ((bytesRead = inputStream.read(buffer)) != -1) {
+                            if (byteArrayOutputStream.size() + bytesRead > FETCH_MAX_BYTES) {
+                                throw new FetchLinkException("Response too large: " + url);
+                            }
                             byteArrayOutputStream.write(buffer, 0, bytesRead);
                         }
                         return byteArrayOutputStream.toByteArray();
@@ -590,6 +605,10 @@ public class Utils {
         }
 
         byte[] bytes = address.getAddress();
+        /* IPv6 unique local, fc00::/7: isSiteLocalAddress() knows only the old fec0::/10 */
+        if (bytes.length == 16 && (bytes[0] & 0xFE) == 0xFC) {
+            return true;
+        }
         if (bytes.length == 4) {
             int b0 = bytes[0] & 0xFF;
             int b1 = bytes[1] & 0xFF;
