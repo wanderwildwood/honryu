@@ -208,7 +208,8 @@ public class MainActivity extends ThemeActivity {
 
     @Override
     protected void onDestroy() {
-        if (viewModel != null) {
+        /* Not when the screen is only being made again (turned, dark mode switched) */
+        if (viewModel != null && !isChangingConfigurations()) {
             viewModel.requestStopEngine();
         }
 

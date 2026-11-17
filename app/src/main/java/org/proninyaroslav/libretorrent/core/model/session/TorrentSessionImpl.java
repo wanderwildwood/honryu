@@ -145,7 +145,8 @@ public class TorrentSessionImpl extends SessionManager
     /* Wait list for non added magnets */
     private final HashSet<String> magnets = new HashSet<>();
     private final ConcurrentHashMap<String, byte[]> loadedMagnets = new ConcurrentHashMap<>();
-    private final ArrayList<String> addTorrentsList = new ArrayList<>();
+    /* Read by the alert thread and written by callers: a list that takes turns. */
+    private final List<String> addTorrentsList = Collections.synchronizedList(new ArrayList<>());
     private final ReentrantLock syncMagnet = new ReentrantLock();
     private final CompositeDisposable disposables = new CompositeDisposable();
     private final TorrentRepository repo;
@@ -322,7 +323,16 @@ public class TorrentSessionImpl extends SessionManager
             throw new IOException("Torrent " + id + " is null");
 
         addTorrentsList.add(params.sha1hash);
+        try {
+            downloadListed(params, torrent, bencode);
+        } catch (IOException | UnknownUriException | RuntimeException e) {
+            /* Never reached the session, so no alert will take it off the list: stopping would wait for ever */
+            addTorrentsList.remove(params.sha1hash);
+            throw e;
+        }
+    }
 
+    private void downloadListed(AddTorrentParams params, Torrent torrent, byte[] bencode) throws IOException, UnknownUriException {
         String path = fs.makeFileSystemPath(params.downloadPath);
         File saveDir = new File(path);
         if (torrent.isDownloadingMetadata()) {
