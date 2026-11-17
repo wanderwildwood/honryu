@@ -89,7 +89,7 @@ public class SchedulerReceiver extends BroadcastReceiver
         boolean oneshot = pref.schedulingRunOnlyOnce();
         if (oneshot) {
             pref.enableSchedulingShutdown(false);
-        } else if (!Scheduler.setStartAppAlarm(appContext, pref.schedulingShutdownTime())) {
+        } else if (!Scheduler.setStopAppAlarm(appContext, pref.schedulingShutdownTime())) {
             notifier.makeExactAlarmPermissionNotify();
         }
 
