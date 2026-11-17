@@ -52,9 +52,8 @@ public class BootReceiver extends BroadcastReceiver {
     }
 
     private boolean isBootCompleted(String action) {
-        return Intent.ACTION_BOOT_COMPLETED.equals(action) ||
-                "android.intent.action.QUICKBOOT_POWERON".equals(action) ||
-                "com.htc.intent.action.QUICKBOOT_POWERON".equals(action);
+        /* Only the system's own: the quick-boot actions of some makers can be sent by any app. */
+        return Intent.ACTION_BOOT_COMPLETED.equals(action);
     }
 
     private void initScheduling(Context appContext, SettingsRepository pref) {

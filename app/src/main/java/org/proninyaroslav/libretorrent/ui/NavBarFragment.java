@@ -189,8 +189,9 @@ public class NavBarFragment extends Fragment {
         } else if (i.hasExtra(Intent.EXTRA_TEXT)) {
             var text = i.getStringExtra(Intent.EXTRA_TEXT);
             uri = TextUtils.isEmpty(text) ? null : Uri.parse(text);
-        } else if (i.hasExtra(Intent.EXTRA_STREAM) && i.getExtras() != null) {
-            uri = (Uri) i.getExtras().get(Intent.EXTRA_STREAM);
+        } else if (i.hasExtra(Intent.EXTRA_STREAM)) {
+            /* Only a Uri: anything else another app puts there is ignored, not a crash. */
+            uri = androidx.core.content.IntentCompat.getParcelableExtra(i, Intent.EXTRA_STREAM, Uri.class);
         }
         if (uri != null) {
             handleUri(uri, i.getType());
