@@ -20,7 +20,6 @@
 package org.proninyaroslav.libretorrent.ui.feeditems;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -183,17 +182,24 @@ public class FeedItemsFragment extends Fragment {
             return;
         }
 
-        viewModel.markAsRead(item.id);
-
-        // A web address goes through the guarded opener, never the system's WebView shell.
-        if (item.articleUrl.startsWith("http://") || item.articleUrl.startsWith("https://")) {
+        // The link comes from the feed's server: only a web address or a magnet is followed.
+        String scheme = Uri.parse(item.articleUrl).getScheme();
+        if ("http".equalsIgnoreCase(scheme) || "https".equalsIgnoreCase(scheme)) {
+            viewModel.markAsRead(item.id);
+            // A web address goes through the guarded opener, never the system's WebView shell.
             org.proninyaroslav.libretorrent.ui.customviews.GuardedLinksKt
                     .openGuarded(requireContext(), item.articleUrl);
             return;
         }
-        var i = new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(item.articleUrl));
-        startActivity(i);
+        if ("magnet".equalsIgnoreCase(scheme)) {
+            viewModel.markAsRead(item.id);
+            var navController = activity.getRootNavController();
+            navController.navigate(NavBarFragmentDirections.actionAddTorrent(Uri.parse(item.articleUrl)));
+            return;
+        }
+        Notices.stay(Snackbar.make(binding.coordinatorLayout,
+                        R.string.feed_item_url_not_found,
+                        Snackbar.LENGTH_SHORT));
     }
 
     private void openDownloadUrl(FeedItemsListItem item) {
