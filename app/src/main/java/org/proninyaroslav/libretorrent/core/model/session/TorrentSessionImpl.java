@@ -1155,7 +1155,7 @@ public class TorrentSessionImpl extends SessionManager
             Sha1Hash best = p.getInfoHashes().getBest();
             if (best != null)
                 addTorrentsList.remove(best.toHex());
-            TorrentInfo ti = p.torrentInfo();
+            TorrentInfo ti = p.getTorrentInfo();
             if (ti != null)
                 addTorrentsList.remove(ti.infoHash().toHex());
         } catch (RuntimeException e) {
