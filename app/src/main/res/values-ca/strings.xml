@@ -346,8 +346,6 @@
     <string name="pref_proxy_password_title">Contrasenya</string>
     <!-- Schedule settings -->
     <string name="pref_enable_scheduling_start_summary">Inicia l\'aplicació en un moment determinat. Els torrents es processen segons el seu estat abans de tancar l\'últim.</string>
-    <string name="pref_scheduling_switch_wifi_title">Commuta la Wi-Fi</string>
-    <string name="pref_scheduling_switch_wifi_summary">Activa la Wi-Fi per a l\'inici programat, i desactiva-la per l\'aturada programada.</string>
     <!-- Feed settings -->
     <string name="pref_feed_auto_refresh_title">Actualitza automàticament els canals</string>
     <string name="pref_feed_auto_refresh_summary">Actualitza periòdicament els canals en segon pla.</string>

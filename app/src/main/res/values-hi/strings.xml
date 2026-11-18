@@ -450,8 +450,6 @@
     <string name="pref_enable_scheduling_shutdown_title">शटडाउन-समय</string>
     <string name="pref_enable_scheduling_shutdown_summary">एक निश्चित समय पर ऐप को बंद कर दें</string>
     <string name="pref_scheduling_run_only_once_title">केवल एक बार चलाएँ</string>
-    <string name="pref_scheduling_switch_wifi_title">Wi-Fi टॉगल करें</string>
-    <string name="pref_scheduling_switch_wifi_summary">निर्धारित शुरुआत के लिए Wi-Fi चालू करें और निर्धारित स्टॉप के लिए बंद करें।</string>
     <!-- Feed settings -->
     <string name="pref_feed_auto_refresh_title">ऑटो-रिफ्रेश चैनल</string>
     <string name="pref_feed_auto_refresh_summary">समय-समय पर पृष्ठभूमि में चैनलों को ताज़ा करें।</string>

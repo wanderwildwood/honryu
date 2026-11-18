@@ -405,8 +405,6 @@
     <string name="pref_proxy_password_title">كلمة المرور</string>
     <!-- Schedule settings -->
     <string name="pref_enable_scheduling_start_summary">بدء التطبيق في وقت محدد. سيتم تشغيل التورنت وفقًا لحالتها قبل آخر إغلاق.</string>
-    <string name="pref_scheduling_switch_wifi_title">تبديل Wi-Fi</string>
-    <string name="pref_scheduling_switch_wifi_summary">قم بتشغيل Wi-Fi للبدء المجدول، وإيقاف تشغيله للتوقف المجدول.</string>
     <!-- Feed settings -->
     <string name="pref_feed_auto_refresh_title">قنوات التحديث التلقائي</string>
     <string name="pref_feed_auto_refresh_summary">تحديث القنوات في الخلفية بشكل دوري.</string>

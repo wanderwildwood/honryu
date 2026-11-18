@@ -366,8 +366,6 @@
     <string name="pref_proxy_password_title">Password</string>
     <!-- Schedule settings -->
     <string name="pref_enable_scheduling_start_summary">Start app at the specified time. Torrents will run according to their state before the last shutdown</string>
-    <string name="pref_scheduling_switch_wifi_title">ওয়াই-ফাই পরিবর্তন করো</string>
-    <string name="pref_scheduling_switch_wifi_summary">Wi-Fi is automatically enabled when app is launched at the scheduled time and is disabled after app is shutdown at the scheduled time</string>
     <!-- Feed settings -->
     <string name="pref_feed_auto_refresh_title">চ্যানেল স্বয়ং পরিষ্কার করো</string>
     <string name="pref_feed_auto_refresh_summary">সাময়িকভাবে পটভূমিতে চ্যানেলগুলোদেখো/রিফ্রেশ করো।</string>

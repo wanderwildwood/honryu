@@ -498,8 +498,6 @@
     <string name="pref_enable_scheduling_shutdown_title">シャットダウン時刻</string>
     <string name="pref_enable_scheduling_shutdown_summary">特定の時刻にアプリを終了する</string>
     <string name="pref_scheduling_run_only_once_title">1度だけ実行</string>
-    <string name="pref_scheduling_switch_wifi_title">Wi-Fi の切り替え</string>
-    <string name="pref_scheduling_switch_wifi_summary">Wi-Fiを、予定を開始するときはオン、予定を停止するときはオフにします。</string>
     <!-- Feed settings -->
     <string name="pref_feed_auto_refresh_title">チャンネルの自動更新</string>
     <string name="pref_feed_auto_refresh_summary">バックグラウンドで定期的にチャンネルを更新する。</string>

@@ -492,8 +492,6 @@
     <string name="pref_enable_scheduling_shutdown_title">Ora di spegnimento</string>
     <string name="pref_enable_scheduling_shutdown_summary">Spegnere l\'app al momento specificato</string>
     <string name="pref_scheduling_run_only_once_title">Esegui solo una volta</string>
-    <string name="pref_scheduling_switch_wifi_title">Attiva/disattiva Wi-Fi</string>
-    <string name="pref_scheduling_switch_wifi_summary">Il Wi-Fi viene attivato e disattivato alle rispettive ore programmate.</string>
     <!-- Feed settings -->
     <string name="pref_feed_auto_refresh_title">Auto-aggiorna i canali</string>
     <string name="pref_feed_auto_refresh_summary">Aggiorna periodicamente i canali in background.</string>

@@ -351,10 +351,6 @@ public interface SettingsRepository
 
     void schedulingRunOnlyOnce(boolean val);
 
-    boolean schedulingSwitchWiFi();
-
-    void schedulingSwitchWiFi(boolean val);
-
     /*
      * Feed settings
      */

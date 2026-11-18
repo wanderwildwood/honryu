@@ -25,7 +25,6 @@ import static org.proninyaroslav.libretorrent.service.Scheduler.SCHEDULER_WORK_S
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.net.wifi.WifiManager;
 
 import org.proninyaroslav.libretorrent.core.RepositoryHelper;
 import org.proninyaroslav.libretorrent.core.model.TorrentEngine;
@@ -73,10 +72,6 @@ public class SchedulerReceiver extends BroadcastReceiver
         } else if (!Scheduler.setStartAppAlarm(appContext, pref.schedulingStartTime())) {
             notifier.makeExactAlarmPermissionNotify();
         }
-        if (pref.schedulingSwitchWiFi())
-            ((WifiManager)appContext.getApplicationContext()
-                    .getSystemService(Context.WIFI_SERVICE)).setWifiEnabled(true);
-
         TorrentEngine.getInstance(appContext).start();
         Utils.enableBootReceiverIfNeeded(appContext);
     }
@@ -94,10 +89,6 @@ public class SchedulerReceiver extends BroadcastReceiver
         }
 
         TorrentEngine.getInstance(appContext).forceStop();
-
-        if (pref.schedulingSwitchWiFi())
-            ((WifiManager)appContext.getApplicationContext()
-                    .getSystemService(Context.WIFI_SERVICE)).setWifiEnabled(false);
 
         Utils.enableBootReceiverIfNeeded(appContext);
     }

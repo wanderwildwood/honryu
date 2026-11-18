@@ -498,8 +498,6 @@
     <string name="pref_enable_scheduling_shutdown_title">பணிநிறுத்தம் நேரம்</string>
     <string name="pref_enable_scheduling_shutdown_summary">ஒரு குறிப்பிட்ட நேரத்தில் பயன்பாட்டை நிறுத்துங்கள்</string>
     <string name="pref_scheduling_run_only_once_title">ஒரு முறை மட்டுமே இயக்கவும்</string>
-    <string name="pref_scheduling_switch_wifi_title">வைஃபை மாற்று</string>
-    <string name="pref_scheduling_switch_wifi_summary">திட்டமிடப்பட்ட தொடக்கத்திற்காக வைஃபை இயக்கவும், திட்டமிடப்பட்ட நிறுத்தத்திற்கு அணைக்கவும்.</string>
     <!-- Feed settings -->
     <string name="pref_feed_auto_refresh_title">ஆட்டோ-ரஃப்ரெச் சேனல்கள்</string>
     <string name="pref_feed_auto_refresh_summary">அவ்வப்போது பின்னணியில் சேனல்களை புதுப்பிக்கவும்.</string>

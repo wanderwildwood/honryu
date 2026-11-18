@@ -485,8 +485,6 @@
     <string name="pref_enable_scheduling_shutdown_title">Afsluit-tijdstip</string>
     <string name="pref_enable_scheduling_shutdown_summary">De app afsluiten op een bepaald tijdstip</string>
     <string name="pref_scheduling_run_only_once_title">Slechts eenmaal uitvoeren</string>
-    <string name="pref_scheduling_switch_wifi_title">Wi-Fi aan/uit</string>
-    <string name="pref_scheduling_switch_wifi_summary">Zet wifi aan voor geplande start en uit voor geplande stop.</string>
     <!-- Feed settings -->
     <string name="pref_feed_auto_refresh_title">Kanalen automatisch vernieuwen</string>
     <string name="pref_feed_auto_refresh_summary">Kanalen periodiek vernieuwen op de achtergrond.</string>

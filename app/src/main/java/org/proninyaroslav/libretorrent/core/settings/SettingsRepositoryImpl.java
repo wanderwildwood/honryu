@@ -159,7 +159,6 @@ public class SettingsRepositoryImpl implements SettingsRepository {
         static final int schedulingStartTime = 540; /* 9:00 am in minutes*/
         static final int schedulingShutdownTime = 1260; /* 9:00 pm in minutes */
         static final boolean schedulingRunOnlyOnce = false;
-        static final boolean schedulingSwitchWiFi = false;
         /* Feed settings */
         static final long feedItemKeepTime = 4 * 86400000L; /* 4 days */
         static final boolean autoRefreshFeeds = false;
@@ -1245,19 +1244,6 @@ public class SettingsRepositoryImpl implements SettingsRepository {
     public void schedulingRunOnlyOnce(boolean val) {
         pref.edit()
                 .putBoolean(appContext.getString(R.string.pref_key_scheduling_run_only_once), val)
-                .apply();
-    }
-
-    @Override
-    public boolean schedulingSwitchWiFi() {
-        return pref.getBoolean(appContext.getString(R.string.pref_key_scheduling_switch_wifi),
-                Default.schedulingSwitchWiFi);
-    }
-
-    @Override
-    public void schedulingSwitchWiFi(boolean val) {
-        pref.edit()
-                .putBoolean(appContext.getString(R.string.pref_key_scheduling_switch_wifi), val)
                 .apply();
     }
 

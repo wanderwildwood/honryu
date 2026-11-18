@@ -498,8 +498,6 @@
     <string name="pref_enable_scheduling_shutdown_title">Ώρα τερματισμού λειτουργίας</string>
     <string name="pref_enable_scheduling_shutdown_summary">Τερματισμός της εφαρμογής σε καθορισμένη ώρα</string>
     <string name="pref_scheduling_run_only_once_title">Εκτέλεση μία φορά</string>
-    <string name="pref_scheduling_switch_wifi_title">Εναλλαγή Wi-Fi</string>
-    <string name="pref_scheduling_switch_wifi_summary">Ενεργοποίηση του Wi-Fi για προγραμματισμένη έναρξη και απενεργοποίηση για προγραμματισμένη διακοπή.</string>
     <!-- Feed settings -->
     <string name="pref_feed_auto_refresh_title">Αυτόματη ανανέωση καναλιών</string>
     <string name="pref_feed_auto_refresh_summary">Περιοδική ανανέωση των καναλιών στο παρασκήνιο.</string>

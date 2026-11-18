@@ -498,8 +498,6 @@
     <string name="pref_enable_scheduling_shutdown_title">关闭时间</string>
     <string name="pref_enable_scheduling_shutdown_summary">在指定时间关闭应用</string>
     <string name="pref_scheduling_run_only_once_title">只运行一次</string>
-    <string name="pref_scheduling_switch_wifi_title">切换 Wi-Fi 状态</string>
-    <string name="pref_scheduling_switch_wifi_summary">随计划调度开启或关闭 Wi-Fi。</string>
     <!-- Feed settings -->
     <string name="pref_feed_auto_refresh_title">自动刷新频道</string>
     <string name="pref_feed_auto_refresh_summary">在后台定期刷新频道。</string>

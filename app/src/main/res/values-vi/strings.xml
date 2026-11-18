@@ -446,8 +446,6 @@
     <string name="pref_scheduling_run_only_once_title">Chỉ chạy một lần</string>
     <string name="pref_proxy_login_title">Tên tài khoản</string>
     <string name="pref_enable_scheduling_shutdown_summary">Tắt ứng dụng tại một thời điểm nhất định</string>
-    <string name="pref_scheduling_switch_wifi_title">Chuyển đổi Wi-Fi</string>
-    <string name="pref_scheduling_switch_wifi_summary">Bật Wi-Fi khi bắt đầu theo lịch trình và tắt khi dừng theo lịch trình.</string>
     <string name="exact_alarm_permission_warning">Để bộ lập lịch hoạt động, bạn phải xin phép trong hộp thoại hệ thống đặc biệt. Tiếp tục?</string>
     <string name="pref_feed_refresh_interval_title">Khoảng thời gian làm mới</string>
     <string name="pref_feed_auto_refresh_title">Tự động làm mới kênh</string>

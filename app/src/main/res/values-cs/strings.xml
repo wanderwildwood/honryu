@@ -497,8 +497,6 @@
     <string name="pref_enable_scheduling_shutdown_title">Čas vypnutí</string>
     <string name="pref_enable_scheduling_shutdown_summary">Vypnout aplikaci v zadaném čase</string>
     <string name="pref_scheduling_run_only_once_title">Spustit pouze jednou</string>
-    <string name="pref_scheduling_switch_wifi_title">Zapnout/vypnout Wi-Fi</string>
-    <string name="pref_scheduling_switch_wifi_summary">Zapnout Wi-Fi před plánovaným startem a vypnout při plánovaném zastavení.</string>
     <!-- Feed settings -->
     <string name="pref_feed_auto_refresh_title">Automatické obnovení kanálů</string>
     <string name="pref_feed_auto_refresh_summary">Pravidelně obnovovat kanály na pozadí.</string>

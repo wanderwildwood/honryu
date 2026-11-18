@@ -497,8 +497,6 @@
     <string name="pref_enable_scheduling_shutdown_title">Czas wyłączenia</string>
     <string name="pref_enable_scheduling_shutdown_summary">Wyłącz aplikację o określonym czasie.</string>
     <string name="pref_scheduling_run_only_once_title">Uruchom tylko raz</string>
-    <string name="pref_scheduling_switch_wifi_title">Włącz/wyłącz Wi-Fi</string>
-    <string name="pref_scheduling_switch_wifi_summary">Włącz Wi-Fi dla zaplanowanego uruchomienia i wyłącz dla zaplanowanego wyłączenia.</string>
     <!-- Feed settings -->
     <string name="pref_feed_auto_refresh_title">Automatyczne odświeżanie kanałów</string>
     <string name="pref_feed_auto_refresh_summary">Odświeżaj okresowo kanały w tle.</string>

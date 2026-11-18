@@ -477,8 +477,6 @@
     <string name="pref_enable_scheduling_shutdown_title">Abschaltzeit</string>
     <string name="pref_enable_scheduling_shutdown_summary">Die App zu einer bestimmten Zeit beenden</string>
     <string name="pref_scheduling_run_only_once_title">Nur einmal ausführen</string>
-    <string name="pref_scheduling_switch_wifi_title">WLAN umschalten</string>
-    <string name="pref_scheduling_switch_wifi_summary">WLAN für geplanten Start einschalten und für geplanten Stopp ausschalten.</string>
     <!-- Feed settings -->
     <string name="pref_feed_auto_refresh_title">Kanäle automatisch auffrischen</string>
     <string name="pref_feed_auto_refresh_summary">Kanäle in regelmäßigen Abständen im Hintergrund auffrischen.</string>

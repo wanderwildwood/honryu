@@ -496,8 +496,6 @@
     <string name="pref_enable_scheduling_shutdown_title">ഷട്ട്ഡൗൺ സമയം</string>
     <string name="pref_enable_scheduling_shutdown_summary">നിർദ്ദിഷ്ട സമയത്ത് ഷട്ട്ഡൗൺ ചെയ്യുക അപ്ലിക്കേഷൻ</string>
     <string name="pref_scheduling_run_only_once_title">ഒരിക്കൽ മാത്രം പ്രവർത്തിപ്പിക്കുക</string>
-    <string name="pref_scheduling_switch_wifi_title">വൈഫൈ പ്രവർത്തനക്ഷമമാക്കുക / പ്രവർത്തനരഹിതമാക്കുക</string>
-    <string name="pref_scheduling_switch_wifi_summary">ഷെഡ്യൂൾ ചെയ്ത സമയത്ത് അപ്ലിക്കേഷൻ ആരംഭിക്കുമ്പോൾ Wi-Fi യാന്ത്രികമായി പ്രവർത്തനക്ഷമമാക്കുകയും ഷെഡ്യൂൾ ചെയ്ത സമയത്തിൽ അപ്ലിക്കേഷൻ ഷട്ട്ഡൗൺ ചെയ്തതിന് ശേഷം അത് അപ്രാപ്തമാക്കുകയും ചെയ്യും</string>
     <!-- Feed settings -->
     <string name="pref_feed_auto_refresh_title">യാന്ത്രിക പുതുക്കൽ ചാനലുകൾ</string>
     <string name="pref_feed_auto_refresh_summary">പശ്ചാത്തലത്തിൽ ചാനലുകൾ പുതുക്കിയെടുക്കുക</string>

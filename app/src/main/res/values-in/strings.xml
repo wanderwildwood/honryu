@@ -494,8 +494,6 @@
     <string name="pref_enable_scheduling_shutdown_title">Waktu mati</string>
     <string name="pref_enable_scheduling_shutdown_summary">Matikan aplikasi saat waktu tertentu</string>
     <string name="pref_scheduling_run_only_once_title">Jalankan hanya sekali</string>
-    <string name="pref_scheduling_switch_wifi_title">Hidupkan/matikan Wi-Fi</string>
-    <string name="pref_scheduling_switch_wifi_summary">Nyalakan Wi-Fi untuk mulai dijadwal, dan matikan untuk berhenti dijadwal.</string>
     <!-- Feed settings -->
     <string name="pref_feed_auto_refresh_title">Segarkan otomatis kanal</string>
     <string name="pref_feed_auto_refresh_summary">Segarkan kanal secara periodik di latar belakang.</string>

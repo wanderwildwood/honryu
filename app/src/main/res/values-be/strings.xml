@@ -478,13 +478,11 @@
     <string name="pref_enable_scheduling_start_title">Час запуску</string>
     <string name="pref_foreground_notify_combined_pause_button_title">Сумешчаная кнопка паўзы</string>
     <string name="pref_anonymous_mode_title">Уключыць ананімны рэжым</string>
-    <string name="pref_scheduling_switch_wifi_summary">Уключаць Wi-Fi пры запланаваным запуску і выключаць пры запланаваным прыпынку.</string>
     <string name="pref_enable_natpmp_title">NAT-PMP</string>
     <string name="pref_autostart_title">Аўтаматычны запуск</string>
     <string name="pref_cpu_do_not_sleep_title">Трымаць праграму ў рэжыме сну</string>
     <string name="pref_feed_refresh_intervals_entries_6">1 дзень</string>
     <string name="pref_enable_upnp_title">UPnP</string>
-    <string name="pref_scheduling_switch_wifi_title">Уключыць/выключыць Wi-Fi</string>
     <string name="pref_proxy_password_title">Пароль</string>
     <string name="pref_feed_refresh_intervals_entries_3">2 гадзіны</string>
     <string name="pref_cpu_do_not_sleep_summary">Выкарыстоўвайце, калі хуткасць спампоўкі зніжаецца пры выключэнні экрана. (Павялічвае выкарыстанне батарэі.)</string>

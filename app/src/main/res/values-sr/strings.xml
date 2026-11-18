@@ -493,8 +493,6 @@
     <string name="pref_enable_scheduling_shutdown_title">Време гашења</string>
     <string name="pref_enable_scheduling_shutdown_summary">Угасити апликацију у одређено време</string>
     <string name="pref_scheduling_run_only_once_title">Покрени само једном</string>
-    <string name="pref_scheduling_switch_wifi_title">Укључи/искључи Wi-Fi</string>
-    <string name="pref_scheduling_switch_wifi_summary">Укључи Wi-Fi за заказани почетак, и искључи за заказано гашење.</string>
     <!-- Feed settings -->
     <string name="pref_feed_auto_refresh_title">Аутоматски освежи канале</string>
     <string name="pref_feed_auto_refresh_summary">Периодично освежи канале у позадини.</string>

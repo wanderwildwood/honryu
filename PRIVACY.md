@@ -35,7 +35,7 @@ it; not your settings or the system log.
 
 | permission | why |
 |---|---|
-| `INTERNET`, `ACCESS_NETWORK_STATE`, `ACCESS_WIFI_STATE`, `CHANGE_WIFI_STATE` | to download and share, and to keep to Wi-Fi or unmetered connections when you ask it to |
+| `INTERNET`, `ACCESS_NETWORK_STATE`, `ACCESS_WIFI_STATE` | to download and share, and to keep to Wi-Fi or unmetered connections when you ask it to |
 | `WAKE_LOCK`, `FOREGROUND_SERVICE`, `FOREGROUND_SERVICE_DATA_SYNC`, `FOREGROUND_SERVICE_SPECIAL_USE`, `POST_NOTIFICATIONS` | to keep a download going with the screen off, and to say so in a notification |
 | `READ_EXTERNAL_STORAGE`, `WRITE_EXTERNAL_STORAGE`, `MANAGE_EXTERNAL_STORAGE` | to save files where you choose and to open `.torrent` files |
 | `RECEIVE_BOOT_COMPLETED`, `SCHEDULE_EXACT_ALARM` | for the optional start-on-boot and the download scheduler |

@@ -477,8 +477,6 @@
     <string name="pref_enable_scheduling_shutdown_title">Horário de encerramento</string>
     <string name="pref_enable_scheduling_shutdown_summary">Fechar a app no horário especificado</string>
     <string name="pref_scheduling_run_only_once_title">Executar somente uma vez</string>
-    <string name="pref_scheduling_switch_wifi_title">Alternar Wi-Fi</string>
-    <string name="pref_scheduling_switch_wifi_summary">Ative o Wi-Fi para início programado e desative-o para paragem programada.</string>
     <string name="exact_alarm_permission_warning">Para que o planejador funcione, deve obter permissão numa caixa de diálogo especial do sistema. Continuar?</string>
     <string name="pref_feed_auto_refresh_title">Atualização automática de canais</string>
     <string name="pref_feed_auto_refresh_summary">Periodicamente atualizar canais em segundo plano.</string>

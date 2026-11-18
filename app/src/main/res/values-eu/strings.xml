@@ -464,8 +464,6 @@
     <string name="pref_enable_scheduling_start_summary">Start app at the specified time. Torrents will run according to their state before the last shutdown</string>
     <string name="pref_enable_scheduling_shutdown_title">Amatatze-ordua</string>
     <string name="pref_scheduling_run_only_once_title">Exekutatu behin bakarrik</string>
-    <string name="pref_scheduling_switch_wifi_title">Gaitu/desgaitu WiFi-a</string>
-    <string name="pref_scheduling_switch_wifi_summary">Wi-Fi is automatically enabled when app is launched at the scheduled time and is disabled after app is shutdown at the scheduled time</string>
     <!-- Feed settings -->
     <string name="pref_feed_auto_refresh_title">Berritu kanalak automatikoki</string>
     <string name="pref_feed_auto_refresh_summary">Periodically refresh channels in the background</string>

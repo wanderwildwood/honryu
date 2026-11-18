@@ -259,7 +259,6 @@
     <string name="pref_proxy_login_title">Brugernavn</string>
     <string name="pref_proxy_password_title">Kodeord</string>
     <string name="pref_enable_scheduling_start_title">Start tid</string>
-    <string name="pref_scheduling_switch_wifi_title">Indstil Wi-Fi</string>
     <string name="pref_feed_auto_refresh_title">Auto-refresh kanaler</string>
     <string name="pref_feed_refresh_interval_title">Refresh interval</string>
     <string name="pref_feed_refresh_intervals_entries_0">15 minutter</string>

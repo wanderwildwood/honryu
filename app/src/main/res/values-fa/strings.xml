@@ -493,8 +493,6 @@
     <string name="pref_enable_scheduling_shutdown_title">زمان خاموش شدن</string>
     <string name="pref_enable_scheduling_shutdown_summary">برنامه را در زمانی خاص خاموش کن</string>
     <string name="pref_scheduling_run_only_once_title">تنها یک‌بار اجرا کن</string>
-    <string name="pref_scheduling_switch_wifi_title">فعال/غیرفعال‌کردن وای‌فای</string>
-    <string name="pref_scheduling_switch_wifi_summary">وای‌فای به طور خودکار هنگامی که برنامه در زمان برنامه‌ریزی شده اجرا شود، فعال و هنگامی که برنامه در زمان برنامه‌ریزی شده بسته شود، غیرفعال می‌شود</string>
     <!-- Feed settings -->
     <string name="pref_feed_auto_refresh_title">به‌طور خودکار کانال‌ها را نوسازی کن</string>
     <string name="pref_feed_auto_refresh_summary">به‌طور دوره‌ای کانال‌ها را در پس‌زمینه نوسازی کن</string>

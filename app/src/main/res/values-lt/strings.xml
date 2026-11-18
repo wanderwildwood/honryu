@@ -441,8 +441,6 @@
     <string name="pref_enable_scheduling_shutdown_title">Išjungimo laikas</string>
     <string name="pref_enable_scheduling_shutdown_summary">Išjungti programą nurodytu laiku</string>
     <string name="pref_scheduling_run_only_once_title">Paleisti tik vieną kartą</string>
-    <string name="pref_scheduling_switch_wifi_title">Wi-Fi perjungimas</string>
-    <string name="pref_scheduling_switch_wifi_summary">Įjungti Wi-Fi suplanuotam paleidimui ir išjungti suplanuotam sustabdymui.</string>
     <!-- Feed settings -->
     <string name="pref_feed_auto_refresh_title">Automatiškai atnaujinti kanalus</string>
     <string name="pref_feed_auto_refresh_summary">Periodiškai atnaujinti kanalus fone.</string>

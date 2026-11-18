@@ -499,8 +499,6 @@
     <string name="pref_enable_scheduling_shutdown_title">Kapatma zamanı</string>
     <string name="pref_enable_scheduling_shutdown_summary">Uygulamayı belirli bir zamanda kapat</string>
     <string name="pref_scheduling_run_only_once_title">Yalnızca bir kez çalıştır</string>
-    <string name="pref_scheduling_switch_wifi_title">Wi-Fi\'yi aç/kapat</string>
-    <string name="pref_scheduling_switch_wifi_summary">Zamanlanan başlangıç için Wi-Fi\'yi açın ve zamanlanan durdurma için kapatın.</string>
     <!-- Feed settings -->
     <string name="pref_feed_auto_refresh_title">Kanalları otomatik yenile</string>
     <string name="pref_feed_auto_refresh_summary">Kanalları arka planda belirli aralıklarla yenile.</string>

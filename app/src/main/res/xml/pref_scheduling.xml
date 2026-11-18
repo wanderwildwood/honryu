@@ -32,13 +32,6 @@
         app:singleLineTitle="false" />
 
     <CheckBoxPreference
-        android:key="@string/pref_key_scheduling_switch_wifi"
-        android:persistent="false"
-        android:summary="@string/pref_scheduling_switch_wifi_summary"
-        android:title="@string/pref_scheduling_switch_wifi_title"
-        app:singleLineTitle="false" />
-
-    <CheckBoxPreference
         android:key="@string/pref_key_scheduling_run_only_once"
         android:persistent="false"
         android:title="@string/pref_scheduling_run_only_once_title"

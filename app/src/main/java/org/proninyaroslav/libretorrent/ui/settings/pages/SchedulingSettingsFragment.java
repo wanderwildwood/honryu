@@ -99,13 +99,6 @@ public class SchedulingSettingsFragment extends CustomPreferenceFragment
             runOnlyOnce.setChecked(pref.schedulingRunOnlyOnce());
             bindOnPreferenceChangeListener(runOnlyOnce);
         }
-
-        String keySwitchWiFi = getString(R.string.pref_key_scheduling_switch_wifi);
-        CheckBoxPreference switchWiFi = findPreference(keySwitchWiFi);
-        if (switchWiFi != null) {
-            switchWiFi.setChecked(pref.schedulingSwitchWiFi());
-            bindOnPreferenceChangeListener(switchWiFi);
-        }
     }
 
     @Override
@@ -183,8 +176,6 @@ public class SchedulingSettingsFragment extends CustomPreferenceFragment
         } else if (preference.getKey().equals(getString(R.string.pref_key_scheduling_run_only_once))) {
             pref.schedulingRunOnlyOnce((boolean) newValue);
 
-        } else if (preference.getKey().equals(getString(R.string.pref_key_scheduling_switch_wifi))) {
-            pref.schedulingSwitchWiFi((boolean) newValue);
         }
 
         return true;

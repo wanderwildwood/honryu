@@ -492,8 +492,6 @@
     <string name="pref_enable_scheduling_shutdown_title">Heure d\'arrêt planifiée</string>
     <string name="pref_enable_scheduling_shutdown_summary">Arrêter l\'application à l\'heure spécifiée</string>
     <string name="pref_scheduling_run_only_once_title">Exécuter une seule fois</string>
-    <string name="pref_scheduling_switch_wifi_title">Allumer/éteindre le Wi-Fi</string>
-    <string name="pref_scheduling_switch_wifi_summary">Allumer ou éteindre le Wi-Fi selon une heure d\'allumage et d\'arrêt planifié.</string>
     <!-- Feed settings -->
     <string name="pref_feed_auto_refresh_title">Actualisation automatique des canaux</string>
     <string name="pref_feed_auto_refresh_summary">Actualiser périodiquement les canaux en arrière-plan.</string>

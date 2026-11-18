@@ -492,8 +492,6 @@
     <string name="pref_enable_scheduling_shutdown_title">종료 시각</string>
     <string name="pref_enable_scheduling_shutdown_summary">특정 시각에 앱을 종료합니다.</string>
     <string name="pref_scheduling_run_only_once_title">한 번만 실행</string>
-    <string name="pref_scheduling_switch_wifi_title">Wi-Fi 온오프</string>
-    <string name="pref_scheduling_switch_wifi_summary">앱이 특정 시각에 실행될 때 자동으로 Wi-Fi를 켜고, 앱이 특정 시각에 종료될 때 Wi-Fi를 끕니다.</string>
     <!-- Feed settings -->
     <string name="pref_feed_auto_refresh_title">자동 새로고침 채널</string>
     <string name="pref_feed_auto_refresh_summary">백그라운드에서 주기적으로 채널을 새로고침합니다.</string>

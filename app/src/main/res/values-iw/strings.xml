@@ -210,7 +210,6 @@
     <string name="pref_proxy_port_title">פתחה</string>
     <string name="pref_proxy_login_title">שם משתמש</string>
     <string name="pref_proxy_password_title">סיסמה</string>
-    <string name="pref_scheduling_switch_wifi_title">הפעלת/כיבוי Wi-Fi</string>
     <string name="pref_feed_refresh_intervals_entries_0">רבע שעה</string>
     <string name="pref_feed_refresh_intervals_entries_2">שעה</string>
     <string name="pref_feed_refresh_intervals_entries_3">שעתיים</string>
@@ -476,7 +475,6 @@
     <string name="pref_proxy_requires_auth_title">דורש אישור</string>
     <string name="seeding_torrent_notify_template">%1$s • ↑ %2$s/שנ׳ • %3$s</string>
     <string name="pref_proxy_peers_too_title">השתמש גם בשביל חיבורים</string>
-    <string name="pref_scheduling_switch_wifi_summary">הפעל את ה-Wi-Fi להתחלה מתוזמנת, וכבה לעצירה מתוזמנת.</string>
     <string name="session_stats_download_upload">%1$s • %2$s/שנ׳</string>
     <string name="file_downloading_status_template">%1$s • %2$s/%3$s • %4$d%% •
 \nזמין: %5$s</string>
