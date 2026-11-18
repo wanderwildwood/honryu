@@ -617,5 +617,5 @@
     <string name="pref_locale_summary">Cambia el idioma de la aplicación</string>
     <string name="pref_locale_system_default">Utilizar ajustes del sistema</string>
     <string name="pref_proxy_require_all_connections_title">Conectarse siempre mediante proxy</string>
-    <string name="pref_proxy_require_all_connections_summary">Deshabilita DHT, Local Service Discovery, UPnP y NAT-PMP mientras el proxy siga activo. Estas funciones no se pueden enrutar a través de un proxy y, de lo contrario, expondrían tu dirección IP real y consultas DNS incluso con un proxy configurado. Los enlaces y los feeds RSS pasan por el proxy; un proxy SOCKS4 no puede transportarlos, así que con él no se descargan.</string>
+    <string name="pref_proxy_require_all_connections_summary">Deshabilita DHT, Local Service Discovery, UPnP y NAT-PMP mientras el proxy siga activo. Estas funciones no se pueden enrutar a través de un proxy y, de lo contrario, expondrían tu dirección IP real y consultas DNS incluso con un proxy configurado. Los enlaces y los feeds RSS pasan por el proxy; un proxy SOCKS4/SOCKS5 no puede transportarlos, así que con él no se descargan.</string>
 </resources>

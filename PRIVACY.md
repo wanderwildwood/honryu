@@ -19,7 +19,9 @@ If you want your address hidden from the other people in a torrent, put the phon
 or set a proxy under *Settings → Network*, and turn on *Require proxy for all connections*.
 With a proxy set, links and RSS feeds are fetched through it too. A SOCKS4 proxy cannot carry
 them: then they are fetched directly, or, with *Require proxy for all connections* on, not at
-all.
+all. Through a SOCKS5 proxy the phone may still look up the site's name itself, so with
+*Require proxy for all connections* on, links and feeds are fetched only through an HTTP proxy
+and not at all through a SOCKS5 one.
 
 ## Crash reports
 

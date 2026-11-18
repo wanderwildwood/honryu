@@ -559,7 +559,9 @@ public class Utils {
 
         if (!resolveLocally) {
             /*
-             * Through a proxy the name is the proxy's to look up: no DNS query from here. An
+             * Through a proxy the name is the proxy's to look up: no DNS query from here (the
+             * platform may still make one for SOCKS5, which is why FetchRoute refuses SOCKS5
+             * while the proxy is required for all connections). An
              * address written as numbers is still checked (that needs no lookup), and a name
              * that by its form means this phone or a local network is refused (see
              * FetchRoute.isLocalName); a public name pointing at a private address is not

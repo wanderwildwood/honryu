@@ -67,7 +67,8 @@ by design.
 
 See [PRIVACY.md](PRIVACY.md). In short: the other people in a torrent see your internet
 address, and nothing else is sent anywhere. With a proxy set, links and RSS feeds go through it
-too, and with **Require proxy for all connections** on they are never fetched around it.
+too, and with **Require proxy for all connections** on they are never fetched around it (through
+a SOCKS proxy they are then not fetched at all).
 
 ## License
 

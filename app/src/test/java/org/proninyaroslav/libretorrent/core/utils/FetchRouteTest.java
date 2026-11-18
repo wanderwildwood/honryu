@@ -32,6 +32,13 @@ public class FetchRouteTest {
     }
 
     @Test
+    public void socks5IsRefusedUnderTheKillSwitch() {
+        FetchRoute r = FetchRoute.of(ProxyType.SOCKS5, "10.0.0.2", 9050, true);
+        assertEquals(FetchRoute.Kind.REFUSE, r.kind);
+        assertNull(r.proxy);
+    }
+
+    @Test
     public void httpGoesThroughTheProxy() {
         FetchRoute r = FetchRoute.of(ProxyType.HTTP, "10.0.0.2", 8080, true);
         assertEquals(FetchRoute.Kind.PROXY, r.kind);

@@ -14,8 +14,11 @@ import java.util.regex.Pattern;
  * How a feed or a .torrent link is fetched, by the same proxy settings the torrents use:
  * through the proxy when one is set and Java can speak to it (HTTP, SOCKS5), directly when none
  * is set, and not at all when the proxy is required for all connections but cannot carry this
- * one (SOCKS4, or an address or port that is missing). Through a proxy the site's name is left
- * for the proxy to look up, so no DNS query leaves the phone.
+ * one (SOCKS4, or an address or port that is missing). Through an HTTP proxy the site's name is
+ * left for the proxy to look up, so no DNS query leaves the phone. Android's own
+ * HttpURLConnection may still look the site's name up on the phone before it hands the
+ * connection to a SOCKS5 proxy, so while the proxy is required for all connections SOCKS5 is
+ * refused too.
  */
 public final class FetchRoute {
 
@@ -38,6 +41,9 @@ public final class FetchRoute {
                                 boolean requireAll) {
         if (type == SessionSettings.ProxyType.NONE) {
             return new FetchRoute(Kind.DIRECT, null);
+        }
+        if (type == SessionSettings.ProxyType.SOCKS5 && requireAll) {
+            return new FetchRoute(Kind.REFUSE, null);
         }
         Proxy.Type javaType = switch (type) {
             case HTTP -> Proxy.Type.HTTP;
