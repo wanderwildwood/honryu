@@ -139,7 +139,8 @@ public class TorrentSessionImpl extends SessionManager
     private final ConcurrentLinkedQueue<TorrentEngineListener> listeners = new ConcurrentLinkedQueue<>();
     private SessionSettings settings = new SessionSettings();
     private final ReentrantLock settingsLock = new ReentrantLock();
-    private final Queue<LoadTorrentTask> restoreTorrentsQueue = new LinkedList<>();
+    /* Filled by the caller's thread and drained by the alert thread */
+    private final Queue<LoadTorrentTask> restoreTorrentsQueue = new ConcurrentLinkedQueue<>();
     private final ExecutorService loadTorrentsExec;
     private final ConcurrentHashMap<String, TorrentDownload> torrentTasks = new ConcurrentHashMap<>();
     /* Wait list for non added magnets */
@@ -323,21 +324,28 @@ public class TorrentSessionImpl extends SessionManager
             throw new IOException("Torrent " + id + " is null");
 
         addTorrentsList.add(params.sha1hash);
+        boolean queued;
         try {
-            downloadListed(params, torrent, bencode);
+            queued = downloadListed(params, torrent, bencode);
         } catch (IOException | UnknownUriException | RuntimeException e) {
             /* Never reached the session, so no alert will take it off the list: stopping would wait for ever */
             addTorrentsList.remove(params.sha1hash);
+            checkStop();
             throw e;
+        }
+        if (!queued) {
+            /* Not handed to the session (already there, or stopping): no alert will come for it either */
+            addTorrentsList.remove(params.sha1hash);
+            checkStop();
         }
     }
 
-    private void downloadListed(AddTorrentParams params, Torrent torrent, byte[] bencode) throws IOException, UnknownUriException {
+    /* True when the torrent was handed to the session, so that an add alert will follow */
+    private boolean downloadListed(AddTorrentParams params, Torrent torrent, byte[] bencode) throws IOException, UnknownUriException {
         String path = fs.makeFileSystemPath(params.downloadPath);
         File saveDir = new File(path);
         if (torrent.isDownloadingMetadata()) {
-            download(params.source, saveDir, params.addPaused, params.sequentialDownload);
-            return;
+            return addMagnet(params.source, saveDir, params.addPaused, params.sequentialDownload);
         }
 
         TorrentDownload task = torrentTasks.get(torrent.id);
@@ -345,7 +353,7 @@ public class TorrentSessionImpl extends SessionManager
             task.remove(false);
 
         if (params.fromMagnet) {
-            download(bencode,
+            return download(bencode,
                     saveDir,
                     params.filePriorities,
                     params.sequentialDownload,
@@ -355,7 +363,7 @@ public class TorrentSessionImpl extends SessionManager
             try (FileDescriptorWrapper w = fs.getFD(Uri.parse(params.source))) {
                 FileDescriptor fd = w.open("r");
                 try (FileInputStream fin = new FileInputStream(fd)) {
-                    download(IOUtils.toByteArray(fin),
+                    return download(IOUtils.toByteArray(fin),
                             saveDir,
                             params.filePriorities,
                             params.sequentialDownload,
@@ -901,6 +909,26 @@ public class TorrentSessionImpl extends SessionManager
         checkStop();
     }
 
+    /*
+     * A torrent whose add alert came after the stop began: the tasks being stopped did not
+     * include it, so it is stopped here, and the engine stops once it has.
+     */
+    private void stopLateTask(@NonNull String hash, @NonNull TorrentDownload task) {
+        if (!task.hasMissingFiles())
+            task.saveResumeData(false);
+        disposables.add(task.requestStop().subscribe(
+                () -> {
+                    torrentTasks.remove(hash);
+                    checkStop();
+                },
+                (err) -> {
+                    Log.e(TAG, "Error stopping torrent: " + Log.getStackTraceString(err));
+                    torrentTasks.remove(hash);
+                    checkStop();
+                }
+        ));
+    }
+
     private void checkStop() {
         if (stopRequested.get() && torrentTasks.isEmpty() && addTorrentsList.isEmpty())
             super.stop();
@@ -1016,13 +1044,29 @@ public class TorrentSessionImpl extends SessionManager
             switch (alert.type()) {
                 case ADD_TORRENT:
                     TorrentAlert<?> torrentAlert = (TorrentAlert<?>) alert;
-                    TorrentHandle th = find(torrentAlert.handle().infoHash());
-                    if (th == null)
+                    String alertHash = null;
+                    TorrentHandle th;
+                    try {
+                        Sha1Hash infoHash = torrentAlert.handle().infoHash();
+                        alertHash = infoHash == null ? null : infoHash.toHex();
+                        th = find(infoHash);
+                    } catch (RuntimeException e) {
+                        /* A failed add leaves a handle that may not answer */
+                        th = null;
+                    }
+                    if (th == null) {
+                        /* The add failed: nothing more will come for it, so let go of it and load the next one */
+                        if (alertHash != null)
+                            addTorrentsList.remove(alertHash);
+                        checkStop();
+                        runNextLoadTorrentTask();
                         break;
+                    }
                     String hash = th.infoHash().toHex();
                     if (magnets.contains(hash))
                         break;
-                    torrentTasks.put(hash, newTask(th, hash));
+                    TorrentDownload addedTask = newTask(th, hash);
+                    torrentTasks.put(hash, addedTask);
                     if (addTorrentsList.contains(hash))
                         notifyListeners((listener) ->
                                 listener.onTorrentAdded(hash));
@@ -1030,7 +1074,10 @@ public class TorrentSessionImpl extends SessionManager
                         notifyListeners((listener) ->
                                 listener.onTorrentLoaded(hash));
                     addTorrentsList.remove(hash);
-                    checkStop();
+                    if (stopRequested.get())
+                        stopLateTask(hash, addedTask);
+                    else
+                        checkStop();
                     runNextLoadTorrentTask();
                     break;
                 case METADATA_RECEIVED:
@@ -1428,14 +1475,16 @@ public class TorrentSessionImpl extends SessionManager
 
         @Override
         public void run() {
+            /* Only an add handed to the session brings an alert that loads the next one */
+            boolean queued = false;
             try {
                 if (isTorrentAlreadyRunning(torrentId))
                     return;
 
                 if (isMagnet)
-                    download(magnetUri, saveDir, magnetPaused, magnetSequentialDownload);
+                    queued = addMagnet(magnetUri, saveDir, magnetPaused, magnetSequentialDownload);
                 else
-                    restoreDownload(torrentId);
+                    queued = restoreDownload(torrentId);
 
             } catch (Exception e) {
                 Log.e(TAG, "Unable to restore torrent from previous session: " + torrentId, e);
@@ -1447,15 +1496,18 @@ public class TorrentSessionImpl extends SessionManager
 
                 notifyListeners((listener) ->
                         listener.onRestoreSessionError(torrentId));
+            } finally {
+                if (!queued)
+                    runNextLoadTorrentTask();
             }
         }
     }
 
-    private void download(byte[] bencode, File saveDir,
-                          Priority[] priorities, boolean sequentialDownload,
-                          boolean paused) {
+    private boolean download(byte[] bencode, File saveDir,
+                             Priority[] priorities, boolean sequentialDownload,
+                             boolean paused) {
         if (operationNotAllowed())
-            return;
+            return false;
 
         if (bencode == null)
             throw new IllegalArgumentException("Torrent data is null");
@@ -1476,7 +1528,7 @@ public class TorrentSessionImpl extends SessionManager
         if (infoHash != null) {
             torrent_handle existing = swig().find_torrent(infoHash);
             if (existing != null && existing.is_valid())
-                return; /* Found a download with the same hash */
+                return false; /* Found a download with the same hash */
         }
 
         if (saveDir != null)
@@ -1521,13 +1573,14 @@ public class TorrentSessionImpl extends SessionManager
         addDefaultTrackers(p);
 
         swig().async_add_torrent(p);
+        return true;
     }
 
-    private void download(TorrentInfo ti, File saveDir,
-                          Priority[] priorities, boolean sequentialDownload,
-                          boolean paused) {
+    private boolean download(TorrentInfo ti, File saveDir,
+                             Priority[] priorities, boolean sequentialDownload,
+                             boolean paused) {
         if (operationNotAllowed())
-            return;
+            return false;
 
         if (ti == null)
             throw new IllegalArgumentException("Torrent info is null");
@@ -1537,7 +1590,7 @@ public class TorrentSessionImpl extends SessionManager
         torrent_handle th = swig().find_torrent(ti.swig().info_hash());
         if (th != null && th.is_valid()) {
             /* Found a download with the same hash */
-            return;
+            return false;
         }
 
         add_torrent_params p = new add_torrent_params();
@@ -1585,6 +1638,7 @@ public class TorrentSessionImpl extends SessionManager
         addDefaultTrackers(p);
 
         swig().async_add_torrent(p);
+        return true;
     }
 
     @Override
@@ -1594,8 +1648,18 @@ public class TorrentSessionImpl extends SessionManager
             boolean paused,
             boolean sequentialDownload
     ) {
+        addMagnet(magnetUri, saveDir, paused, sequentialDownload);
+    }
+
+    /* True when the magnet was handed to the session, so that an add alert will follow */
+    private boolean addMagnet(
+            @NonNull String magnetUri,
+            File saveDir,
+            boolean paused,
+            boolean sequentialDownload
+    ) {
         if (operationNotAllowed())
-            return;
+            return false;
 
         error_code ec = new error_code();
         add_torrent_params p = libtorrent.parse_magnet_uri(magnetUri, ec);
@@ -1605,11 +1669,11 @@ public class TorrentSessionImpl extends SessionManager
 
         sha1_hash info_hash = p.getInfo_hashes().get_best();
         if (info_hash == null)
-            return;
+            return false;
         torrent_handle th = swig().find_torrent(info_hash);
         if (th != null && th.is_valid()) {
             /* Found a download with the same hash */
-            return;
+            return false;
         }
 
         if (saveDir != null)
@@ -1635,6 +1699,7 @@ public class TorrentSessionImpl extends SessionManager
         addDefaultTrackers(p);
 
         swig().async_add_torrent(p);
+        return true;
     }
 
     private void addDefaultTrackers(add_torrent_params p) {
@@ -1654,9 +1719,10 @@ public class TorrentSessionImpl extends SessionManager
         settings.defaultTrackersList = trackersList;
     }
 
-    private void restoreDownload(String id) throws IOException {
+    /* True when the torrent was handed to the session, so that an add alert will follow */
+    private boolean restoreDownload(String id) throws IOException {
         if (operationNotAllowed())
-            return;
+            return false;
 
         FastResume fastResume = repo.getFastResumeById(id);
         if (fastResume == null)
@@ -1688,8 +1754,9 @@ public class TorrentSessionImpl extends SessionManager
 
         /* After reading the metadata some time may have passed */
         if (operationNotAllowed())
-            return;
+            return false;
 
         swig().async_add_torrent(p);
+        return true;
     }
 }
