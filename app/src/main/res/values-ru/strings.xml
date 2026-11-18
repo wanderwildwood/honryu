@@ -621,5 +621,5 @@
     <string name="pref_locale_summary">Изменить язык приложения</string>
     <string name="pref_locale_system_default">Системная</string>
     <string name="pref_proxy_require_all_connections_title">Требовать прокси для всех подключений</string>
-    <string name="pref_proxy_require_all_connections_summary">Отключает DHT, Local Service Discovery, UPnP и NAT-PMP во время работы прокси-сервера. Эти функции не могут быть перенаправлены через прокси-сервер и в противном случае раскрывали бы ваш реальный IP-адрес и DNS-запросы, даже при настроенном прокси-сервере.</string>
+    <string name="pref_proxy_require_all_connections_summary">Отключает DHT, Local Service Discovery, UPnP и NAT-PMP во время работы прокси-сервера. Эти функции не могут быть перенаправлены через прокси-сервер и в противном случае раскрывали бы ваш реальный IP-адрес и DNS-запросы, даже при настроенном прокси-сервере. Ссылки и RSS-ленты идут через прокси-сервер; прокси SOCKS4 не может их передавать, поэтому с ним они не загружаются.</string>
 </resources>
