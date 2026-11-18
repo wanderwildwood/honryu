@@ -488,7 +488,13 @@ public class Utils {
                     if (TextUtils.isEmpty(location)) {
                         throw new FetchLinkException("Redirect response without Location header");
                     }
-                    currentUrl = new URL(urlObj, location).toString();
+                    URL next = new URL(urlObj, location);
+                    /* Once on https, never back to plain http, where the file could be read or swapped */
+                    if (HTTPS_PREFIX.equalsIgnoreCase(urlObj.getProtocol())
+                            && !HTTPS_PREFIX.equalsIgnoreCase(next.getProtocol())) {
+                        throw new FetchLinkException("Redirect from https to " + next.getProtocol() + " refused: " + url);
+                    }
+                    currentUrl = next.toString();
                     continue;
                 }
 
