@@ -86,7 +86,6 @@
     <string name="torrent_status_seeding">تۆوکردن…</string>
     <string name="torrent_status_finished">تەواوبوو</string>
     <string name="torrent_status_downloading_metadata">داونڵۆدکردنی مێتادا…</string>
-    <string name="manage_all_files_warning_dialog_title">ئاگاداری</string>
     <string name="error_io_torrent">نەتواندرا بەڕگەی تۆرێنت بخوێندرێتەوە</string>
     <string name="error_fetch_link">نەتواندرا دراوە لە بەستەرەکەوە ڕابکێشرێت</string>
     <string name="error_add_torrent">نەتواندرا تۆرێنتەکە زیاد بکرێط</string>
@@ -132,7 +131,6 @@
     <string name="torrent_status_checking">بەسەرداچوونەوە…</string>
     <string name="perm_denied_warning">ڕێپێدانی بیرگە پێویستە بۆ دابەزاندن و دەستپێگەیشتن بە تۆرێنتەکان. دەتەوێت ئەم ڕێپێدانە ڕەت بکەیتەوە؟</string>
     <string name="perm_denied_title">ڕێپێدان ڕەتکرایەوە</string>
-    <string name="manage_all_files_warning_dialog_description">وەشانی گووگڵ پلەیی لیبرێ تۆرێنت بەکار مەهێنە ئەگەر دەتەوێت تۆرێنتەکان لە فۆڵدەری تری بێجگە لە \'Downloads\' پاشەکەوت بکەیت.\nسەرچاوەی تر لە پەڕەی پڕۆژەکە ەن.</string>
     <string name="add_torrent_title">زیادکردنی تۆرێنت</string>
     <string name="error_decode_torrent">نەتواندرا کۆدی پەڕگەی تۆرێنتەکە هەڵبوەشێندرێتەوە. لەوانەیە زیانی پێگەیشتبێت یان لە شێوازێکی هەڵەدا بێت؟</string>
     <string name="error_invalid_link_or_path">بەستەر یان ڕێچکەی نادروستی تۆرێنت</string>

@@ -486,15 +486,12 @@
     <string name="pref_proxy_type_entries_0">(Không)</string>
     <string name="pref_proxy_password_title">Mật khẩu</string>
     <string name="pref_feed_keep_items_time_entries_1">2 ngày</string>
-    <string name="manage_all_files_warning_dialog_title">Cảnh báo</string>
     <string name="pref_show_nat_errors">Hiển thị lỗi NAT</string>
     <string name="pref_foreground_notify_status_filter_entries_4">Lỗi</string>
     <string name="pref_foreground_notify_combined_pause_button_title">Kết hợp nút tạm dừng</string>
     <string name="pref_proxy_type_title">Loại ủy quyền</string>
     <string name="pref_feed_keep_items_time_entries_6">2 tháng</string>
     <string name="error_open_torrent">Không thể mở torrent</string>
-    <string name="manage_all_files_warning_dialog_description">Không sử dụng phiên bản Google Play của LibreTorrent nếu bạn muốn lưu torrent trong các thư mục không phải \'Tải xuống\' và các thư mục tương tự.
-\nCó các nguồn khác trên trang dự án.</string>
     <string name="pref_foreground_notify_sorting_entries_8">ETA (nhỏ nhất trước)</string>
     <string name="feed_filter_prompt">Nhập các từ (được phân tách bằng dấu \"|\"), một trong số đó phải có trong tên hoặc nhập biểu thức chính quy. Các torrent chỉ được thêm nếu bộ lọc này khớp với tên torrent.</string>
     <string name="pref_foreground_notify_combined_pause_button_summary">Kết hợp hai nút: tạm dừng tất cả và tiếp tục tất cả. Nút sẽ hoạt động giống như một trình chuyển đổi. Cảnh báo: trạng thái nút không bị ảnh hưởng bởi việc tạm dừng/tiếp tục torrent thủ công.</string>

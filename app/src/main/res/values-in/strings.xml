@@ -568,10 +568,7 @@
     <string name="pref_foreground_notify_sorting_entries_12">Tidak ada penyortiran</string>
     <string name="error_open_torrent">Tidak dapat membuka torrent</string>
     <string name="pref_foreground_notify_status_filter_entries_3">Mengunduh Metadata…</string>
-    <string name="manage_all_files_warning_dialog_description">Jangan gunakan versi Google Play LibreTorrent jika anda ingin menyimpan torrents dalam folder selain \'download\' dan sejenisnya.
-\nAda sumber lain di halaman proyek.</string>
     <string name="perm_denied_warning_android_r">Akses semua file izin diperlukan untuk mengunduh torrent dan mengakses file .torrent di folder arbitrer. Tanpa izin ini, LibreTorrent hanya akan memiliki akses ke folder dalam jumlah terbatas. Apakah Anda yakin ingin menolak izin ini?</string>
-    <string name="manage_all_files_warning_dialog_title">Peringatan</string>
     <string name="exact_alarm_permission_warning">Agar penjadwal berfungsi, Anda harus mendapatkan izin dalam dialog sistem khusus. Lanjutkan?</string>
     <string name="torrent_speed_limit_dialog">Atur kecepatan dalam satuan KiB/s. Perlu diperhatikan bahwa mengatur batasan yang lebih tinggi pada satu torrent daripada batasan global tidak mengubah batasan global.</string>
     <string name="pref_validate_https_trackers_summary">Sertifikat HTTPS pemantau dan juga seeder berbasis web HTTPS akan diperiksa keabsahannya dengan menggunakan penyimpanan sertifikat pada sistem.</string>

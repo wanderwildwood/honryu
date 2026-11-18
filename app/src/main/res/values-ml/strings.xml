@@ -537,7 +537,6 @@
     <string name="about_title">LibreTorrent നെക്കുറിച്ച്</string>
     <string name="about_description">കൂടുതൽ വിവരങ്ങൾ &lt;a href=https://gitlab.com/proninyaroslav/libretorrent&gt;https://gitlab.com/proninyaroslav/libretorrent&lt;/a&gt; ൽ ലഭ്യമാണ്&lt;br&gt;&lt;br&gt; ലിബ്‌ടോറന്റ് (ജാവ റാപ്പർ &lt;a href=https://github.com/aldenml/libtorrent4j&gt;libtorrent4j&lt;/a&gt;) അടിസ്ഥാനമാക്കിയുള്ള Android 4+ നായുള്ള ഫ്രീഡം ടോറന്റ് ക്ലയന്റിലെന്നപോലെ LibreTorrent ഒരു സ is ജന്യമാണ്.&lt;br&gt;&lt;br&gt; LibreTorrent എന്നത് സ്വതന്ത്ര സോഫ്റ്റ്വെയറാണ്, ഇത് &lt;a href=http://www.gnu.org/copyleft/gpl.html&gt;GNU General Public License v3 (GPLv3)&lt;/a&gt; നിബന്ധനകൾ‌ക്ക് കീഴിൽ പുറത്തിറക്കി</string>
     <string name="about_changelog">ചെയ്ഞ്ച്ലോഗ്</string>
-    <string name="manage_all_files_warning_dialog_title">മുന്നറിയിപ്പ്</string>
     <string name="pref_validate_https_trackers_title">HTTPS ട്രാക്കറുകളുടെ സർട്ടിഫിക്കറ്റുകൾ സാധൂകരിക്കുക</string>
     <string name="pref_validate_https_trackers_summary">HTTPS ട്രാക്കറുകളുടെയും HTTPS വെബ് സീഡുകളുടെയും സർട്ടിഫിക്കറ്റ് സിസ്റ്റം സർട്ടിഫിക്കറ്റ് സ്റ്റോറിൽ സാധൂകരിക്കും.</string>
     <string name="perm_denied_warning_android_r">ടോറന്റുകൾ ഡൗൺലോഡ് ചെയ്യുന്നതിനും അനിയന്ത്രിതമായ ഫോൾഡറുകളിൽ .ടോറന്റ് ഫയലുകൾ ആക്‌സസ് ചെയ്യുന്നതിനും എല്ലാ ഫയലുകളും ആക്‌സസ് ചെയ്യാനുള്ള അനുമതി ആവശ്യമാണ്. ഈ അനുമതിയില്ലാതെ, ലിബ്രെടോറന്റിന് പരിമിതമായ എണ്ണം ഫോൾഡറുകളിലേക്ക് മാത്രമേ ആക്സസ് ഉണ്ടാകൂ. ഈ അനുമതി നിഷേധിക്കണമെന്ന് തീർച്ചയാണോ?</string>

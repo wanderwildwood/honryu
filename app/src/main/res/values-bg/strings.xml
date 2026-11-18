@@ -360,9 +360,6 @@
     <string name="torrent_ETA">Оставащо врене</string>
     <string name="torrent_leechers">Лийчъри</string>
     <string name="torrent_pieces_template">%1$d/%2$d (%3$s)</string>
-    <string name="manage_all_files_warning_dialog_title">Внимание</string>
-    <string name="manage_all_files_warning_dialog_description">Не използвайте версията на Google Play на LibreTorrent, ако искате да запазвате торенти в папки, различни от „Изтегляния“ и подобни.
-\nИма и други източници на страницата на проекта.</string>
     <string name="torrent_hash_sum">Контролна сума</string>
     <string name="torrent_created_in_program">Създаден в програма</string>
     <string name="sequential_download">Последователно изтегляне</string>

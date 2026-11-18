@@ -124,7 +124,6 @@
     <string name="torrent_status_checking">בבדיקה…</string>
     <string name="torrent_status_downloading_metadata">הורדת נתוני־על…</string>
     <string name="perm_denied_title">ההרשאה נדחתה</string>
-    <string name="manage_all_files_warning_dialog_title">אזהרה</string>
     <string name="add_torrent_title">הוספת טורנט</string>
     <string name="file_is_too_large_error">הקובץ גדול מדי</string>
     <string name="torrent_size">גודל</string>
@@ -500,8 +499,6 @@
     <string name="pref_enable_scheduling_start_title">שעת הפעלה</string>
     <string name="session_stats_listen_port">פתחת האזנה: %1$s</string>
     <string name="downloading_torrent_notify_template">%1$d%% • %2$s • ↓ %3$s/שנ׳ • %4$s</string>
-    <string name="manage_all_files_warning_dialog_description">אין להשתמש בגרסת ה־Google Play של LibreTorrent כדי לשמור טורנטים בתיקיות אחרות שאינן „הורדות” וכדומה.
-\nישנם מקורות נוספים בדף המיזם.</string>
     <string name="pref_use_random_port_summarty">מגדיר את הפורט ההתחלתי באופן אקראי בטווח [%1$d, %2$d] ואת פורט הסיום בפורט הראשוני + 10.</string>
     <string name="pref_show_nat_errors">הצג שגיאות NAT</string>
     <string name="pref_enable_ip_filtering_summary">בהתאם לגודל הקובץ, החלת המסנן בעת ההפעלה עשויה להימשך זמן מה. (מגדיל את השימוש בזיכרון.)</string>

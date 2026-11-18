@@ -192,7 +192,6 @@
     <string name="torrent_status_downloading_metadata">Laster ned metadata …</string>
     <string name="perm_denied_title">Nekta tilgang</string>
     <string name="torrent_status_finished">Fullført</string>
-    <string name="manage_all_files_warning_dialog_title">Åtvaring</string>
     <string name="error_empty_name">Skriv inn eit namn</string>
     <string name="torrent_create_date">Oppretta</string>
     <string name="file_priority_low">Ignorer</string>

@@ -126,8 +126,6 @@
     <string name="torrent_status_downloading_metadata">A descarregar metadados…</string>
     <string name="perm_denied_title">Permissão negada</string>
     <string name="perm_denied_warning">A permissão de armazenamento é necessária para descarregar torrents e aceder ficheiros .torrent. Realmente quer negar esta permissão?</string>
-    <string name="manage_all_files_warning_dialog_title">Atenção</string>
-    <string name="manage_all_files_warning_dialog_description">Não use a versão do Google Play do LibreTorrent se quiser gravar torrents em pastas diferentes de \'Descargas\' e similares. \nExistem outras fontes na página do projeto.</string>
     <string name="add_torrent_title">Adicionar torrent</string>
     <string name="error_decode_torrent">Não foi possível decodificar o ficheiro .torrent. Talvez esteja danificado ou num formato inválido?</string>
     <string name="error_io_torrent">Não foi possível ler o ficheiro .torrent</string>

@@ -412,7 +412,6 @@
     <string name="force_announce_torrent">Força l’anunci</string>
     <string name="replace_file">Reemplaça el fitxer</string>
     <string name="error_open_torrent">No s’ha pogut obrir el torrent</string>
-    <string name="manage_all_files_warning_dialog_title">Avís</string>
     <string name="file_chooser_title">Selecció de fitxer</string>
     <string name="dialog_change_priority_title">Canvia’n la prioritat</string>
     <string name="torrent_file_count">Recompte de fitxers</string>
@@ -445,8 +444,6 @@
     <string name="torrent_moving_title">Movent Torrent…</string>
     <string name="dialog_add_link_title">Entra l\'infohash, l\'enllaç magnet o l\'enllaç HTTP/S</string>
     <string name="notify_shutting_down">Apagant-se…</string>
-    <string name="manage_all_files_warning_dialog_description">No utilitzeu la versió de Google Play de LibreTorrent si voleu guardar els vostres Torrents a altres rutes a paty de \'Descàrregues\' o similar.
-\nHi ha altres fonts a la pàgina del projecte.</string>
     <string name="session_stats_listen_port">Port de comunicació: %1$s</string>
     <string name="session_stats_dht_nodes">Nodes DHT: %1$d</string>
     <string name="torrent_error_notify_title">Error de Torrent</string>

@@ -570,9 +570,6 @@
     <string name="error_open_torrent">Αδυναμία ανοίγματος torrent</string>
     <string name="exact_alarm_permission_warning">Για να δουλέψει ο προγραμματιστής πρέπει να δώσετε άδεια στο σύστημα. Συμφωνείτε;</string>
     <string name="perm_denied_warning_android_r">Απαιτείται άδεια πρόσβασης σε όλα τα αρχεία, για λήψη torrent και πρόσβαση σε αρχεία .torrent σε αυθαίρετους φακέλους. Χωρίς αυτήν την άδεια το LibreTorrent θα έχει πρόσβαση μόνο σε περιορισμένο αριθμό φακέλων. Είστε βέβαιοι ότι θέλετε να αρνηθείτε αυτήν την άδεια;</string>
-    <string name="manage_all_files_warning_dialog_title">Προειδοποίηση</string>
-    <string name="manage_all_files_warning_dialog_description">Μην χρησιμοποιείτε την έκδοση του LibreTorrent από το Google Play, αν θέλετε να αποθηκεύετε τα torrents σε φακέλους διαφορετικούς από τις «Λήψεις» και παρόμοιους.
-\nΥπάρχουν άλλες πηγές στην ιστοσελίδα του έργου.</string>
     <string name="pref_validate_https_trackers_title">Επικύρωση πιστοποιητικών των HTTPS ιχνηλατών</string>
     <string name="pref_validate_https_trackers_summary">Το πιστοποιητικό των HTTPS ιχνηλατών και των HTTPS διαμοιραστών ιστού θα επικυρωθεί στο χώρο αποθήκευσης πιστοποιητικών συστήματος.</string>
     <string name="download_first_last_pieces">Λήψη πρώτα του πρώτου και τελευταίου κομματιού</string>

@@ -569,9 +569,6 @@
     <string name="pref_foreground_notify_status_filter">Statusfilter</string>
     <string name="pref_foreground_notification_category">Förgrundsaviseringsinställningar</string>
     <string name="error_open_torrent">Det går inte att öppna torrent</string>
-    <string name="manage_all_files_warning_dialog_title">Varning</string>
-    <string name="manage_all_files_warning_dialog_description">Använd inte Google Play-versionen av LibreTorrent om du vill spara torrenter i andra mappar än \"Hämtningar\" och liknande.
-\nDet finns andra källor på projektsidan.</string>
     <string name="exact_alarm_permission_warning">För att schemaläggaren ska fungera måste du få behörighet i en speciell systemdialog. Fortsätt?</string>
     <string name="perm_denied_warning_android_r">Åtkomst till alla filer krävs för att hämta torrenter och komma åt .torrent-filer i godtyckliga mappar. Utan detta tillstånd kommer LibreTorrent endast att ha tillgång till ett begränsat antal mappar. Är du säker på att du vill avfärda denna behörighet?</string>
     <string name="pref_validate_https_trackers_title">Validera HTTPS-spårarcertifikat</string>

@@ -570,8 +570,6 @@
     <string name="perm_denied_warning_android_r">Для завантаження торентів і доступу до файлів .torrent у довільних теках потрібен дозвіл на доступ до всіх файлів. Без цього дозволу LibreTorrent матиме доступ лише до обмеженої кількості тек. Ви впевнені, що хочете відмовити в цьому дозволі?</string>
     <string name="pref_validate_https_trackers_summary">Сертифікат HTTPS-трекерів і вебсидів HTTPS буде перевірено в системному сховищі сертифікатів.</string>
     <string name="exact_alarm_permission_warning">Щоб планувальник працював, ви повинні отримати дозвіл у спеціальному системному діалоговому вікні. Продовжити?</string>
-    <string name="manage_all_files_warning_dialog_title">Попередження</string>
-    <string name="manage_all_files_warning_dialog_description">Не використовуйте версію LibreTorrent для Google Play, якщо ви бажаєте зберігати торенти в теках, відмінних від «Завантажене» або подібних. \nНа сторінці проєкту є інші джерела.</string>
     <string name="torrent_speed_limit_dialog">Встановити швидкість у КіБ/с. Зауважте, що встановлення для торента обмеження, більшого за глобальне, не замінить глобальне.</string>
     <string name="download_first_last_pieces">Спочатку завантажувати перші та останні частини</string>
     <string name="apply_settings_after_reboot">Зміни буде застосовано після перезапуску застосунку.</string>

@@ -568,8 +568,6 @@
     <string name="error_open_torrent">No se pudo abrir el torrent</string>
     <string name="exact_alarm_permission_warning">Para que el programador funcione, debes obtener el permiso en un diálogo especial del sistema. ¿Continuar?</string>
     <string name="perm_denied_warning_android_r">El permiso de acceso a todos los archivos es necesario tanto para descargar torrents como para abrir archivos «.torrent» en todo tipo de carpetas. Sin este permiso LibreTorrent solo podrá ver una pequeña parte del sistema de archivos. ¿Estás seguro de querer denegar este permiso?</string>
-    <string name="manage_all_files_warning_dialog_title">Advertencia</string>
-    <string name="manage_all_files_warning_dialog_description">No utilices la versión de LibreTorrent en Google Play si quieres guardar torrents en carpetas más allá de las predefinidas (e.j. que no sean la de «Descargas»).\nPuedes ver otras formas de descargar la aplicación en la página web del proyecto.</string>
     <string name="pref_validate_https_trackers_title">Validar certificados HTTPS de rastreadores</string>
     <string name="pref_validate_https_trackers_summary">Se validarán los certificados HTTPS tanto de rastreadores como de semillas web cotejándolos con el almacén de certificados del sistema.</string>
     <string name="download_first_last_pieces">Descargar primeras y últimas partes primero</string>

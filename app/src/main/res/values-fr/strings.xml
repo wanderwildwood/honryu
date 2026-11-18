@@ -548,12 +548,9 @@
     <string name="error_open_torrent">Impossible d\'ouvrir le torrent</string>
     <string name="pref_foreground_notify_status_filter_entries_0">Tous</string>
     <string name="pref_foreground_notify_status_filter_entries_2">Téléchargé</string>
-    <string name="manage_all_files_warning_dialog_description">N\'utilisez pas la version Google Play de LibreTorrent si vous souhaitez enregistrer des torrents dans des dossiers autres que \" Téléchargements \" et similaires.
-\nIl existe d\'autres sources sur la page du projet.</string>
     <string name="perm_denied_warning_android_r">L\'autorisation d\'accès à tous les fichiers est nécessaire pour télécharger des torrents et accéder aux fichiers .torrent dans des dossiers arbitraires. Sans cette autorisation, LibreTorrent n\'aura accès qu\'à un nombre limité de dossiers. Êtes-vous sûr de vouloir refuser cette autorisation ?</string>
     <string name="pref_foreground_notify_status_filter_entries_1">En cours de téléchargement…</string>
     <string name="pref_foreground_notify_status_filter_entries_4">Erreur</string>
-    <string name="manage_all_files_warning_dialog_title">Attention</string>
     <string name="pref_foreground_notify_sorting_entries_0">Nom (A - Z)</string>
     <string name="pref_foreground_notify_sorting_entries_1">Nom (Z - A)</string>
     <string name="pref_foreground_notify_sorting_entries_2">Date d\'ajout (plus récent en premier)</string>

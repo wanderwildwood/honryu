@@ -542,7 +542,6 @@
     <string name="pref_enc_in_connections_title">الاتصالات الواردة</string>
     <string name="pref_encryption_category">التشفير</string>
     <string name="error_open_torrent">لا يمكن فتح التورينت‮‭‬‫‫‪‌</string>
-    <string name="manage_all_files_warning_dialog_title">تحذير</string>
     <string name="peer_connection_type_utp">μTP</string>
     <string name="pref_foreground_notify_sorting_entries_7">التقدم (الأكبر أولا)</string>
     <string name="download_first_last_pieces">تحميل القطع الأولى والأخيرة أولا</string>
@@ -573,8 +572,6 @@
     <string name="pref_foreground_notify_sorting">الفرز</string>
     <string name="pref_foreground_notify_sorting_entries_11">الشعبية (الأكبر أولاً)</string>
     <string name="exact_alarm_permission_warning">لكي يعمل المجدول، يجب الحصول على إذن في مربع حوار نظام خاص. سلك؟</string>
-    <string name="manage_all_files_warning_dialog_description">لا تستخدم إصدار Google Play من LibreTorrent إذا كنت ترغب في حفظ التورنت في مجلدات أخرى غير \"التنزيلات\" وما شابه ذلك.
-\nهناك مصادر أخرى لتحميل التطبيق على صفحة المشروع.</string>
     <string name="pref_feed_refresh_interval_title">الفاصل الزمني للتحديث</string>
     <string name="pref_feed_keep_items_time_title">الاحتفاظ بالمقالات</string>
     <string name="perm_denied_warning_android_r">مطلوب إذن الوصول إلى جميع الملفات لتحميل السيول والوصول إلى الملفات .torrent في المجلدات التعسفية. وبدون هذا الإذن، لن يكون ل LibreTorrent سوى حق الوصول إلى عدد محدود من المجلدات. هل تريد بالتأكيد رفض هذا الإذن؟</string>

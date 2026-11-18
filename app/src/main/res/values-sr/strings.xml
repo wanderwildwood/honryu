@@ -541,11 +541,8 @@
     <string name="select_tag">Изаберите ознаку</string>
     <string name="edit_tag">Измени ознаку</string>
     <string name="download_first_last_pieces">Прво преузмите први и последњи комад</string>
-    <string name="manage_all_files_warning_dialog_description">Не користите Гугл Плеј верзију ЛибреТоррент-а ако желите да сачувате торенте у фасциклама које нису „Преузимања“ и слично.
-\nНа страници пројекта постоје и други извори.</string>
     <string name="torrent_speed_limit_dialog">Подесите брзину у КиБ/с. Имајте на уму да постављање веће границе на торенту од глобалног ограничења неће надјачати глобално ограничење.</string>
     <string name="error_open_torrent">Није могуће отворити торрент</string>
-    <string name="manage_all_files_warning_dialog_title">Упозорење</string>
     <string name="apply_settings_after_reboot">Izmene će biti primenjene nakon ponovnog pokretanja aplikacije.</string>
     <string name="pref_foreground_notify_sorting">Сортирање</string>
     <string name="pref_foreground_notify_status_filter_entries_4">Грешка</string>

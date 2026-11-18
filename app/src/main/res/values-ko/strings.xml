@@ -555,8 +555,6 @@
     <string name="torrent_speed_limit_dialog">속도를 KiB/s로 설정하세요. 토렌트 상한을 더 높게 설정해도, 전체 상한 설정을 뛰어넘지 않습니다.</string>
     <string name="exact_alarm_permission_warning">스케쥴러를 실행하기 위해 반드시 특별 시스템 다이얼로그 권한을 허가해야 합니다. 실행합니까?</string>
     <string name="perm_denied_warning_android_r">토렌트를 다운로드하고 임의의 .torrent 파일에 액세스하기 위해 모든 파일에 대한 권한이 필요합니다. 이 권한이 없다면 LibreTorrent는 한정된 수의 폴더에만 액세스할 수 있습니다. 정말 이 권한을 거부하시겠습니까?</string>
-    <string name="manage_all_files_warning_dialog_description">\'Downloads\'폴더 이외에 토렌트 파일을 다운로드 하고 싶다면 Google Play의 LibreTorrent 버전을 사용하지 마십시오.
-\n프로젝트 페이지에서 다른 배포 버전을 찾을 수 있습니다.</string>
     <string name="pref_default_trackers_list_summary">다음과 같은 경우에 사용될 트래커 리스트:
 \n1. 토렌트 추가 시, 디폴트 리스트가 자동으로 토렌트에 추가됨.
 \n2. 마그넷 링크 사용시 적용.</string>
@@ -574,7 +572,6 @@
     <string name="pref_foreground_notify_sorting_entries_11">인기 (큰 것 먼저)</string>
     <string name="pref_foreground_notify_sorting_entries_10">인기 (적은것 먼저)</string>
     <string name="pref_watch_dir_delete_file_title">추가한 후 .torrent 파일 삭제</string>
-    <string name="manage_all_files_warning_dialog_title">경고</string>
     <string name="pref_foreground_notify_sorting_entries_6">진행도 (적은것 먼저)</string>
     <string name="pref_foreground_notify_status_filter_entries_2">다운로드됨</string>
     <string name="pref_foreground_notify_sorting_entries_2">날짜 추가 (새로운 것을 먼저)</string>

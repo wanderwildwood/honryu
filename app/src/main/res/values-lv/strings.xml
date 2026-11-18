@@ -180,8 +180,6 @@
     <string name="download_counter_ETA_template">%1$s/%2$s • %3$d%% %4$s</string>
     <string name="torrent_status_stopped">Apturēts</string>
     <string name="torrent_status_downloading_metadata">Lejupielādē metadatus…</string>
-    <string name="manage_all_files_warning_dialog_title">Brīdinājums</string>
-    <string name="manage_all_files_warning_dialog_description">Nelietojiet LibreTorrent Google Play lietotnes versiju, ja vēlaties saglabāt torrentus citās mapēs, kā \'Lejupielādes\' un līdzīgas.\nProjekta lapā var lejupielādēt citas lietotnes versijas.</string>
     <string name="error_fetch_link">Nevarēja iegūt datus no saites</string>
     <string name="error_fetch_torrent_metadata">Nevarēja iegūt metadatus</string>
     <string name="error_invalid_link_or_path">Nederīga saite vai torrenta ceļš</string>

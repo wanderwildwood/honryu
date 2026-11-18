@@ -18,7 +18,6 @@
     <string name="drawer_sorting_peers">Папулярнасць</string>
     <string name="network_online">Анлайн</string>
     <string name="network_offline">Афлайн</string>
-    <string name="manage_all_files_warning_dialog_title">Папярэджанне</string>
     <string name="torrent_create_date">Створана</string>
     <string name="home_directory">Дадому</string>
     <string name="torrent_peers">Пірынгі</string>
@@ -52,8 +51,6 @@
     <string name="peers_template">%1$d/%2$d</string>
     <string name="torrent_status_checking">Праверка…</string>
     <string name="perm_denied_warning">Для спампоўкі торэнтаў і доступу да файлаў .torrent патрабуецца дазвол на захоўванне. Вы сапраўды хочаце адмовіць у гэтым дазволе?</string>
-    <string name="manage_all_files_warning_dialog_description">Не выкарыстоўвайце версію LibreTorrent з Google Play, калі вы хочаце захоўваць торэнты ў іншых папках, акрамя \"Спампоўкі\" і падобных.
-\nНа старонцы праекта ёсць і іншыя крыніцы для спампоўкі праграмы.</string>
     <string name="error_decode_torrent">Не ўдалося расшыфраваць торэнт-файл. Можа быць, ён пашкоджаны або ў няправільным фармаце?</string>
     <string name="error_io_torrent">Не ўдалося прачытаць файл .torrent</string>
     <string name="error_invalid_link_or_path">Няправільная спасылка або шлях да торэнта</string>

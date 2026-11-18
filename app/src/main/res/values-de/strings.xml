@@ -557,9 +557,6 @@
     <string name="journal_filter_portmap_log">UPnP/NAT-PMP-Protokoll</string>
     <string name="journal_filter_dht_log">DHT-Protokoll</string>
     <string name="perm_denied_warning_android_r">Die Berechtigung zum Zugriff auf alle Dateien ist erforderlich, um Torrents herunterzuladen und um auf .torrent-Dateien in beliebigen Ordnern zuzugreifen. Ohne diese Berechtigung kann LibreTorrent nur auf eine begrenzte Anzahl von Ordnern zugreifen. Sind Sie sich sicher, dass Sie diese Berechtigung verweigern möchten?</string>
-    <string name="manage_all_files_warning_dialog_title">Warnung</string>
-    <string name="manage_all_files_warning_dialog_description">Verwende nicht die Google Play-Version von LibreTorrent, wenn du die Torrents in anderen Ordnern als \'Downloads\' und ähnlichen speichern willst.
-\nAndere Quellen gibt es auf der Projektseite.</string>
     <string name="journal_filter_torrent_log">Torrent-Protokoll</string>
     <string name="pref_foreground_notify_sorting_entries_11">Beliebtheit (höchste zuerst)</string>
     <string name="pref_foreground_notify_combined_pause_button_title">Kombinierte Pause-Schaltfläche</string>

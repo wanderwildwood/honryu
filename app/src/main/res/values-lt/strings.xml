@@ -572,12 +572,9 @@
     <string name="exact_alarm_permission_warning">Kad tvarkaraštis veiktų, turite gauti leidimą specialiame sistemos dialogo lange. Vykdyti?</string>
     <string name="perm_denied_warning_android_r">Norint atsisiųsti torentus ir pasiekti .torrent failus esančius bet kuriuose aplankuose, reikalingas prieigos prie visų failų leidimas. Be šio leidimo LibreTorrent turės prieigą tik prie riboto skaičiaus aplankų. Ar tikrai norite atmesti šį leidimą?</string>
     <string name="pref_validate_https_trackers_summary">HTTPS sekimo priemonių ir HTTPS žiniatinklio skleidėjų sertifikatas bus patvirtintas sistemos sertifikatų saugykloje.</string>
-    <string name="manage_all_files_warning_dialog_title">Įspėjimas</string>
     <string name="pref_validate_https_trackers_title">Patikrinti HTTPS sekimo priemonių sertifikatą</string>
     <string name="download_first_last_pieces">Pirmiausia atsisiųsti pirmą ir paskutinę dalis</string>
     <string name="torrent_speed_limit_dialog">Nustatyti greitį KiB/s. Atkreipkite dėmesį, kad nustačius didesnę torento ribą nei globali riba, globali riba nebus pakeista.</string>
-    <string name="manage_all_files_warning_dialog_description">Nenaudokite „Google Play“ LibreTorrent versijos, jei norite išsaugoti torrentus kituose aplankuose nei „Atsisiuntimai“ ir panašiai.
-\nProjekto puslapyje yra ir kitų šaltinių.</string>
     <string name="apply_settings_after_reboot">Pakeitimai bus pritaikyti iš naujo paleidus programą.</string>
     <string name="pref_posix_disk_io_title">POSIX Disk I/O</string>
     <string name="pref_locale_title">Kalba</string>

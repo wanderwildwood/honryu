@@ -504,7 +504,6 @@
     <string name="drawer_date_added_yesterday">कल</string>
     <string name="drawer_date_added_month">माह</string>
     <string name="drawer_date_added_today">आज</string>
-    <string name="manage_all_files_warning_dialog_title">चेतावनी</string>
     <string name="select_tag">टैग चुने</string>
     <string name="drawer_date_added_year">वर्ष</string>
     <string name="edit_tag">टैग संपादित करें</string>
@@ -575,8 +574,6 @@
     <string name="journal_started_recording">रिकार्डिंग शुरू की</string>
     <string name="pref_validate_https_trackers_summary">HTTPS ट्रैकर्स और HTTPS वेब सीड्स का प्रमाणपत्र सिस्टम सर्टिफिकेट स्टोर में मान्य किया जाएगा।</string>
     <string name="drawer_date_added">दिनांक जोड़ा गया</string>
-    <string name="manage_all_files_warning_dialog_description">यदि आप torrents को \'डाउनलोड\' और इसी तरह के फोल्डरों के अलावा अन्य फोल्डरों में सहेजना चाहते हैं तो LibreTorrent के Google Play संस्करण का उपयोग न करें।
-\nपरियोजना पेज पर अन्य स्रोत भी हैं।</string>
     <string name="pref_foreground_notify_status_filter_entries_3">मेटाडेटा डाउनलोड हो रहा है…</string>
     <string name="exact_alarm_permission_warning">शेड्यूलर को काम करने के लिए, आपको एक विशेष सिस्टम संवाद में अनुमति प्राप्त करनी होगी। आगे बढ़ें?</string>
     <string name="perm_denied_warning_android_r">Torrent डाउनलोड करने और मनमाने फोल्डरों में .torrent फाइलों तक पहुंचने के लिए सभी फाइलों तक पहुंच की अनुमति आवश्यक है। इस अनुमति के बिना, LibreTorrent के पास केवल सीमित संख्या में फोल्डरों तक पहुंच होगी। क्या आप वाकई इस अनुमति को अस्वीकार करना चाहते हैं?</string>

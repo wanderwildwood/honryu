@@ -564,7 +564,6 @@
     <string name="pref_foreground_notify_sorting_entries_11">பிரபலம் (பெரியது முதலில்)</string>
     <string name="pref_foreground_notify_sorting_entries_10">பிரபலம் (சிறியது முதலில்)</string>
     <string name="pref_default_trackers_list_title">இயல்புநிலை சுவடுகள்</string>
-    <string name="manage_all_files_warning_dialog_title">எச்சரிக்கை</string>
     <string name="download_first_last_pieces">முதல் மற்றும் கடைசி பாகங்களை முதலில் தரவிறக்கவும்</string>
     <string name="exact_alarm_permission_warning">திட்டமிடுபவர் வேலை செய்ய, நீங்கள் ஒரு சிறப்பு கணினி உரையாடலில் இசைவு பெற வேண்டும். தொடரவா?</string>
     <string name="perm_denied_warning_android_r">அனைத்து கோப்புகளையும் அணுகவும் டொரண்ட்ச் மற்றும் அணுகலை அணுக அனுமதித்தல் தேவை. டோரண்ட் கோப்புகளை தன்னிச்சையான கோப்புறைகளில். இந்த அனுமதியின்றி, லிப்ரெட்டோரண்டிற்கு ஒரு குறிப்பிட்ட எண்ணிக்கையிலான கோப்புறைகளுக்கு மட்டுமே அணுகல் இருக்கும். இந்த அனுமதியை நீங்கள் மறுக்க விரும்புகிறீர்களா?</string>
@@ -575,7 +574,6 @@
     <string name="torrent_version_entries_v1_only">வி 1 மட்டும்</string>
     <string name="torrent_version_entries_v2_only">வி 2 மட்டும்</string>
     <string name="pref_foreground_notify_combined_pause_button_summary">இரண்டு பொத்தான்களை ஒருங்கிணைக்கிறது: அனைத்தையும் இடைநிறுத்தி, அனைத்தையும் மீண்டும் தொடங்குங்கள். பொத்தான் ஒரு ச்விட்சர் போல வேலை செய்யும். எச்சரிக்கை: டொரண்டின் கையேடு இடைநிறுத்தம்/விண்ணப்பம் மூலம் பொத்தான் நிலை பாதிக்கப்படாது.</string>
-    <string name="manage_all_files_warning_dialog_description">\'பதிவிறக்கங்கள்\' தவிர வேறு கோப்புறைகளில் டோரண்டுகளை சேமிக்க விரும்பினால், லிப்ரெட்டோரண்டின் கூகிள் பிளே பதிப்பைப் பயன்படுத்த வேண்டாம். \nதிட்ட பக்கத்தில் பிற ஆதாரங்கள் உள்ளன.</string>
     <string name="pref_validate_https_trackers_title">HTTPS டிராக்கர்களின் சான்றிதழ்களை சரிபார்க்கவும்</string>
     <string name="pref_default_trackers_list_summary">டிராக்கர்ச் பட்டியல், பின்வரும் நிகழ்வுகளில் பயன்படுத்தப்படுகிறது:\n 1. ஒரு நீரோட்டத்தைச் சேர்க்கும்போது, இயல்புநிலை பட்டியல் தானாக டொரண்ட் பட்டியலில் சேர்க்கப்படும்.\n 2. காந்த இணைப்புகளைப் பெற பயன்படுகிறது.</string>
     <string name="go_to_folder">கோப்புறைக்குச் செல்லுங்கள்</string>

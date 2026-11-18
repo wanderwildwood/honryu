@@ -361,10 +361,7 @@
     <string name="pref_led_indicator_color_notify_title">Warna penunjuk LED</string>
     <string name="pref_theme_category">Tetapan tema</string>
     <string name="pref_foreground_notify_sorting">Penyusunan</string>
-    <string name="manage_all_files_warning_dialog_title">Amaran</string>
     <string name="pref_foreground_notify_sorting_entries_8">ETA (terkecil dahulu)</string>
-    <string name="manage_all_files_warning_dialog_description">Jangan gunakan LibreTorrent versi Gedung Play jikalai anda ingin menyimpan torrent di dalam folder selain \'Downloads\' atau sama dengannya.
-\nTerdapat sumber lain dari laman projek.</string>
     <string name="pref_auto_manage_title">Urus automatik</string>
     <string name="torrent_speed_limit_dialog">Menetapkan kelajuan dalam KiB/s. Perlu diingatkan bahawa nilai had yang lebih tinggi dari had sejagat pada torrent tidak akan mengatasi had sejagat.</string>
     <string name="pref_max_connections_per_torrent_title">Jumlah maksimum sambungan setiap torrent</string>

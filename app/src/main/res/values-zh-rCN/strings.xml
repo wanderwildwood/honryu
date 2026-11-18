@@ -570,9 +570,6 @@
     <string name="error_open_torrent">无法打开种子文件</string>
     <string name="exact_alarm_permission_warning">要使调度程序工作，你必须在一个特殊的系统对话框中获得权限。是否继续？</string>
     <string name="perm_denied_warning_android_r">访问所有文件权限是下载种子和访问任意文件夹中 .torrent 文件所必需的。如果没有此权限，LibreTorrent 将只能访问有限数量的文件夹。是否确实要拒绝此权限？</string>
-    <string name="manage_all_files_warning_dialog_description">如果您想要保存种子到自定义文件夹而不是\"Downloads\"之类的文件夹，那就不要使用 LibreTorrent 的 Google Play 版本。
-\n在项目页面上有其它的下载源。</string>
-    <string name="manage_all_files_warning_dialog_title">警告</string>
     <string name="pref_validate_https_trackers_summary">HTTPS trackers 和 HTTPS web 种子的证书将在系统证书存储中进行验证。</string>
     <string name="pref_validate_https_trackers_title">验证 HTTPS trackers 的证书</string>
     <string name="download_first_last_pieces">优先下载最前与最后的区块</string>

@@ -567,10 +567,7 @@
     <string name="torrent_move_fail">無法移動 Torrent</string>
     <string name="torrent_moving_title">正在移動 Torrent……</string>
     <string name="error_open_torrent">無法開啟 Torrent</string>
-    <string name="manage_all_files_warning_dialog_title">警告</string>
     <string name="torrent_speed_limit_dialog">設定速度單位為 KiB/s。注意，設定一個高於全域限制的 Torrent 速度上限將不會覆寫全域限制。</string>
-    <string name="manage_all_files_warning_dialog_description">若您想儲存 Torrent 至自訂資料夾而非「Downloads」之類的資料夾，請不要使用 Google Play 版本的 LibreTorrent。
-\n在專案頁面上有其他來源。</string>
     <string name="pref_validate_https_trackers_title">驗證 HTTPS 追蹤器憑證</string>
     <string name="exact_alarm_permission_warning">要使排程器運作，您必須在一個特殊的系統對話方塊中取得權限。要繼續嗎？</string>
     <string name="pref_move_after_download_in_title">下載後移至</string>

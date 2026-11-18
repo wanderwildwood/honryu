@@ -542,8 +542,6 @@
     <string name="feed_channel_list_empty">কোনো চ্যানেল নেই</string>
     <string name="error_open_torrent">টরেন্ট ফাইল ওপেন করা যাচ্ছে না</string>
     <string name="download_first_last_pieces">প্রথম এবং শেষ টুকরা আগে ডাউনলোড করুন</string>
-    <string name="manage_all_files_warning_dialog_title">সতর্কীকরণ</string>
-    <string name="manage_all_files_warning_dialog_description">\'Downloads\' কিংবা এরকম ফোল্ডার ব্যতিত অন্য কোথাও টরেন্ট সেভ করতে চাইলে Google Play এর LibreTorrent ভার্শনটি ব্যবহার করবেন না। প্রজেক্ট পেজ এ অন্যান্য ভার্শনের সোর্স রয়েছে।</string>
     <string name="apply_settings_after_reboot">অ্যাপটি পুনরায় চালু/রিস্টার্ট করার পর পরিবর্তনগুলো প্রয়োগ করা হবে।</string>
     <string name="pref_foreground_notification_category">বিজ্ঞপ্তি পছন্দসমূহ</string>
     <string name="pref_validate_https_trackers_title">HTTPS ট্র্যাকারের অনুমতিপত্র যাচাই করো</string>
