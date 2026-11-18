@@ -70,7 +70,7 @@ captures/
 *.jks
 *.keystore
 
-# Release signing config (see key.properties.example)
+# Old signing config name, kept ignored; the key and its settings live in signing/
 key.properties
 
 # Android NDK build stuff
