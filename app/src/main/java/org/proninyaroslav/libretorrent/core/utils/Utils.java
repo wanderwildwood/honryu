@@ -95,11 +95,9 @@ import org.proninyaroslav.libretorrent.ui.home.drawer.model.DrawerStatusFilter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
-import java.net.PasswordAuthentication;
 import java.net.Proxy;
 import java.net.URL;
 import java.net.UnknownHostException;
@@ -449,11 +447,11 @@ public class Utils {
         if (viaProxy && pref.proxyRequiresAuth()) {
             String login = pref.proxyLogin() == null ? "" : pref.proxyLogin();
             String password = pref.proxyPassword() == null ? "" : pref.proxyPassword();
+            /* Asked for by the proxy: SOCKS5 always, HTTP for an https address's tunnel */
+            ProxyLogin.set(pref.proxyAddress().trim(), login, password);
             if (proxyType == SessionSettings.ProxyType.HTTP) {
                 proxyAuthorization = "Basic " + Base64.getEncoder().encodeToString(
                         (login + ":" + password).getBytes(StandardCharsets.UTF_8));
-            } else {
-                ProxyLogin.set(pref.proxyAddress().trim(), login, password);
             }
         }
 
@@ -468,7 +466,12 @@ public class Utils {
                 var connection = (HttpURLConnection) (viaProxy
                         ? urlObj.openConnection(route.proxy)
                         : urlObj.openConnection());
-                if (proxyAuthorization != null) {
+                /*
+                 * Sent ahead only for a plain http address, which the proxy reads. Inside an https
+                 * tunnel the header would reach the site itself; there the proxy's 407 is answered
+                 * by ProxyLogin instead.
+                 */
+                if (proxyAuthorization != null && HTTP_PREFIX.equalsIgnoreCase(urlObj.getProtocol())) {
                     connection.setRequestProperty("Proxy-Authorization", proxyAuthorization);
                 }
 
@@ -1121,35 +1124,5 @@ public class Utils {
     // Always light: an E Ink panel shows black on white, and a dark theme is a setting it cannot honour.
     public static void applyNightMode(@NonNull Application application) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-    }
-
-    /*
-     * The SOCKS5 proxy's login. Java asks for it through the process-wide Authenticator; this one
-     * answers only a SOCKS request from the proxy's own host, and nothing else.
-     */
-    private static final class ProxyLogin extends Authenticator {
-        private static volatile String host;
-        private static volatile PasswordAuthentication login;
-        private static boolean installed;
-
-        static synchronized void set(@NonNull String proxyHost, @NonNull String user, @NonNull String password) {
-            host = proxyHost;
-            login = new PasswordAuthentication(user, password.toCharArray());
-            if (!installed) {
-                Authenticator.setDefault(new ProxyLogin());
-                installed = true;
-            }
-        }
-
-        @Override
-        protected PasswordAuthentication getPasswordAuthentication() {
-            String protocol = getRequestingProtocol();
-            String asking = getRequestingHost();
-            if (protocol != null && protocol.toUpperCase().startsWith("SOCKS")
-                    && asking != null && asking.equalsIgnoreCase(host)) {
-                return login;
-            }
-            return null;
-        }
     }
 }
