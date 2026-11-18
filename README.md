@@ -33,7 +33,7 @@ a muddy mid-gray. Status, progress and choices are carried by shape and words.
 
 **Mudita's type and components.** Lato at [MMD](https://github.com/mudita/MMD)'s sizes;
 switches, chips, progress bars, menus, dialogs and the bottom bar drawn the way MMD draws
-them; settings rows ruled in black, without icons.
+them; settings rows plain, with no rules and no icons.
 
 **No shadows, ripples, dimming or slides.** On E Ink each of those is a smear. Dialogs and
 menus carry a black rim instead, and pages change at once.

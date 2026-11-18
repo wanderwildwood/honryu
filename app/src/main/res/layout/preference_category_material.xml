@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  A section's name in the settings: bold capitals over a heavier rule, as Glance and Notes head
-  their sections. Replaces androidx.preference's layout of the same name (Apache-2.0).
+  A section's name in the settings: bold capitals, with no rule under them (STYLE.md: no
+  separator lines on settings pages). Replaces androidx.preference's layout of the same name (Apache-2.0).
 -->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -10,7 +10,8 @@
     android:orientation="vertical"
     android:paddingStart="20dp"
     android:paddingEnd="20dp"
-    android:paddingTop="22dp">
+    android:paddingTop="22dp"
+    android:paddingBottom="6dp">
 
     <include layout="@layout/image_frame"/>
 
@@ -33,11 +34,5 @@
         android:maxLines="10"
         android:textSize="16sp"
         android:textColor="#000000"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_marginTop="6dp"
-        android:background="#000000"/>
 
 </LinearLayout>

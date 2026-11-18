@@ -109,14 +109,12 @@ public class SettingsHeaderAdapter extends CustomPreferenceGroupAdapter {
             var params = view.getLayoutParams();
             params.height = rowHeight;
             view.setLayoutParams(params);
-            // The row's words sit in its first child, which keeps a 64dp minimum; the rule under
-            // them is the last, and has to stay inside the shorter row.
-            if (view instanceof ViewGroup group && group.getChildCount() > 1) {
+            // The row's words sit in its only child, which keeps a 64dp minimum of its own.
+            if (view instanceof ViewGroup group && group.getChildCount() > 0) {
                 var words = group.getChildAt(0);
-                var rule = group.getChildAt(group.getChildCount() - 1);
                 words.setMinimumHeight(0);
                 var wordsParams = words.getLayoutParams();
-                wordsParams.height = rowHeight - rule.getLayoutParams().height;
+                wordsParams.height = rowHeight;
                 words.setLayoutParams(wordsParams);
             }
         }

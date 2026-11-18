@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Every settings row, drawn as the Kompakt's own apps draw theirs: the words in black, a black
-  rule under each row, nothing that glides. Replaces androidx.preference's layout of the same
+  Every settings row, drawn as the Kompakt's own apps draw theirs: the words in black, no rule
+  between rows (STYLE.md), nothing that glides. Replaces androidx.preference's layout of the same
   name (Apache-2.0), keeping every id it looks for.
 -->
 <LinearLayout
@@ -64,12 +64,5 @@
             android:orientation="vertical"/>
 
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:background="#000000"/>
 
 </LinearLayout>
