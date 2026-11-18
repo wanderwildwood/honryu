@@ -76,6 +76,17 @@ public class FetchRouteTest {
     }
 
     @Test
+    public void anAddressWithATrailingDotIsCheckedAsAnAddress() {
+        assertEquals("127.0.0.1", FetchRoute.bareHost("127.0.0.1."));
+        assertEquals("10.0.0.1", FetchRoute.bareHost("10.0.0.1.."));
+        assertTrue(FetchRoute.isDottedQuad(FetchRoute.bareHost("127.0.0.1.")));
+        assertTrue(FetchRoute.isDottedQuad(FetchRoute.bareHost("10.0.0.1.")));
+        assertEquals("::1", FetchRoute.bareHost("[::1]"));
+        assertEquals("feeds.example.org", FetchRoute.bareHost("feeds.example.org."));
+        assertTrue(FetchRoute.isLocalName(FetchRoute.bareHost(".")));
+    }
+
+    @Test
     public void throughAProxyPublicNamesPass() {
         assertFalse(FetchRoute.isLocalName("feeds.example.org"));
         assertFalse(FetchRoute.isLocalName("example.plan"));

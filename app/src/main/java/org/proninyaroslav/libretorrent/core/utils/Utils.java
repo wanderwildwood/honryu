@@ -565,8 +565,7 @@ public class Utils {
              * FetchRoute.isLocalName); a public name pointing at a private address is not
              * seen from here.
              */
-            String bare = host.startsWith("[") && host.endsWith("]")
-                    ? host.substring(1, host.length() - 1) : host;
+            String bare = FetchRoute.bareHost(host);
             boolean literal = bare.contains(":") || FetchRoute.isDottedQuad(bare);
             if (!literal && FetchRoute.isLocalName(bare)) {
                 throw new FetchLinkException("URL names a disallowed address: " + host);

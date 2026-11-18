@@ -61,6 +61,20 @@ public final class FetchRoute {
             ".localhost", ".local", ".lan", ".home.arpa", ".internal"
     };
 
+    /*
+     * The host as it is judged: without the brackets of an IPv6 address and without trailing
+     * dots, so 127.0.0.1. is checked as the address 127.0.0.1 and not let past as a name
+     */
+    @NonNull
+    public static String bareHost(@NonNull String host) {
+        String bare = host.startsWith("[") && host.endsWith("]")
+                ? host.substring(1, host.length() - 1) : host;
+        while (bare.endsWith(".")) {
+            bare = bare.substring(0, bare.length() - 1);
+        }
+        return bare;
+    }
+
     /* An IPv4 address in the plain dotted form, which is checked as an address */
     public static boolean isDottedQuad(@NonNull String host) {
         return DOTTED_QUAD.matcher(host).matches();
