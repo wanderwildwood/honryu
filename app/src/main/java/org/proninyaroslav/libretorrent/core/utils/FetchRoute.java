@@ -7,6 +7,8 @@ import org.proninyaroslav.libretorrent.core.settings.SessionSettings;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
+import java.util.Locale;
+import java.util.regex.Pattern;
 
 /*
  * How a feed or a .torrent link is fetched, by the same proxy settings the torrents use:
@@ -50,5 +52,44 @@ public final class FetchRoute {
         }
         Proxy proxy = new Proxy(javaType, InetSocketAddress.createUnresolved(address.trim(), port));
         return new FetchRoute(Kind.PROXY, proxy);
+    }
+
+    private static final Pattern DOTTED_QUAD =
+            Pattern.compile("(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}");
+    private static final Pattern NUMERIC_LABEL = Pattern.compile("[0-9]+|0x[0-9a-f]*");
+    private static final String[] LOCAL_SUFFIXES = {
+            ".localhost", ".local", ".lan", ".home.arpa", ".internal"
+    };
+
+    /* An IPv4 address in the plain dotted form, which is checked as an address */
+    public static boolean isDottedQuad(@NonNull String host) {
+        return DOTTED_QUAD.matcher(host).matches();
+    }
+
+    /*
+     * Through a proxy the name is not looked up here, so it is judged by its form alone: a
+     * name with no dot (localhost, a LAN machine, an address written as one number), a name
+     * under a suffix kept for local networks, and an address written in any form but the
+     * plain dotted one (0x7f000001, 0177.0.0.1, 127.1) are refused. A public name that points
+     * at a private address cannot be told from here; the proxy looks it up.
+     */
+    public static boolean isLocalName(@NonNull String host) {
+        String name = host.toLowerCase(Locale.ROOT);
+        while (name.endsWith(".")) {
+            name = name.substring(0, name.length() - 1);
+        }
+        if (name.isEmpty() || !name.contains(".")) {
+            return true;
+        }
+        for (String suffix : LOCAL_SUFFIXES) {
+            if (name.endsWith(suffix)) {
+                return true;
+            }
+        }
+        if (isDottedQuad(name)) {
+            return false;
+        }
+        String last = name.substring(name.lastIndexOf('.') + 1);
+        return NUMERIC_LABEL.matcher(last).matches();
     }
 }

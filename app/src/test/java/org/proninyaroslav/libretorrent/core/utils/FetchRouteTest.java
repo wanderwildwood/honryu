@@ -1,7 +1,9 @@
 package org.proninyaroslav.libretorrent.core.utils;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.proninyaroslav.libretorrent.core.settings.SessionSettings.ProxyType;
@@ -47,5 +49,37 @@ public class FetchRouteTest {
         assertEquals(FetchRoute.Kind.REFUSE, FetchRoute.of(ProxyType.SOCKS5, "", 1080, true).kind);
         assertEquals(FetchRoute.Kind.REFUSE, FetchRoute.of(ProxyType.HTTP, "10.0.0.2", 0, true).kind);
         assertEquals(FetchRoute.Kind.DIRECT, FetchRoute.of(ProxyType.HTTP, null, 8080, false).kind);
+    }
+
+    @Test
+    public void throughAProxyLocalNamesAreRefusedByTheirForm() {
+        assertTrue(FetchRoute.isLocalName("localhost"));
+        assertTrue(FetchRoute.isLocalName("LOCALHOST."));
+        assertTrue(FetchRoute.isLocalName("printer"));
+        assertTrue(FetchRoute.isLocalName("feeds.localhost"));
+        assertTrue(FetchRoute.isLocalName("nas.local"));
+        assertTrue(FetchRoute.isLocalName("router.lan"));
+        assertTrue(FetchRoute.isLocalName("box.home.arpa"));
+        assertTrue(FetchRoute.isLocalName("wiki.corp.internal"));
+    }
+
+    @Test
+    public void throughAProxyOddAddressFormsAreRefused() {
+        assertTrue(FetchRoute.isLocalName("2130706433"));
+        assertTrue(FetchRoute.isLocalName("0x7f000001"));
+        assertTrue(FetchRoute.isLocalName("0177.0.0.1"));
+        assertTrue(FetchRoute.isLocalName("127.1"));
+        assertTrue(FetchRoute.isLocalName("0x7f.0.0.1"));
+        assertFalse(FetchRoute.isDottedQuad("0177.0.0.1"));
+        assertTrue(FetchRoute.isDottedQuad("127.0.0.1"));
+        assertTrue(FetchRoute.isDottedQuad("203.0.113.7"));
+    }
+
+    @Test
+    public void throughAProxyPublicNamesPass() {
+        assertFalse(FetchRoute.isLocalName("feeds.example.org"));
+        assertFalse(FetchRoute.isLocalName("example.plan"));
+        assertFalse(FetchRoute.isLocalName("203.0.113.7"));
+        assertFalse(FetchRoute.isLocalName("1.example.com"));
     }
 }

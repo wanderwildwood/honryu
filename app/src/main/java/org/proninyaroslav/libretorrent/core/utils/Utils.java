@@ -551,15 +551,18 @@ public class Utils {
         if (!resolveLocally) {
             /*
              * Through a proxy the name is the proxy's to look up: no DNS query from here. An
-             * address written as numbers is still checked (that needs no lookup), and so is
-             * the one name that always means this phone.
+             * address written as numbers is still checked (that needs no lookup), and a name
+             * that by its form means this phone or a local network is refused (see
+             * FetchRoute.isLocalName); a public name pointing at a private address is not
+             * seen from here.
              */
             String bare = host.startsWith("[") && host.endsWith("]")
                     ? host.substring(1, host.length() - 1) : host;
-            if (bare.equalsIgnoreCase("localhost") || bare.toLowerCase().endsWith(".localhost")) {
+            boolean literal = bare.contains(":") || FetchRoute.isDottedQuad(bare);
+            if (!literal && FetchRoute.isLocalName(bare)) {
                 throw new FetchLinkException("URL names a disallowed address: " + host);
             }
-            if (bare.matches("[0-9.]+") || bare.contains(":")) {
+            if (literal) {
                 try {
                     if (isDisallowedAddress(InetAddress.getByName(bare))) {
                         throw new FetchLinkException("URL resolves to a disallowed address: " + bare);
