@@ -41,6 +41,7 @@ import org.libtorrent4j.TorrentFlags;
 import org.libtorrent4j.TorrentHandle;
 import org.libtorrent4j.TorrentInfo;
 import org.libtorrent4j.Vectors;
+import org.libtorrent4j.alerts.AddTorrentAlert;
 import org.libtorrent4j.alerts.Alert;
 import org.libtorrent4j.alerts.AlertType;
 import org.libtorrent4j.alerts.ListenFailedAlert;
@@ -1058,6 +1059,8 @@ public class TorrentSessionImpl extends SessionManager
                         /* The add failed: nothing more will come for it, so let go of it and load the next one */
                         if (alertHash != null)
                             addTorrentsList.remove(alertHash);
+                        if (alert instanceof AddTorrentAlert)
+                            forgetFailedAdd((AddTorrentAlert) alert);
                         checkStop();
                         runNextLoadTorrentTask();
                         break;
@@ -1137,6 +1140,26 @@ public class TorrentSessionImpl extends SessionManager
         String hash = th.infoHash().toHex();
         if (magnets.contains(hash)) {
             th.saveResumeData(TorrentHandle.SAVE_INFO_DICT);
+        }
+    }
+
+    /*
+     * A failed add's handle is not valid and cannot name the torrent, so its hash is read from
+     * the add's own params: the info hash for a magnet, or the torrent's own hash for a .torrent
+     * file, whose params may carry no info hash. Both are taken off the list; one that is not on
+     * it changes nothing.
+     */
+    private void forgetFailedAdd(AddTorrentAlert alert) {
+        try {
+            org.libtorrent4j.AddTorrentParams p = alert.params();
+            Sha1Hash best = p.getInfoHashes().getBest();
+            if (best != null)
+                addTorrentsList.remove(best.toHex());
+            TorrentInfo ti = p.torrentInfo();
+            if (ti != null)
+                addTorrentsList.remove(ti.infoHash().toHex());
+        } catch (RuntimeException e) {
+            Log.e(TAG, "Unable to read the params of a failed add: " + Log.getStackTraceString(e));
         }
     }
 
