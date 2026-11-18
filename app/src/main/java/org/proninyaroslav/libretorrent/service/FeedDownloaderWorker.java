@@ -21,6 +21,7 @@ package org.proninyaroslav.libretorrent.service;
 
 import android.content.Context;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -47,6 +48,7 @@ import org.proninyaroslav.libretorrent.core.utils.Utils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /*
  * The worker for downloading torrents from RSS/Atom items.
@@ -61,6 +63,8 @@ public class FeedDownloaderWorker extends Worker {
 
     private static final long START_ENGINE_RETRY_TIME = 3000; /* ms */
     private static final int START_ENGINE_MAX_TRIES = 20;
+    /* Then the items stay unread, for the next refresh or a tap to fetch them */
+    private static final int MAX_RUN_ATTEMPTS = 5;
 
     private TorrentEngine engine;
     private FeedRepository repo;
@@ -84,27 +88,47 @@ public class FeedDownloaderWorker extends Worker {
             return Result.failure();
 
         if (ACTION_DOWNLOAD_TORRENT_LIST.equals(action))
-            return addTorrents(fetchTorrents(data.getStringArray(TAG_ITEM_ID_LIST)));
+            return downloadTorrents(data.getStringArray(TAG_ITEM_ID_LIST));
 
         return Result.failure();
     }
 
-    private ArrayList<AddTorrentParams> fetchTorrents(String... ids) {
-        ArrayList<AddTorrentParams> paramsList = new ArrayList<>();
-        if (ids == null)
-            return paramsList;
+    private Result downloadTorrents(String[] ids) {
+        if (ids == null || ids.length == 0)
+            return Result.failure();
 
-        for (FeedItem item : repo.getItemsById(ids)) {
-            AddTorrentParams params = fetchTorrent(item);
-            if (params != null)
-                paramsList.add(params);
+        /*
+         * The engine first: the .torrent files are fetched only once it can take them, so a
+         * try that has to wait for a later one costs no download.
+         */
+        if (!startEngine()) {
+            return getRunAttemptCount() + 1 < MAX_RUN_ATTEMPTS
+                    ? Result.retry()
+                    : Result.failure();
         }
 
-        return paramsList;
+        ArrayList<AddTorrentParams> paramsList = new ArrayList<>();
+        List<String> addedIds = new ArrayList<>();
+        for (FeedItem item : repo.getItemsById(ids)) {
+            AddTorrentParams params = fetchTorrent(item);
+            if (params != null) {
+                paramsList.add(params);
+                addedIds.add(item.id);
+            }
+        }
+        if (paramsList.isEmpty())
+            return Result.failure();
+
+        engine.addTorrents(paramsList, true);
+        /* Read once added: an item that could not be fetched stays unread */
+        for (String id : addedIds)
+            repo.markAsRead(id);
+
+        return Result.success();
     }
 
     private AddTorrentParams fetchTorrent(FeedItem item) {
-        if (item == null)
+        if (item == null || TextUtils.isEmpty(item.downloadUrl))
             return null;
 
         Uri downloadPath = Utils.getTorrentDownloadPath(getApplicationContext());
@@ -185,31 +209,27 @@ public class FeedDownloaderWorker extends Worker {
         );
     }
 
-    private Result addTorrents(ArrayList<AddTorrentParams> paramsList) {
-        if (paramsList == null || paramsList.isEmpty())
-            return Result.failure();
-
+    private boolean startEngine() {
         if (!engine.isRunning())
             engine.start();
 
         /*
          * Not for ever: Android 12+ may refuse to start the engine's service from here. The
-         * work is tried again later, when it may be allowed, instead of waiting on in a loop.
+         * work is tried again later, a few times, when it may be allowed, instead of waiting
+         * on in a loop.
          */
         for (int tries = 0; !engine.isRunning(); tries++) {
             if (tries >= START_ENGINE_MAX_TRIES)
-                return Result.retry();
+                return false;
             try {
                 Thread.sleep(START_ENGINE_RETRY_TIME);
                 engine.start();
 
             } catch (InterruptedException e) {
-                return Result.failure();
+                return false;
             }
         }
 
-        engine.addTorrents(paramsList, true);
-
-        return Result.success();
+        return true;
     }
 }

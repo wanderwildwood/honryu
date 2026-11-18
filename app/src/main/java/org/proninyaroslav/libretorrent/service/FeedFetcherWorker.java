@@ -225,13 +225,14 @@ public class FeedFetcherWorker extends Worker {
     private void sendFetchedItems(FeedChannel channel, List<FeedItem> items) {
         ArrayList<String> ids = new ArrayList<>();
         for (FeedItem item : items) {
-            if (item == null || item.read) {
+            /* An item with no torrent link has nothing to download */
+            if (item == null || item.read || TextUtils.isEmpty(item.downloadUrl)) {
                 continue;
             }
 
+            /* Marked read by the downloader once it has added the torrent */
             if (isMatch(item, channel.filter, channel.isRegexFilter)) {
                 ids.add(item.id);
-                repo.markAsRead(item.id);
             }
         }
 
