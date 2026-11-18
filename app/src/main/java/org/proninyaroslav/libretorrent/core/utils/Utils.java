@@ -584,6 +584,14 @@ public class Utils {
             return urlObj;
         }
 
+        /*
+         * Kept as a known gap: the connection looks the name up again after this check, so a
+         * hostile feed host with a short-lived DNS record could answer a public address here
+         * and a LAN address there. Closing it needs a fetch to the checked address itself (with
+         * its own TLS path for https), in every feed and .torrent fetch. What it reaches is a
+         * blind request: the answer is only read as a feed or a torrent, and a failure shows
+         * as an error. Revisit if feeds ever show what they fetch.
+         */
         InetAddress[] addresses;
         try {
             addresses = InetAddress.getAllByName(host);
