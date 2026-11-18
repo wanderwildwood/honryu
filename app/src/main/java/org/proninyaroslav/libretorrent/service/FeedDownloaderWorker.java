@@ -63,7 +63,10 @@ public class FeedDownloaderWorker extends Worker {
 
     private static final long START_ENGINE_RETRY_TIME = 3000; /* ms */
     private static final int START_ENGINE_MAX_TRIES = 20;
-    /* Then the items stay unread, for the next refresh or a tap to fetch them */
+    /*
+     * Then the items stay unread and are fetched only by a tap: a later refresh skips every
+     * item already in the database, so it never offers them for download again
+     */
     private static final int MAX_RUN_ATTEMPTS = 5;
 
     private TorrentEngine engine;
