@@ -102,13 +102,34 @@ public class FeedParser {
             if (pubDate != null)
                 pubDateTime = pubDate.getTime();
 
+            /* RSS allows an item with no <title>; the title is the item's key */
+            String title = itemTitle(item.getTitle(), articleUrl, downloadUrl);
+            if (title == null)
+                continue;
+
             FeedItem feedItem = new FeedItem(feedChannel.id, downloadUrl,
-                    articleUrl, item.getTitle(), pubDateTime);
+                    articleUrl, title, pubDateTime);
             feedItem.fetchDate = System.currentTimeMillis();
             items.add(feedItem);
         }
 
         return items;
+    }
+
+    /*
+     * The item's title, or its article link, or its torrent link when it has no <title>.
+     * A title that is present is kept as it is, since it is part of the stored item's id.
+     * Null when the item has none of them: it cannot be told apart from other items.
+     */
+    public static String itemTitle(String title, String articleUrl, String downloadUrl) {
+        if (title != null)
+            return title;
+        if (articleUrl != null && !articleUrl.trim().isEmpty())
+            return articleUrl;
+        if (downloadUrl != null && !downloadUrl.trim().isEmpty())
+            return downloadUrl;
+
+        return null;
     }
 
     private String getFirstNotNullLink(List<String> links) {

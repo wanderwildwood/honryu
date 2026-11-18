@@ -255,6 +255,7 @@ public class FeedFetcherWorker extends Worker {
         if (filters == null || TextUtils.isEmpty(filters)) {
             return true;
         }
+        String title = item.title == null ? "" : item.title;
 
         for (String filter : filters.split(Utils.NEWLINE_PATTERN)) {
             if (TextUtils.isEmpty(filter)) {
@@ -272,13 +273,13 @@ public class FeedFetcherWorker extends Worker {
                     continue;
                 }
 
-                if (pattern.matcher(item.title).matches()) {
+                if (pattern.matcher(title).matches()) {
                     return true;
                 }
             } else {
                 String[] words = filter.split(repo.getFilterSeparator());
                 for (String word : words) {
-                    if (item.title.toLowerCase().contains(word.toLowerCase().trim())) {
+                    if (title.toLowerCase().contains(word.toLowerCase().trim())) {
                         return true;
                     }
                 }
