@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
+import org.proninyaroslav.libretorrent.ui.compose.FilesPicker;
 
 public class ShowInCabinetTest {
     @Test
@@ -11,6 +12,12 @@ public class ShowInCabinetTest {
         assertEquals("com.wanderwildwood.tana.action.SHOW_FILE", ShowInCabinet.ACTION);
         assertEquals("com.wanderwildwood.tana", ShowInCabinet.PACKAGE);
         assertEquals("path", ShowInCabinet.EXTRA_PATH);
+    }
+
+    @Test
+    public void theCertificateCheckedIsCabinets() {
+        /* isInstalled trusts the package FilesPicker checks the release certificate of */
+        assertEquals(FilesPicker.PACKAGE, ShowInCabinet.PACKAGE);
     }
 
     @Test

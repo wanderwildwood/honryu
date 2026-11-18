@@ -9,6 +9,8 @@ import android.provider.DocumentsContract;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.proninyaroslav.libretorrent.ui.compose.FilesPicker;
+
 import java.util.regex.Pattern;
 
 /*
@@ -35,8 +37,10 @@ public final class ShowInCabinet {
         return new Intent(ACTION).setPackage(PACKAGE).putExtra(EXTRA_PATH, path);
     }
 
+    /* Cabinet has the screen, and is the real Cabinet: the path goes to nobody else */
     public static boolean isInstalled(@NonNull Context context) {
-        return intent("/").resolveActivity(context.getPackageManager()) != null;
+        return intent("/").resolveActivity(context.getPackageManager()) != null
+                && FilesPicker.INSTANCE.isFiles(context);
     }
 
     /*
