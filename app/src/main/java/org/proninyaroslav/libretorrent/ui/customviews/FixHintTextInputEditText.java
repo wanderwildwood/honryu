@@ -23,15 +23,14 @@ import android.util.AttributeSet;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.material.textfield.TextInputEditText;
-
 /*
  * Fixes crash on Android 8.0 if hint is inside TextInputEditText
  * See https://issuetracker.google.com/issues/62834931
+ *
+ * A SteadyCaretEditText, so every field in the layouts has the steady caret.
  */
 
-public class FixHintTextInputEditText extends TextInputEditText {
-    private SteadyCaret caret;
+public class FixHintTextInputEditText extends SteadyCaretEditText {
 
     public FixHintTextInputEditText(@NonNull Context context) {
         super(context);
@@ -47,27 +46,6 @@ public class FixHintTextInputEditText extends TextInputEditText {
             int defStyleAttr
     ) {
         super(context, attrs, defStyleAttr);
-    }
-
-    @Override
-    protected void onDraw(@NonNull android.graphics.Canvas canvas) {
-        super.onDraw(canvas);
-        if (caret == null) {
-            caret = new SteadyCaret(this);
-        }
-        caret.draw(canvas);
-    }
-
-    @Override
-    protected void onSelectionChanged(int selStart, int selEnd) {
-        super.onSelectionChanged(selStart, selEnd);
-        invalidate();
-    }
-
-    @Override
-    protected void onFocusChanged(boolean focused, int direction, @Nullable android.graphics.Rect previouslyFocusedRect) {
-        super.onFocusChanged(focused, direction, previouslyFocusedRect);
-        invalidate();
     }
 
     @Override
